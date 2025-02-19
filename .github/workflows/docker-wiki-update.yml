@@ -1,0 +1,54 @@
+name: Download build manifests from GitHub artifacts and push them to GitHub wiki
+# We're doing everything in one workflow on purpose
+# This way we make sure we don't access wiki pages from several jobs simultaneously
+
+env:
+  PUSH_TO_REGISTRY: ${{ github.repository_owner == 'fbnrst' && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+
+on:
+  workflow_call:
+
+jobs:
+  wiki-update:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create dev environment 📦
+        uses: ./.github/actions/create-dev-env
+
+      - name: Download all history lines 📥
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-history_line"
+          path: /tmp/jupyter/hist_lines/
+
+      - name: Download all manifests 📥
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-manifest"
+          path: /tmp/jupyter/manifests/
+
+      - name: Checkout Wiki Repo 📃
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki/
+
+      - name: Update wiki 🏷
+        run: >
+          python3 -m tagging.update_wiki
+          --wiki-dir wiki/
+          --hist-lines-dir /tmp/jupyter/hist_lines/
+          --manifests-dir /tmp/jupyter/manifests/
+        shell: bash
+
+      - name: Push Wiki to GitHub 📤
+        if: env.PUSH_TO_REGISTRY == 'true'
+        uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
+        with:
+          commit_message: "Automated wiki publish for ${{ github.sha }}"
+          repository: wiki/

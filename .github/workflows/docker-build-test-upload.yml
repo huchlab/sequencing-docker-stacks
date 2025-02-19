@@ -1,0 +1,131 @@
+name: Download a parent image, build a new one, and test it; then upload the image, tags, and manifests to GitHub artifacts
+
+env:
+  REGISTRY: quay.io
+  OWNER: ${{ github.repository_owner }}
+
+on:
+  workflow_call:
+    inputs:
+      parent-image:
+        description: Parent image name
+        required: true
+        type: string
+      parent-variant:
+        description: Parent variant tag prefix
+        required: false
+        type: string
+        default: default
+      image:
+        description: Image name
+        required: true
+        type: string
+      variant:
+        description: Variant tag prefix
+        required: false
+        type: string
+        default: default
+      platform:
+        description: Image platform
+        required: true
+        type: string
+      runs-on:
+        description: GitHub Actions Runner image
+        required: true
+        type: string
+
+jobs:
+  build-test-upload:
+    runs-on: ${{ inputs.runs-on }}
+
+    steps:
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@v4
+      - name: Create dev environment 📦
+        uses: ./.github/actions/create-dev-env
+
+      - name: Load parent built image to Docker 📥
+        if: inputs.parent-image != ''
+        uses: ./.github/actions/load-image
+        with:
+          image: ${{ inputs.parent-image }}
+          platform: ${{ inputs.platform }}
+          variant: ${{ inputs.parent-variant }}
+
+      - name: Pull base ubuntu image 📥
+        if: inputs.parent-image == ''
+        run: docker pull ubuntu:24.04
+        shell: bash
+
+      - name: Build image 🛠
+        run: >
+          docker build
+          --rm --force-rm
+          --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+          images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/
+          --build-arg REGISTRY=${{ env.REGISTRY }}
+          --build-arg OWNER=${{ env.OWNER }}
+        env:
+          DOCKER_BUILDKIT: 1
+          # Full logs for CI build
+          BUILDKIT_PROGRESS: plain
+        shell: bash
+
+      - name: Write tags file 🏷
+        run: >
+          python3 -m tagging.write_tags_file
+          --registry ${{ env.REGISTRY }}
+          --owner ${{ env.OWNER }}
+          --short-image-name ${{ inputs.image }}
+          --variant ${{ inputs.variant }}
+          --tags-dir /tmp/jupyter/tags/
+        shell: bash
+      - name: Upload tags file 💾
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags
+          path: /tmp/jupyter/tags/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}.txt
+          retention-days: 3
+
+      - name: Write manifest and build history file 🏷
+        run: >
+          python3 -m tagging.write_manifest
+          --registry ${{ env.REGISTRY }}
+          --owner ${{ env.OWNER }}
+          --short-image-name ${{ inputs.image }}
+          --variant ${{ inputs.variant }}
+          --hist-lines-dir /tmp/jupyter/hist_lines/
+          --manifests-dir /tmp/jupyter/manifests/
+        shell: bash
+      - name: Upload manifest file 💾
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-manifest
+          path: /tmp/jupyter/manifests/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}-*.md
+          retention-days: 3
+      - name: Upload build history line 💾
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-history_line
+          path: /tmp/jupyter/hist_lines/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}-*.txt
+          retention-days: 3
+
+      - name: Save image as a tar for later use 💾
+        run: |
+          mkdir -p /tmp/jupyter/images/
+          docker save ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} | zstd > /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
+        shell: bash
+      - name: Upload image as artifact 💾
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          path: /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
+          retention-days: 3
+
+      - name: Run tests ✅
+        run: >
+          python3 -m tests.run_tests
+          --registry ${{ env.REGISTRY }}
+          --owner ${{ env.OWNER }}
+          --short-image-name ${{ inputs.image }}
+        shell: bash

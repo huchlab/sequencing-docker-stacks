@@ -1,0 +1,139 @@
+name: Build, test, and push Docker Images
+
+on:
+  schedule:
+    # Weekly, at 03:00 on Monday UTC
+    - cron: "0 3 * * 1"
+  pull_request:
+    paths:
+      - ".github/workflows/docker.yml"
+      # We use local reusable workflows to make architecture clean and simple
+      # https://docs.github.com/en/actions/sharing-automations/reusing-workflows
+      - ".github/workflows/docker-build-test-upload.yml"
+      - ".github/workflows/docker-merge-tags.yml"
+      - ".github/workflows/docker-tag-push.yml"
+      - ".github/workflows/docker-wiki-update.yml"
+
+      # We use local composite actions to combine multiple workflow steps within one action
+      # https://docs.github.com/en/actions/sharing-automations/creating-actions/about-custom-actions#composite-actions
+      - ".github/actions/create-dev-env/action.yml"
+      - ".github/actions/load-image/action.yml"
+
+      - "images/**"
+      - "!images/*/README.md"
+      - "tagging/**"
+      - "!tagging/README.md"
+      - "tests/**"
+      - "!tests/README.md"
+      - "requirements-dev.txt"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/docker.yml"
+      - ".github/workflows/docker-build-test-upload.yml"
+      - ".github/workflows/docker-merge-tags.yml"
+      - ".github/workflows/docker-tag-push.yml"
+      - ".github/workflows/docker-wiki-update.yml"
+
+      - ".github/actions/create-dev-env/action.yml"
+      - ".github/actions/load-image/action.yml"
+
+      - "images/**"
+      - "!images/*/README.md"
+      - "tagging/**"
+      - "!tagging/README.md"
+      - "tests/**"
+      - "!tests/README.md"
+      - "requirements-dev.txt"
+  workflow_dispatch:
+
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs
+concurrency:
+  # Only cancel in-progress jobs or runs for the current workflow - matches against branch & tags
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  aarch64-rnaseq:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: rnaseq-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+
+  x86_64-rnaseq:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: rnaseq-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+
+  aarch64-images-tag-push:
+    uses: ./.github/workflows/docker-tag-push.yml
+    with:
+      platform: aarch64
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        image:
+          [
+            rnaseq-notebook,
+          ]
+        variant: [default]
+    needs:
+      [
+        aarch64-rnaseq,
+      ]
+
+  x86_64-images-tag-push:
+    uses: ./.github/workflows/docker-tag-push.yml
+    with:
+      platform: x86_64
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        image:
+          [
+            rnaseq-notebook,
+          ]
+        variant: [default]
+    needs:
+      [
+        x86_64-rnaseq,
+      ]
+
+  merge-tags:
+    uses: ./.github/workflows/docker-merge-tags.yml
+    with:
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        image:
+          [
+            rnaseq-notebook,
+          ]
+        variant: [default]
+    needs: [aarch64-images-tag-push, x86_64-images-tag-push]
+    if: github.repository_owner == 'fbnrst'
+
+  wiki-update:
+    uses: ./.github/workflows/docker-wiki-update.yml
+    needs: [aarch64-images-tag-push, x86_64-images-tag-push]
+    if: github.repository_owner == 'fbnrst'
+    permissions:
+      contents: write

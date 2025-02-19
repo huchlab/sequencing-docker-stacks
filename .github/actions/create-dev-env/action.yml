@@ -1,0 +1,16 @@
+name: Build environment
+description: Create a build environment
+
+runs:
+  using: composite
+  steps:
+    - name: Set Up Python 🐍
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+
+    - name: Install Dev Dependencies 📦
+      run: |
+        pip install --upgrade pip
+        pip install --upgrade -r requirements-dev.txt
+      shell: bash
