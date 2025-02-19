@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=fbnrst
-ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook
+ARG BASE_IMAGE=$REGISTRY/$OWNER/sequencing-base-notebook
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"

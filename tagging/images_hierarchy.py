@@ -37,7 +37,7 @@ class ImageDescription:
 
 
 ALL_IMAGES = {
-    "rnaseq-notebook": ImageDescription(
+    "sequencing-base-notebook": ImageDescription(
         parent_image=None,
         taggers=[
             SHATagger(),
@@ -56,24 +56,11 @@ ALL_IMAGES = {
             RPackagesManifest()
         ],
     ),
+    "rnaseq-notebook": ImageDescription(
+        parent_image="sequencing-base-notebook",
+    ),
     "singlecell-notebook": ImageDescription(
-        parent_image=None,
-        taggers=[
-            SHATagger(),
-            DateTagger(),
-            UbuntuVersionTagger(),
-            PythonMajorMinorVersionTagger(),
-            PythonVersionTagger(),
-            JupyterNotebookVersionTagger(),
-            JupyterLabVersionTagger(),
-            JupyterHubVersionTagger(),
-            RVersionTagger()
-        ],
-        manifests=[
-            CondaEnvironmentManifest(),
-            AptPackagesManifest(),
-            RPackagesManifest()
-        ],
+        parent_image="sequencing-base-notebook",
     ),
     "spatial-notebook": ImageDescription(
         parent_image="singlecell-notebook"

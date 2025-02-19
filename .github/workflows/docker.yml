@@ -55,10 +55,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  aarch64-rnaseq:
+  aarch64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
+      image: sequencing-base-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+
+  x86_64-sequencing-base:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: sequencing-base-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+  aarch64-rnaseq:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: "sequencing-base-notebook"
       image: rnaseq-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
@@ -66,7 +81,7 @@ jobs:
   x86_64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: ""
+      parent-image: "sequencing-base-notebook"
       image: rnaseq-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
@@ -118,6 +133,7 @@ jobs:
       matrix:
         image:
           [
+            sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
             spatial-notebook,
@@ -125,6 +141,7 @@ jobs:
         variant: [default]
     needs:
       [
+        aarch64-sequencing-base,
         aarch64-rnaseq,
         aarch64-singlecell,
         aarch64-spatial,
@@ -143,6 +160,7 @@ jobs:
       matrix:
         image:
           [
+            sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
             spatial-notebook,
@@ -150,6 +168,7 @@ jobs:
         variant: [default]
     needs:
       [
+        x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
         x86_64-spatial,
@@ -167,6 +186,7 @@ jobs:
       matrix:
         image:
           [
+            sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
             spatial-notebook,

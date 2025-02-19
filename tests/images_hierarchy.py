@@ -6,8 +6,9 @@ from pathlib import Path
 THIS_DIR = Path(__file__).parent.resolve()
 
 ALL_IMAGES = {
-    "rnaseq-notebook": None,
-    "singlecell-notebook": None,
+    "sequencing-base-notebook": None,
+    "rnaseq-notebook": "sequencing-base-notebook",
+    "singlecell-notebook": "sequencing-base-notebook",
     "spatial-notebook": "singlecell-notebook",
 }
 
