@@ -9,3 +9,42 @@ FROM $BASE_IMAGE
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+USER root
+
+ARG CONTAINER_BUILD_DATE
+ARG CONTAINER_IMAGE_NAME
+ARG CONTAINER_GIT_REPOSITORY
+ARG CONTAINER_GIT_COMMIT
+
+ENV CONTAINER_BUILD_DATE=${CONTAINER_BUILD_DATE}
+ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
+ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
+ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
+
+USER ${NB_UID}
+
+RUN conda config --add channels bioconda
+
+RUN mamba install --yes \
+    'bioconductor-apeglm' \
+    'bioconductor-biocparallel' \
+    'bioconductor-biomart' \
+    'bioconductor-complexheatmap' \
+    'bioconductor-deseq2' \
+    'bioconductor-scran' \
+    'bioconductor-tximport' \
+    'bioconductor-vsn' \
+    'mscorefonts' \
+    'r-ashr' \
+    'r-base' \
+    'r-ggpubr' \
+    'r-languageserver' \
+    'r-pheatmap' \
+    'r-plotly' \
+    'r-robustrankaggreg' \
+    'r-viridis' \
+    'r-writexl' && \
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
