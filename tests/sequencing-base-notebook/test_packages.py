@@ -143,6 +143,13 @@ def _check_import_packages(
     failed_imports = []
     LOGGER.info("Testing the import of packages ...")
     for package in packages_to_check:
+        if ('<' in package):
+            package = package.split('<')[0]
+        elif ('>' in package):
+            package = package.split('>')[0]
+        elif ('=' in package):
+            package = package.split('=')[0]
+        
         LOGGER.info(f"Trying to import {package}")
         try:
             check_function(package_helper, package)
