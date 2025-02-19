@@ -39,6 +39,14 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
 
     steps:
+      - name: Login to Registry 🔐
+        # if: env.PUSH_TO_REGISTRY == 'true'
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: quay.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
       - name: Create dev environment 📦
