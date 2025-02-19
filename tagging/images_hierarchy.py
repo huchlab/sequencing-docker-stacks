@@ -37,5 +37,5 @@ class ImageDescription:
 
 
 ALL_IMAGES = {
-    "rnaseq-notebook": ImageDescription(parent_image="datascience-notebook"),
+    "rnaseq-notebook": ImageDescription(parent_image=None),
 }
