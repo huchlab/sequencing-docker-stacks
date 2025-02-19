@@ -6,23 +6,12 @@ from tests.R_library_check import load_library
 import pytest
 
 library_list = [
-    "apeglm",
-    "ashr",
-    "BiocParallel",
-    "biomaRt",
-    "ComplexHeatmap",
-    "DESeq2",
-    "pheatmap",
-    "plotly",
-    "RColorBrewer",
-    "readxl",
-    "RobustRankAggreg",
-    "scales",
-    "scuttle",
-    "tidyverse",
-    "viridis",
-    "vsn",
-    "writexl"
+    "SingleCellExperiment",
+    "monocle",
+    "MAST",
+    "scater",
+    "scran",
+    "Seurat",
 ]
 
 

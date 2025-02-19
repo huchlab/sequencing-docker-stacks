@@ -1,4 +1,4 @@
-# Jupyter Notebook Rnaseq Stack
+# Jupyter Notebook Singlecell Stack
 
 GitHub Actions in the <https://github.com/fbnrst/sequencing-docker-stacks> project builds and pushes this image to the Registry.
 

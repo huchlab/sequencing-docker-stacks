@@ -7,6 +7,8 @@ THIS_DIR = Path(__file__).parent.resolve()
 
 ALL_IMAGES = {
     "rnaseq-notebook": None,
+    "singlecell-notebook": None,
+    "spatial-notebook": "singlecell-notebook",
 }
 
 

@@ -71,6 +71,40 @@ jobs:
       platform: x86_64
       runs-on: ubuntu-24.04
 
+  aarch64-singlecell:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: singlecell-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+
+  x86_64-singlecell:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: singlecell-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+
+  aarch64-spatial:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: spatial-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+    needs: [aarch64-singlecell]
+
+  x86_64-spatial:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: spatial-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+    needs: [x86_64-singlecell]
+
   aarch64-images-tag-push:
     uses: ./.github/workflows/docker-tag-push.yml
     with:
@@ -85,11 +119,15 @@ jobs:
         image:
           [
             rnaseq-notebook,
+            singlecell-notebook,
+            spatial-notebook,
           ]
         variant: [default]
     needs:
       [
         aarch64-rnaseq,
+        aarch64-singlecell,
+        aarch64-spatial,
       ]
 
   x86_64-images-tag-push:
@@ -106,11 +144,15 @@ jobs:
         image:
           [
             rnaseq-notebook,
+            singlecell-notebook,
+            spatial-notebook,
           ]
         variant: [default]
     needs:
       [
         x86_64-rnaseq,
+        x86_64-singlecell,
+        x86_64-spatial,
       ]
 
   merge-tags:
@@ -126,6 +168,8 @@ jobs:
         image:
           [
             rnaseq-notebook,
+            singlecell-notebook,
+            spatial-notebook,
           ]
         variant: [default]
     needs: [aarch64-images-tag-push, x86_64-images-tag-push]

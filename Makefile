@@ -12,7 +12,9 @@ export DOCKER_BUILDKIT:=1
 
 # All the images listed in the build dependency order
 ALL_IMAGES:= \
-	rnaseq-notebook
+	rnaseq-notebook \
+	singlecell-notebook \
+	spatial-notebook 
 
 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -34,9 +36,7 @@ build/%: ## build the latest image for a stack using the system's architecture
 	  --tag "$(REGISTRY)/$(OWNER)/$(notdir $@):latest" \
 	  "./images/$(notdir $@)" \
 	  --build-arg REGISTRY="$(REGISTRY)" \
-	  --build-arg OWNER="$(OWNER)" \
-	  --build-arg ROOT_IMAGE="$(ROOT_IMAGE)" \
-	  --build-arg PYTHON_VERSION="$(PYTHON_VERSION)"
+	  --build-arg OWNER="$(OWNER)" 
 	@echo -n "Built image size: "
 	@docker images "$(REGISTRY)/$(OWNER)/$(notdir $@):latest" --format "{{.Size}}"
 build-all: $(foreach I, $(ALL_IMAGES), build/$(I)) ## build all stacks

@@ -56,4 +56,26 @@ ALL_IMAGES = {
             RPackagesManifest()
         ],
     ),
+    "singlecell-notebook": ImageDescription(
+        parent_image=None,
+        taggers=[
+            SHATagger(),
+            DateTagger(),
+            UbuntuVersionTagger(),
+            PythonMajorMinorVersionTagger(),
+            PythonVersionTagger(),
+            JupyterNotebookVersionTagger(),
+            JupyterLabVersionTagger(),
+            JupyterHubVersionTagger(),
+            RVersionTagger()
+        ],
+        manifests=[
+            CondaEnvironmentManifest(),
+            AptPackagesManifest(),
+            RPackagesManifest()
+        ],
+    ),
+    "spatial-notebook": ImageDescription(
+        parent_image="singlecell-notebook"
+    ),
 }
