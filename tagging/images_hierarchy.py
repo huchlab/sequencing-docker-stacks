@@ -37,56 +37,5 @@ class ImageDescription:
 
 
 ALL_IMAGES = {
-    "docker-stacks-foundation": ImageDescription(
-        parent_image=None,
-        taggers=[
-            SHATagger(),
-            DateTagger(),
-            UbuntuVersionTagger(),
-            PythonMajorMinorVersionTagger(),
-            PythonVersionTagger(),
-        ],
-        manifests=[CondaEnvironmentManifest(), AptPackagesManifest()],
-    ),
-    "base-notebook": ImageDescription(
-        parent_image="docker-stacks-foundation",
-        taggers=[
-            JupyterNotebookVersionTagger(),
-            JupyterLabVersionTagger(),
-            JupyterHubVersionTagger(),
-        ],
-    ),
-    "minimal-notebook": ImageDescription(parent_image="base-notebook"),
-    "scipy-notebook": ImageDescription(parent_image="minimal-notebook"),
-    "r-notebook": ImageDescription(
-        parent_image="minimal-notebook",
-        taggers=[RVersionTagger()],
-        manifests=[RPackagesManifest()],
-    ),
-    "julia-notebook": ImageDescription(
-        parent_image="minimal-notebook",
-        taggers=[JuliaVersionTagger()],
-        manifests=[JuliaPackagesManifest()],
-    ),
-    "tensorflow-notebook": ImageDescription(
-        parent_image="scipy-notebook", taggers=[TensorflowVersionTagger()]
-    ),
-    "pytorch-notebook": ImageDescription(
-        parent_image="scipy-notebook", taggers=[PytorchVersionTagger()]
-    ),
-    "datascience-notebook": ImageDescription(
-        parent_image="scipy-notebook",
-        taggers=[RVersionTagger(), JuliaVersionTagger()],
-        manifests=[RPackagesManifest(), JuliaPackagesManifest()],
-    ),
-    "pyspark-notebook": ImageDescription(
-        parent_image="scipy-notebook",
-        taggers=[SparkVersionTagger(), JavaVersionTagger()],
-        manifests=[SparkInfoManifest()],
-    ),
-    "all-spark-notebook": ImageDescription(
-        parent_image="pyspark-notebook",
-        taggers=[RVersionTagger()],
-        manifests=[RPackagesManifest()],
-    ),
+    "rnaseq-notebook": ImageDescription(parent_image="datascience-notebook"),
 }
