@@ -32,7 +32,7 @@ RUN mamba install --yes \
     'bioconductor-biomart' \
     'bioconductor-complexheatmap' \
     'bioconductor-deseq2' \
-    'bioconductor-scran' \
+    'bioconductor-scuttle' \
     'bioconductor-tximport' \
     'bioconductor-vsn' \
     'mscorefonts' \
