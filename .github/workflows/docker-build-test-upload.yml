@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: Check secret
-        run: echo ${{ secrets.REGISTRY_TOKEN }}
+        run: echo ${{ secrets.QUAY_PASSWORD }}
 
       - name: Login to Registry 🔐
         # if: env.PUSH_TO_REGISTRY == 'true'
@@ -48,9 +48,9 @@ jobs:
         with:
           registry: quay.io
           username: fbnrst
-          password: notmypassword
+          password: ${{ secrets.QUAY_PASSWORD }}
           # username: ${{ secrets.REGISTRY_USERNAME }}
-          # password: ${{ secrets.REGISTRY_TOKEN }}
+          # password: ${{ secrets.QUAY_PASSWORD }}
 
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
