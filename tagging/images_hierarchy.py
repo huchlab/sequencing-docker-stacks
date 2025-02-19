@@ -37,5 +37,23 @@ class ImageDescription:
 
 
 ALL_IMAGES = {
-    "rnaseq-notebook": ImageDescription(parent_image=None),
+    "rnaseq-notebook": ImageDescription(
+        parent_image=None,
+        taggers=[
+            SHATagger(),
+            DateTagger(),
+            UbuntuVersionTagger(),
+            PythonMajorMinorVersionTagger(),
+            PythonVersionTagger(),
+            JupyterNotebookVersionTagger(),
+            JupyterLabVersionTagger(),
+            JupyterHubVersionTagger(),
+            RVersionTagger()
+        ],
+        manifests=[
+            CondaEnvironmentManifest(),
+            AptPackagesManifest(),
+            RPackagesManifest()
+        ],
+    ),
 }
