@@ -24,7 +24,6 @@ library_list = [
     "igraph",
     "scanorama",
     "scanpy",
-    "scirpy",
     "scrublet",
     "scvi",
     "session_info"

@@ -47,7 +47,6 @@ RUN mamba install --yes \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
-    'scirpy' \
     'scrublet' \
     'scvi-tools>=1.2.2' \
     'session-info' \
