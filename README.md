@@ -1,4 +1,4 @@
-# Jupyter Docker Stacks
+# Sequencing Jupyter Docker Stacks
 
 [![GitHub actions badge](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/docker.yml/badge.svg)](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/docker.yml?query=branch%3Amain "Docker images build status")
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/fbnrst/sequencing-docker-stacks/main.svg)](https://results.pre-commit.ci/latest/github/fbnrst/sequencing-docker-stacks/main "pre-commit.ci build status")
