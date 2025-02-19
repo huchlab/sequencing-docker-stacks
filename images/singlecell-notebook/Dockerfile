@@ -49,7 +49,7 @@ RUN mamba install --yes \
     'scanpy>=1.10.4' \
     'scirpy' \
     'scrublet' \
-    'scvi-tools' \
+    'scvi-tools>=1.2.2' \
     'session-info' \
     # R \
     'bioconductor-singlecellexperiment' \

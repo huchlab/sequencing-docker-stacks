@@ -7,7 +7,27 @@ import pytest
 
 library_list = [
     "anndata",
+    "anndata2ri",
+    "arboreto",
+    "bbknn",
+    "celltypist",
+    "decoupler",
+    "gseapy",
+    "harmonypy",
+    "leidenalg",
+    "loompy",
+    "louvain",
+    "mudata",
+    "muon",
+    "openpyxl",
+    "pybiomart",
+    "igraph",
+    "scanorama",
     "scanpy",
+    "scirpy",
+    "scrublet",
+    "scvi",
+    "session_info"
 ]
 
 

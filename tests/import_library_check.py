@@ -13,7 +13,7 @@ def import_library(container: TrackedContainer, library: str) -> None:
     expected_string = f"Library \\\"{library}\\\" successfully loaded."
     command = ["python", "-c", f"import {library}; print(\"{expected_string}\")"]
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=100,
         tty=True,
         command=command,
     )
