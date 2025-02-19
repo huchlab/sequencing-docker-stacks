@@ -74,7 +74,7 @@ jobs:
   aarch64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: "sequencing-base-notebook"
+      parent-image: sequencing-base-notebook
       image: rnaseq-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
@@ -83,7 +83,7 @@ jobs:
   x86_64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: "sequencing-base-notebook"
+      parent-image: sequencing-base-notebook
       image: rnaseq-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
@@ -92,7 +92,7 @@ jobs:
   aarch64-singlecell:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: ""
+      parent-image: sequencing-base-notebook
       image: singlecell-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
@@ -101,7 +101,7 @@ jobs:
   x86_64-singlecell:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: ""
+      parent-image: sequencing-base-notebook
       image: singlecell-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
