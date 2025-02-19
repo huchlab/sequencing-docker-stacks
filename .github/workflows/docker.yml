@@ -54,86 +54,113 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+
+
 jobs:
-  aarch64-rnaseq:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: ""
-      image: rnaseq-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
+  test_secrets:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check secret
+        run: |
+          if [ -z "${{ secrets.QUAY_PASSWORD }}" ]; then
+            echo "QUAY_PASSWORD is empty"
+            exit 1
+          else
+            echo "QUAY_PASSWORD is set"
+          fi
 
-  x86_64-rnaseq:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: ""
-      image: rnaseq-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
 
-  aarch64-images-tag-push:
-    uses: ./.github/workflows/docker-tag-push.yml
-    with:
-      platform: aarch64
-      image: ${{ matrix.image }}
-      variant: ${{ matrix.variant }}
-    secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
-    strategy:
-      matrix:
-        image:
-          [
-            rnaseq-notebook,
-          ]
-        variant: [default]
-    needs:
-      [
-        aarch64-rnaseq,
-      ]
+      - name: Login to Registry 🔐
+        # if: env.PUSH_TO_REGISTRY == 'true'
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: quay.io
+          username: fbnrst
+          password: ${{ secrets.QUAY_PASSWORD }}
+          # username: ${{ secrets.REGISTRY_USERNAME }}
+          # password: ${{ secrets.QUAY_PASSWORD }}
 
-  x86_64-images-tag-push:
-    uses: ./.github/workflows/docker-tag-push.yml
-    with:
-      platform: x86_64
-      image: ${{ matrix.image }}
-      variant: ${{ matrix.variant }}
-    secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
-    strategy:
-      matrix:
-        image:
-          [
-            rnaseq-notebook,
-          ]
-        variant: [default]
-    needs:
-      [
-        x86_64-rnaseq,
-      ]
 
-  merge-tags:
-    uses: ./.github/workflows/docker-merge-tags.yml
-    with:
-      image: ${{ matrix.image }}
-      variant: ${{ matrix.variant }}
-    secrets:
-      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
-    strategy:
-      matrix:
-        image:
-          [
-            rnaseq-notebook,
-          ]
-        variant: [default]
-    needs: [aarch64-images-tag-push, x86_64-images-tag-push]
-    if: github.repository_owner == 'fbnrst'
+# jobs:
+#   aarch64-rnaseq:
+#     uses: ./.github/workflows/docker-build-test-upload.yml
+#     with:
+#       parent-image: ""
+#       image: rnaseq-notebook
+#       platform: aarch64
+#       runs-on: ubuntu-24.04-arm
 
-  wiki-update:
-    uses: ./.github/workflows/docker-wiki-update.yml
-    needs: [aarch64-images-tag-push, x86_64-images-tag-push]
-    if: github.repository_owner == 'fbnrst'
-    permissions:
-      contents: write
+#   x86_64-rnaseq:
+#     uses: ./.github/workflows/docker-build-test-upload.yml
+#     with:
+#       parent-image: ""
+#       image: rnaseq-notebook
+#       platform: x86_64
+#       runs-on: ubuntu-24.04
+
+#   aarch64-images-tag-push:
+#     uses: ./.github/workflows/docker-tag-push.yml
+#     with:
+#       platform: aarch64
+#       image: ${{ matrix.image }}
+#       variant: ${{ matrix.variant }}
+#     secrets:
+#       REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+#       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+#     strategy:
+#       matrix:
+#         image:
+#           [
+#             rnaseq-notebook,
+#           ]
+#         variant: [default]
+#     needs:
+#       [
+#         aarch64-rnaseq,
+#       ]
+
+#   x86_64-images-tag-push:
+#     uses: ./.github/workflows/docker-tag-push.yml
+#     with:
+#       platform: x86_64
+#       image: ${{ matrix.image }}
+#       variant: ${{ matrix.variant }}
+#     secrets:
+#       REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+#       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+#     strategy:
+#       matrix:
+#         image:
+#           [
+#             rnaseq-notebook,
+#           ]
+#         variant: [default]
+#     needs:
+#       [
+#         x86_64-rnaseq,
+#       ]
+
+#   merge-tags:
+#     uses: ./.github/workflows/docker-merge-tags.yml
+#     with:
+#       image: ${{ matrix.image }}
+#       variant: ${{ matrix.variant }}
+#     secrets:
+#       REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+#       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+#     strategy:
+#       matrix:
+#         image:
+#           [
+#             rnaseq-notebook,
+#           ]
+#         variant: [default]
+#     needs: [aarch64-images-tag-push, x86_64-images-tag-push]
+#     if: github.repository_owner == 'fbnrst'
+
+#   wiki-update:
+#     uses: ./.github/workflows/docker-wiki-update.yml
+#     needs: [aarch64-images-tag-push, x86_64-images-tag-push]
+#     if: github.repository_owner == 'fbnrst'
+#     permissions:
+#       contents: write
