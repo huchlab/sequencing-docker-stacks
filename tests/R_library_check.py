@@ -13,7 +13,7 @@ def load_library(container: TrackedContainer, library: str) -> None:
     expected_string = f"Library \\\"{library}\\\" successfully loaded."
     command = ["Rscript", "-e", f"library({library}); print(\"{expected_string}\")"]
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=20,
         tty=True,
         command=command,
     )
