@@ -37,6 +37,10 @@ RUN mamba install --yes \
     # R \
     'bioconductor-clusterprofiler' \
     'bioconductor-complexheatmap' \
+    'bioconductor-gseabase' \
+    'bioconductor-org.hs.eg.db' \
+    'bioconductor-org.mm.eg.db' \
+    'bioconductor-reactomepa' \
     'r-base' \
     'r-ggpubr' \
     'r-languageserver' \
