@@ -63,6 +63,7 @@ PACKAGE_MAPPING = {
     "scikit-learn": "sklearn",
     "scvi-tools": "scvi",
     "session-info": "session_info",
+    "spatial-image": "spatial_image",
     "spatialdata-io": "spatialdata_io",
     "spatialdata-plot": "spatialdata_plot",
     # R
@@ -77,8 +78,8 @@ PACKAGE_MAPPING = {
     "robustrankaggreg": "RobustRankAggreg",
     "rodbc": "RODBC",
     "rsqlite": "DBI",
-    "singlecellexperiment": "SingleCellExperiment",
     "seurat": "Seurat",
+    "singlecellexperiment": "SingleCellExperiment",
 }
 
 # List of packages that cannot be tested in a standard way
