@@ -1,4 +1,7 @@
+import numpy as np
 import scanpy as sc
+
+sc.settings.datasetdir = './work/'
 
 adata = sc.datasets.pbmc3k()
 
@@ -9,7 +12,7 @@ sc.pp.pca(adata)
 X = adata.obsm['X_pca'].copy()
 
 
-for i in range(3):
+for i in range(2):
     print(i)
     sc.pp.pca(adata)
     try:

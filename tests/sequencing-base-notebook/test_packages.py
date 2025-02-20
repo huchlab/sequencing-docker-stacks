@@ -53,11 +53,12 @@ LOGGER = logging.getLogger(__name__)
 PACKAGE_MAPPING = {
     # Python
     "beautifulsoup4": "bs4",
+    "biopython": "Bio",
+    "decoupler-py": "decoupler",
     "jupyter-pluto-proxy": "jupyter_pluto_proxy",
     "matplotlib-base": "matplotlib",
     "pytables": "tables",
     "python-igraph": "igraph",
-    "scanpy": "scanpy",
     "scikit-image": "skimage",
     "scikit-learn": "sklearn",
     "scvi-tools": "scvi",
@@ -65,31 +66,19 @@ PACKAGE_MAPPING = {
     "spatialdata-io": "spatialdata_io",
     "spatialdata-plot": "spatialdata_plot",
     # R
-    "bioconductor-clusterprofiler": "clusterProfiler",
-    "bioconductor-biocparallel": "BiocParallel",
-    "bioconductor-biomart": "biomaRt",
-    "bioconductor-complexheatmap": "ComplexHeatmap",
-    "bioconductor-deseq2": "DESeq2",
-    "bioconductor-mast": "MAST",
-    "bioconductor-scater": "scater",
-    "bioconductor-scran": "scran",
-    "bioconductor-scuttle": "scuttle",
-    "bioconductor-singlecellexperiment": "SingleCellExperiment",
-    "bioconductor-tximport": "tximport",
-    "bioconductor-vsn": "vsn",
-    "r-ashr": "ashr",
-    "r-ggpubr": "ggpubr",
-    "r-languageserver": "languageserver",
-    "r-pheatmap": "pheatmap",
-    "r-plotly": "plotly",
-    "r-robustrankaggreg": "RobustRankAggreg",
-    "r-seurat": "Seurat",
-    "r-viridis": "viridis",
-    "r-writexl": "writexl",
+    "biocparallel": "BiocParallel",
+    "biomart": "biomaRt",
+    "clusterprofiler": "clusterProfiler",
+    "complexheatmap": "ComplexHeatmap",
+    "deseq2": "DESeq2",
+    "mast": "MAST",
     "randomforest": "randomForest",
     "rcurl": "RCurl",
+    "robustrankaggreg": "RobustRankAggreg",
     "rodbc": "RODBC",
     "rsqlite": "DBI",
+    "singlecellexperiment": "SingleCellExperiment",
+    "seurat": "Seurat",
 }
 
 # List of packages that cannot be tested in a standard way
@@ -126,13 +115,24 @@ def requested_packages(package_helper: CondaPackageHelper) -> dict[str, set[str]
 
 def is_r_package(package: str) -> bool:
     """Check if a package is an R package"""
-    return package.startswith("r-")
+    return package.startswith("r-") or package.startswith("bioconductor-")
 
 
 def get_package_import_name(package: str) -> str:
     """Perform a mapping between the package name and the name used for the import"""
     if is_r_package(package):
-        package = package[2:]
+        if package.startswith('r-'):
+            package = package[2:]
+        elif package.startswith('bioconductor-'):
+            package = package[13:]
+
+    if ('<' in package):
+        package = package.split('<')[0]
+    elif ('>' in package):
+        package = package.split('>')[0]
+    elif ('=' in package):
+        package = package.split('=')[0]
+
     return PACKAGE_MAPPING.get(package, package)
 
 
@@ -169,14 +169,7 @@ def _check_import_packages(
     """
     failed_imports = []
     LOGGER.info("Testing the import of packages ...")
-    for package in packages_to_check:
-        if ('<' in package):
-            package = package.split('<')[0]
-        elif ('>' in package):
-            package = package.split('>')[0]
-        elif ('=' in package):
-            package = package.split('=')[0]
-        
+    for package in packages_to_check:        
         LOGGER.info(f"Trying to import {package}")
         try:
             check_function(package_helper, package)

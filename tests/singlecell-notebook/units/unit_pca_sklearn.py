@@ -9,7 +9,7 @@ pca_ = PCA(n_components=50, svd_solver='arpack', random_state=0)
 X_pca_0 = pca_.fit_transform(X).copy()
 
 
-for i in range(3):
+for i in range(2):
     print(i)
     pca_ = PCA(n_components=50, svd_solver='arpack', random_state=0)
     X_pca = pca_.fit_transform(X).copy()

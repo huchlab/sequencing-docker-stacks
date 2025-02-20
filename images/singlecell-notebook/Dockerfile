@@ -54,6 +54,7 @@ RUN mamba install --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
+# packages not available for arm64 on conda 
 RUN pip install --no-cache-dir fastcluster
 
 # import decoupler to combile numba

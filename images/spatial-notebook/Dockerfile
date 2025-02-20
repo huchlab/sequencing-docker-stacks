@@ -24,8 +24,6 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
-RUN conda config --add channels bioconda
-
 RUN mamba install --yes \
     # Python \
     'spatial-image' \

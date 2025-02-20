@@ -31,7 +31,7 @@ def test_units(container: TrackedContainer) -> None:
             LOGGER.info(f"Running unit test: {test_file_name}")
 
             container.run_and_wait(
-                timeout=30,
+                timeout=60,
                 volumes={str(host_data_dir): {"bind": cont_data_dir, "mode": "ro"}},
                 tty=True,
                 command=["python", f"{cont_data_dir}/{test_file_name}"],

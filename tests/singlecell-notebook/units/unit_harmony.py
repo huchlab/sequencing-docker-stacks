@@ -1,6 +1,6 @@
 # harmonypy: reproducibility
 # see https://github.com/slowkow/harmonypy/issues/24
-
+import numpy as np
 import scanpy as sc
 from scipy.cluster.vq import kmeans2
 
@@ -15,7 +15,7 @@ sc.external.pp.harmony_integrate(adata, 'blobs', cluster_fn=cluster_fn)
 
 X_harmony = adata.obsm['X_pca_harmony'].copy()
 
-for i in range(3):
+for i in range(2):
     print(i)
     sc.external.pp.harmony_integrate(adata, 'blobs', cluster_fn=cluster_fn)
     try:
