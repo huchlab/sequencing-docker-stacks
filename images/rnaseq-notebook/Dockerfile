@@ -24,16 +24,19 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
+# keeping 'r-base' makes this much faster
 RUN mamba install --yes \
     'bioconductor-apeglm' \
     'bioconductor-biocparallel' \
+    'bioconductor-biomart' \
     'bioconductor-deseq2' \
     'bioconductor-scuttle' \
     'bioconductor-tximport' \
     'bioconductor-vsn' \
     'r-ashr' \
-    'r-pheatmap' \
-    'r-robustrankaggreg'  && \
+    'r-base' \
+    'r-robustrankaggreg' \
+    && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"

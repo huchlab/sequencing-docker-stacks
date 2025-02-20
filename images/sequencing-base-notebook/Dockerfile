@@ -24,22 +24,27 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
-RUN conda config --add channels bioconda
+RUN conda config --append channels bioconda
 
+# keeping 'r-base' makes this much faster
 RUN mamba install --yes \
     # Python \
+    'biopython' \
     'gseapy' \
     'pybiomart' \
     'openpyxl' \
     'session-info' \
     # R \
-    'bioconductor-biomart' \
-    'bioconductor-complexheatmap' \
     'bioconductor-clusterprofiler' \
+    'bioconductor-complexheatmap' \
+    'r-base' \
     'r-ggpubr' \
     'r-languageserver' \
+    'r-pheatmap' \
+    'r-plotly' \
     'r-viridis' \
-    'r-writexl'&& \
+    'r-writexl' \
+    && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
