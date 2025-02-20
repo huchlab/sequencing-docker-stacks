@@ -24,8 +24,6 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
-RUN conda config --add channels bioconda
-
 RUN mamba install --yes \
     # Python \
     'anndata' \
@@ -34,22 +32,17 @@ RUN mamba install --yes \
     'bbknn' \
     'celltypist' \
     'decoupler-py' \
-    'gseapy' \
     'harmonypy' \ 
     'leidenalg' \
     'loompy' \
     'louvain' \
-    'mscorefonts' \
     'mudata' \
     'muon' \
-    'openpyxl' \
-    'pybiomart' \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
     'scrublet' \
     'scvi-tools>=1.2.2' \
-    'session-info' \
     # R \
     'bioconductor-singlecellexperiment' \
     'bioconductor-monocle' \

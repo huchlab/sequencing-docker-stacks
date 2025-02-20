@@ -23,3 +23,23 @@ ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
 ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
+
+RUN conda config --add channels bioconda
+
+RUN mamba install --yes \
+    # Python \
+    'gseapy' \
+    'pybiomart' \
+    'openpyxl' \
+    'session-info' \
+    # R \
+    'bioconductor-biomart' \
+    'bioconductor-complexheatmap' \
+    'bioconductor-clusterprofiler' \
+    'r-ggpubr' \
+    'r-languageserver' \
+    'r-viridis' \
+    'r-writexl'&& \
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
