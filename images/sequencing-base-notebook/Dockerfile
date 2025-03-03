@@ -42,6 +42,7 @@ RUN mamba install --yes \
     'bioconductor-org.mm.eg.db' \
     'bioconductor-reactomepa' \
     'r-base' \
+    'r-fst' \
     'r-ggpubr' \
     'r-languageserver' \
     'r-pheatmap' \
