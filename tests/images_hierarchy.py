@@ -9,6 +9,7 @@ ALL_IMAGES = {
     "sequencing-base-notebook": None,
     "rnaseq-notebook": "sequencing-base-notebook",
     "singlecell-notebook": "sequencing-base-notebook",
+    "multiomics-notebook": "singlecell-notebook",
     "spatial-notebook": "singlecell-notebook",
 }
 

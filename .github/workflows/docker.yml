@@ -106,7 +106,24 @@ jobs:
       platform: x86_64
       runs-on: ubuntu-24.04
     needs: [x86_64-sequencing-base]
-  
+
+  aarch64-multiomics:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: multiomics-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+    needs: [aarch64-singlecell]
+
+  x86_64-multiomics:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: multiomics-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+    needs: [x86_64-singlecell]
 
   aarch64-spatial:
     uses: ./.github/workflows/docker-build-test-upload.yml
@@ -142,6 +159,7 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]
@@ -150,6 +168,7 @@ jobs:
         aarch64-sequencing-base,
         aarch64-rnaseq,
         aarch64-singlecell,
+        aarch64-multiomics,
         aarch64-spatial,
       ]
 
@@ -169,6 +188,7 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]
@@ -177,6 +197,7 @@ jobs:
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
+        x86_64-multiomics,
         x86_64-spatial,
       ]
 
@@ -195,6 +216,7 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]

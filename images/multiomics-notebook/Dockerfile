@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=fbnrst
-ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook
+ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
@@ -24,32 +24,13 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
-RUN conda config --append channels bioconda
-
-# keeping 'r-base' makes this much faster
 RUN mamba install --yes \
     # Python \
-    'biopython' \
-    'gseapy' \
-    'pybiomart' \
-    'openpyxl' \
-    'session-info' \
-    # R \
-    'bioconductor-clusterprofiler' \
-    'bioconductor-complexheatmap' \
-    'bioconductor-gseabase' \
-    'bioconductor-org.hs.eg.db' \
-    'bioconductor-org.mm.eg.db' \
-    'bioconductor-reactomepa' \
-    'r-base' \
-    'r-ggally' \
-    'r-ggpubr' \
-    'r-languageserver' \
-    'r-pheatmap' \
-    'r-plotly' \
-    'r-viridis' \
-    'r-writexl' \
+    'mofapy2' \
+    'muon' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN R -e "BiocManager::install('MOFA2', ask = FALSE, Ncpus = 4)"
