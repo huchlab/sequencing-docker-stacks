@@ -62,6 +62,9 @@ ALL_IMAGES = {
     "singlecell-notebook": ImageDescription(
         parent_image="sequencing-base-notebook",
     ),
+    "multiomics-notebook": ImageDescription(
+        parent_image="singlecell-notebook"
+    ),
     "spatial-notebook": ImageDescription(
         parent_image="singlecell-notebook"
     ),
