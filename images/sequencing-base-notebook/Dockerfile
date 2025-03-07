@@ -31,6 +31,7 @@ RUN mamba install --yes \
     # Python \
     'biopython' \
     'gseapy' \
+    'plotnine' \
     'pybiomart' \
     'openpyxl' \
     'session-info' \
