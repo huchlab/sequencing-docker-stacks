@@ -49,6 +49,7 @@ RUN mamba install --yes \
     'bioconductor-mast' \
     'bioconductor-scater' \
     'bioconductor-scran' \
+    'r-sceasy' \
     'r-seurat>=5.1.0' && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
