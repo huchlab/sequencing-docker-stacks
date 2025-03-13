@@ -56,10 +56,7 @@ RUN mamba install --yes \
     fix-permissions "/home/${NB_USER}"
 
 # packages not available for arm64 on conda 
-RUN pip install --no-cache-dir cellbender fastcluster
+RUN pip install --no-cache-dir fastcluster
 
 # install more R dependencies
 RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
-
-# import decoupler to combile numba
-RUN python -c "import decoupler"
