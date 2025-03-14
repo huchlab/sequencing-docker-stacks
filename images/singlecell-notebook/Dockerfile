@@ -33,11 +33,13 @@ RUN mamba install --yes \
     'celltypist' \
     'decoupler-py' \
     'harmonypy' \ 
+    'hnswlib' # optional dependency of scvelo \
     'leidenalg' \
     'loompy' \
     'louvain' \
     'mudata' \
     'muon' \
+    'pybind11' # optional dependency of scvelo \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
@@ -56,7 +58,9 @@ RUN mamba install --yes \
     fix-permissions "/home/${NB_USER}"
 
 # packages not available for arm64 on conda 
-RUN pip install --no-cache-dir fastcluster
+RUN pip install --no-cache-dir \
+    fastcluster \
+    scvelo
 
 # install more R dependencies
 RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
