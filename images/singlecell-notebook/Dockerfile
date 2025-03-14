@@ -53,7 +53,9 @@ RUN mamba install --yes \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'r-reticulate' \
-    'r-seurat>=5.1.0' && \
+    'r-sceasy' \
+    'r-seurat>=5.1.0' \
+    && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -61,6 +63,3 @@ RUN mamba install --yes \
 # packages not available for arm64 on conda 
 RUN pip install --no-cache-dir \
     fastcluster 
-
-# install more R dependencies
-RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
