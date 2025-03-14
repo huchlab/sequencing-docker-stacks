@@ -44,6 +44,7 @@ RUN mamba install --yes \
     'scanorama' \
     'scanpy>=1.10.4' \
     'scrublet' \
+    'scvelo' \
     'scvi-tools>=1.2.2' \
     # R \
     'bioconductor-singlecellexperiment' \
@@ -59,8 +60,7 @@ RUN mamba install --yes \
 
 # packages not available for arm64 on conda 
 RUN pip install --no-cache-dir \
-    fastcluster \
-    scvelo
+    fastcluster 
 
 # install more R dependencies
 RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
