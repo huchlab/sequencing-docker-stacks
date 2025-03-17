@@ -57,8 +57,11 @@ RUN mamba install --yes \
 
 # packages not available for arm64 on conda 
 RUN pip install --no-cache-dir \
-    fastcluster \
-    cellbender
+    fastcluster 
+
+# do not install dependencies for cellbender (they include jupyter)
+RUN pip install --no-cache-dir --no-deps \
+    cellbender 
 
 # install more R dependencies
 RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
