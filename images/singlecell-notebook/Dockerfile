@@ -66,4 +66,4 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     fastcluster 
 
-RUN R -e "devtools::install_github('cellgeni/sceasy')"
+RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
