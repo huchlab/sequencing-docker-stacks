@@ -59,7 +59,7 @@ jobs:
 
       - name: Get commit SHA
         id: get_sha
-        run: echo "::set-output name=sha12::$(git rev-parse HEAD)"
+        run: echo "::set-output name=sha12::$(git rev-parse --short HEAD)"
         shell: bash
       
       - name: Debug Commit
