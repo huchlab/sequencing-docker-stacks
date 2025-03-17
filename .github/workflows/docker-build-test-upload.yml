@@ -57,14 +57,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Debug secrets 🔐
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          echo "GITHUB_TOKEN: $GITHUB_TOKEN"
-          if [ -z "$GITHUB_TOKEN" ]; then
-            echo "GITHUB_TOKEN is empty"
+          echo "GITHUB_PAT: $GITHUB_PAT"
+          if [ -z "$GITHUB_PAT" ]; then
+            echo "GITHUB_PAT is empty"
           else
-            echo "GITHUB_TOKEN is not empty"
+            echo "GITHUB_PAT is not empty"
           fi
         shell: bash
 
