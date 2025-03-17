@@ -59,7 +59,7 @@ jobs:
       - name: Debug secrets 🔐
         run: |
           echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-          GITHUB_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64 -d)
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           echo "GITHUB_TOKEN: $GITHUB_TOKEN"
           if [ -z "$GITHUB_TOKEN" ]; then
             echo "GITHUB_TOKEN is empty"
