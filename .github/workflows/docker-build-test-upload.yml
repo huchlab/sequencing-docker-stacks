@@ -58,13 +58,13 @@ jobs:
       
       - name: Debug secrets 🔐
         run: |
-          echo "GITHUB_PAT: ${{ secrets.GITHUB_PAT }}"
-          GITHUB_PATH=$(echo ${{ secrets.GITHUB_PAT }} | base64 -d)
-          echo "GITHUB_PATH: $GITHUB_PATH"
-          if [ -z "$GITHUB_PATH" ]; then
-            echo "GITHUB_PATH is empty"
+          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64 -d)
+          echo "GITHUB_TOKEN: $GITHUB_TOKEN"
+          if [ -z "$GITHUB_TOKEN" ]; then
+            echo "GITHUB_TOKEN is empty"
           else
-            echo "GITHUB_PATH is not empty"
+            echo "GITHUB_TOKEN is not empty"
           fi
         shell: bash
 
