@@ -73,8 +73,6 @@ jobs:
         shell: bash
 
       - name: Build image 🛠
-        env:
-          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
         run: >
           docker build
           --rm --force-rm
@@ -90,6 +88,7 @@ jobs:
           DOCKER_BUILDKIT: 1
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
         shell: bash
 
       - name: Write tags file 🏷
