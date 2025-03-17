@@ -25,7 +25,7 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 USER ${NB_UID}
 
 RUN mamba install --yes \
-    # Python \
+    # Python
     'anndata' \
     'anndata2ri' \
     'arboreto' \
@@ -33,27 +33,29 @@ RUN mamba install --yes \
     'celltypist' \
     'decoupler-py' \
     'harmonypy' \ 
-    'hnswlib' # optional dependency of scvelo \
+    # optional dependency of scvelo
+    'hnswlib' \ 
     'leidenalg' \
     'loompy' \
     'louvain' \
     'mudata' \
     'muon' \
-    'pybind11' # optional dependency of scvelo \
+    # optional dependency of scvelo 
+    'pybind11' \ 
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
     'scrublet' \
     'scvelo' \
     'scvi-tools>=1.2.2' \
-    # R \
+    # R
+    'bioconductor-loomexperiment' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-monocle' \
     'bioconductor-mast' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'r-reticulate' \
-    'r-sceasy' \
     'r-seurat>=5.1.0' \
     && \
     mamba clean --all -f -y && \
@@ -63,3 +65,5 @@ RUN mamba install --yes \
 # packages not available for arm64 on conda 
 RUN pip install --no-cache-dir \
     fastcluster 
+
+RUN R -e "devtools::install_github('cellgeni/sceasy')"
