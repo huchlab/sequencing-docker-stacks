@@ -66,4 +66,8 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     fastcluster 
 
+# do not install dependencies for cellbender (they include jupyter)
+RUN pip install --no-cache-dir --no-deps \
+    cellbender 
+
 RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
