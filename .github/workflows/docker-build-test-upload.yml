@@ -55,6 +55,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Debug secrets 🔐
+        run: |
+          echo "GITHUB_PAT: ${{ secrets.GITHUB_PAT }}"
+        shell: bash
 
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
