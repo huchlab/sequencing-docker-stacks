@@ -26,7 +26,3 @@ docker run -it --rm  -p 10000:8888 quay.io/fbnrst/rnaseq-notebook:latest
 - We publish containers for both `x86_64` and `aarch64` platforms
 - Single-platform images have either `aarch64-` or `x86_64-` tag prefixes, for example, `quay.io/jupyter/base-notebook:aarch64-python-3.11.6`
 
-## License
-
-This container image is licensed under the BSD 3-Clause License.  
-It based on the [Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io), which are licensed under the BSD 3-Clause License.
