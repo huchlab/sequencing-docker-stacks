@@ -57,6 +57,14 @@ jobs:
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
+      - name: Get commit SHA
+        id: get_sha
+        run: echo "::set-output name=sha12::$(git rev-parse HEAD)"
+        shell: bash
+      
+      - name: Debug Commit
+        run: echo ${{ steps.get_sha.outputs.sha12 }}
+
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
         uses: ./.github/actions/load-image
