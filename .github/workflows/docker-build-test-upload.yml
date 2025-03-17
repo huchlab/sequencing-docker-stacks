@@ -59,11 +59,10 @@ jobs:
 
       - name: Get commit SHA
         id: get_sha
-        run: echo "::set-output name=sha12::$(git rev-parse --short HEAD)"
-        shell: bash
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       
       - name: Debug Commit
-        run: echo ${{ steps.get_sha.outputs.sha12 }}
+        run: echo ${{ steps.get_sha.outputs.sha }}
 
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
@@ -90,7 +89,7 @@ jobs:
           --build-arg CONTAINER_BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') 
           --build-arg CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
           --build-arg CONTAINER_GIT_REPOSITORY=${{ github.repository }} 
-          --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha12 }}
+          --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha }}
         env:
           DOCKER_BUILDKIT: 1
           # Full logs for CI build
