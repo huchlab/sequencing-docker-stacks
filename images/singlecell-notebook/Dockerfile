@@ -22,6 +22,9 @@ ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
 ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
 ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
+ARG GITHUB_TOKEN
+ENV GITHUB_PAT=$GITHUB_TOKEN
+
 USER ${NB_UID}
 
 RUN mamba install --yes \
@@ -70,4 +73,4 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir --no-deps \
     cellbender 
 
-RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"
+RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
