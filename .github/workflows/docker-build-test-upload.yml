@@ -59,7 +59,7 @@ jobs:
       - name: Debug secrets 🔐
         run: |
           echo "GITHUB_PAT: ${{ secrets.GITHUB_PAT }}"
-          GITHUB_PATH=$(echo $GITHUB_PATH | base64 -d)
+          GITHUB_PATH=$(echo ${{ secrets.GITHUB_PAT }} | base64 -d)
           echo "GITHUB_PATH: $GITHUB_PATH"
           if [ -z "$GITHUB_PATH" ]; then
             echo "GITHUB_PATH is empty"
