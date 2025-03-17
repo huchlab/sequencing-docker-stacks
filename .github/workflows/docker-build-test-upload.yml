@@ -59,6 +59,13 @@ jobs:
       - name: Debug secrets 🔐
         run: |
           echo "GITHUB_PAT: ${{ secrets.GITHUB_PAT }}"
+          GITHUB_PATH=$(echo $GITHUB_PATH | base64 -d)
+          echo "GITHUB_PATH: $GITHUB_PATH"
+          if [ -z "$GITHUB_PATH" ]; then
+            echo "GITHUB_PATH is empty"
+          else
+            echo "GITHUB_PATH is not empty"
+          fi
         shell: bash
 
       - name: Create dev environment 📦
