@@ -53,10 +53,6 @@ jobs:
 
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
-      
-      - name: Debug token 🐞
-        run: echo ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
 
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
