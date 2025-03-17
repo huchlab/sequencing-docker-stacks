@@ -25,7 +25,7 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 USER ${NB_UID}
 
 RUN mamba install --yes \
-    # Python \
+    # Python
     'anndata' \
     'anndata2ri' \
     'arboreto' \
@@ -33,24 +33,31 @@ RUN mamba install --yes \
     'celltypist' \
     'decoupler-py' \
     'harmonypy' \ 
+    # optional dependency of scvelo
+    'hnswlib' \ 
     'leidenalg' \
     'loompy' \
     'louvain' \
     'mudata' \
     'muon' \
+    # optional dependency of scvelo 
+    'pybind11' \ 
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
     'scrublet' \
+    'scvelo' \
     'scvi-tools>=1.2.2' \
-    # R \
+    # R
+    'bioconductor-loomexperiment' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-monocle' \
     'bioconductor-mast' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'r-reticulate' \
-    'r-seurat>=5.1.0' && \
+    'r-seurat>=5.1.0' \
+    && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -63,5 +70,4 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir --no-deps \
     cellbender 
 
-# install more R dependencies
 RUN R -e "devtools::install_github('cellgeni/sceasy', Ncpus = 4)"

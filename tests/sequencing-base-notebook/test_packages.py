@@ -74,6 +74,7 @@ PACKAGE_MAPPING = {
     "deseq2": "DESeq2",
     "ggally": "GGally",
     "gseabase": "GSEABase",
+    "loomexperiment": "LoomExperiment",
     "mast": "MAST",
     "mofa2": "MOFA2",
     "org.hs.eg.db": "org.Hs.eg.db",
