@@ -60,9 +60,6 @@ jobs:
       - name: Get commit SHA
         id: get_sha
         run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      
-      - name: Debug Commit
-        run: echo ${{ steps.get_sha.outputs.sha }}
 
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
