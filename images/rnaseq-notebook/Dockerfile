@@ -31,6 +31,7 @@ RUN mamba install --yes \
     'bioconductor-biomart' \
     'bioconductor-deseq2' \
     'bioconductor-scuttle' \
+    'bioconductor-tximeta' \
     'bioconductor-tximport' \
     'bioconductor-vsn' \
     'r-ashr' \
