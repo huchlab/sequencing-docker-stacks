@@ -55,7 +55,7 @@ class ManifestHeader:
 - Build timestamp: {build_timestamp}
 - Docker image: `{registry}/{owner}/{short_image_name}:{commit_hash_tag}`
 - Docker image size: {image_size}
-- Git commit SHA: [{commit_hash}](https://github.com/jupyter/docker-stacks/commit/{commit_hash})
+- Git commit SHA: [{commit_hash}](https://github.com/fbnrst/sequencing-docker-stacks/commit/{commit_hash})
 - Git commit message:
 
 ```text

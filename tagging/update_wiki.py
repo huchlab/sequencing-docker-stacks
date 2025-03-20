@@ -65,7 +65,7 @@ def regenerate_home_wiki_page(wiki_dir: Path) -> None:
 """
 
     GITHUB_COMMITS_URL = (
-        "[{}](https://github.com/jupyter/docker-stacks/commits/main/?since={}&until={})"
+        "[{}](https://github.com/fbnrst/sequencing-docker-stacks/commits/main/?since={}&until={})"
     )
 
     for year_dir in sorted((wiki_dir / "monthly-files").glob("*"), reverse=True):
