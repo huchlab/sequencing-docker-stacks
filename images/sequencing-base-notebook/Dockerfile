@@ -36,12 +36,7 @@ RUN mamba install --yes \
     'openpyxl' \
     'session-info' \
     # R \
-    'bioconductor-clusterprofiler' \
     'bioconductor-complexheatmap' \
-    'bioconductor-gseabase' \
-    'bioconductor-org.hs.eg.db' \
-    'bioconductor-org.mm.eg.db' \
-    'bioconductor-reactomepa' \
     'r-base' \
     'r-ggally' \
     'r-ggpubr' \

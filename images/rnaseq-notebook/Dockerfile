@@ -29,13 +29,20 @@ RUN mamba install --yes \
     'bioconductor-apeglm' \
     'bioconductor-biocparallel' \
     'bioconductor-biomart' \
+    'bioconductor-clusterprofiler' \
     'bioconductor-deseq2' \
+    'bioconductor-gseabase' \
+    'bioconductor-gsva' \
+    'bioconductor-org.hs.eg.db' \
+    'bioconductor-org.mm.eg.db' \
+    'bioconductor-reactomepa' \
     'bioconductor-scuttle' \
     'bioconductor-tximeta' \
     'bioconductor-tximport' \
     'bioconductor-vsn' \
     'r-ashr' \
     'r-base' \
+    'r-dendextend' \
     'r-robustrankaggreg' \
     && \
     mamba clean --all -f -y && \
