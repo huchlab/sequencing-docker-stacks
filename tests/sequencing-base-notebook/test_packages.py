@@ -73,6 +73,7 @@ PACKAGE_MAPPING = {
     "complexheatmap": "ComplexHeatmap",
     "deseq2": "DESeq2",
     "ggally": "GGally",
+    "glmgampoi": "glmGamPoi",
     "gseabase": "GSEABase",
     "gsva": "GSVA",
     "loomexperiment": "LoomExperiment",
