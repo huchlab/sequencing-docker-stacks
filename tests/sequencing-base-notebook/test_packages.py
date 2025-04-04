@@ -78,6 +78,7 @@ PACKAGE_MAPPING = {
     "gsva": "GSVA",
     "loomexperiment": "LoomExperiment",
     "mast": "MAST",
+    "milor": "miloR",
     "mofa2": "MOFA2",
     "org.hs.eg.db": "org.Hs.eg.db",
     "org.mm.eg.db": "org.Mm.eg.db",
