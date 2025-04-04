@@ -33,6 +33,7 @@ RUN mamba install --yes \
     'anndata2ri' \
     'arboreto' \
     'bbknn' \
+    'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py' \
     'harmonypy' \ 
@@ -45,6 +46,7 @@ RUN mamba install --yes \
     'muon' \
     # optional dependency of scvelo 
     'pybind11' \ 
+    'pydeseq2>=0.5.0' \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
@@ -53,11 +55,13 @@ RUN mamba install --yes \
     'scvi-tools>=1.2.2' \
     # R
     'bioconductor-loomexperiment' \
-    'bioconductor-singlecellexperiment' \
-    'bioconductor-monocle' \
     'bioconductor-mast' \
+    'bioconductor-milor' \
+    'bioconductor-monocle' \
     'bioconductor-scater' \
     'bioconductor-scran' \
+    'bioconductor-singlecellexperiment' \
+    'r-data.table' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
@@ -73,7 +77,8 @@ USER ${NB_UID}
 
 # packages not available for arm64 on conda 
 RUN pip install --no-cache-dir \
-    fastcluster 
+    fastcluster \
+    liana
 
 # do not install dependencies for cellbender (they include jupyter)
 RUN pip install --no-cache-dir --no-deps \
