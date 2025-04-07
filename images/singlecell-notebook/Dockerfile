@@ -50,7 +50,6 @@ RUN mamba install --yes \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
-    'scikit-misc' \
     'scrublet' \
     'scvelo' \
     'scvi-tools>=1.2.2' \
@@ -79,7 +78,8 @@ USER ${NB_UID}
 # packages not available for arm64 on conda 
 RUN pip install --no-cache-dir \
     fastcluster \
-    liana
+    liana \
+    scikit-misc
 
 # do not install dependencies for cellbender (they include jupyter)
 RUN pip install --no-cache-dir --no-deps \
