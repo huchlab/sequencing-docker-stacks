@@ -18,7 +18,7 @@ This command pulls the `rnaseq-notebook` image tagged `latest` from Quay.io if i
 It then starts a container running a Jupyter Server with the JupyterLab frontend and exposes the container's internal port `8888` to port `10000` of the host machine:
 
 ```bash
-docker run -it --rm  -p 10000:8888 quay.io/fbnrst/rnaseq-notebook:latest
+docker run -it --rm  -p 10000:8888 -v "${PWD}":/home/jovyan/work quay.io/fbnrst/rnaseq-notebook:latest
 ```
 
 ## CPU Architectures
