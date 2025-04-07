@@ -50,6 +50,7 @@ RUN mamba install --yes \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
+    'scikit-misc' \
     'scrublet' \
     'scvelo' \
     'scvi-tools>=1.2.2' \
