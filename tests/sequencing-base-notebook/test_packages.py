@@ -61,6 +61,7 @@ PACKAGE_MAPPING = {
     "python-igraph": "igraph",
     "scikit-image": "skimage",
     "scikit-learn": "sklearn",
+    "scikit-misc": "skmisc",
     "scvi-tools": "scvi",
     "session-info": "session_info",
     "spatial-image": "spatial_image",
