@@ -26,10 +26,14 @@ USER ${NB_UID}
 
 RUN mamba install --yes \
     # Python \
+    'napari-spatialdata' \
+    'pyproj' \
     'spatial-image' \
     'spatialdata' \
     'spatialdata-io' \
-    'spatialdata-plot' && \
+    'spatialdata-plot' \
+    'squidpy' \
+    && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
