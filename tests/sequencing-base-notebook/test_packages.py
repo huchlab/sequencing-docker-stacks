@@ -103,6 +103,7 @@ EXCLUDED_PACKAGES = [
     "grpcio",
     "hdf5",
     "jupyterhub-singleuser",
+    "jupyterlab_execute_time", 
     "jupyterlab-git",
     "mamba",
     "notebook>",
