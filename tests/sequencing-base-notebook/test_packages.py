@@ -57,6 +57,7 @@ PACKAGE_MAPPING = {
     "decoupler-py": "decoupler",
     "jupyter-pluto-proxy": "jupyter_pluto_proxy",
     "matplotlib-base": "matplotlib",
+    "napari-spatialdata": "napari_spatialdata",
     "pytables": "tables",
     "python-igraph": "igraph",
     "scikit-image": "skimage",
