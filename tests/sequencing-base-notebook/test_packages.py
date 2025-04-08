@@ -108,6 +108,7 @@ EXCLUDED_PACKAGES = [
     "notebook>",
     "openssl",
     "protobuf",
+    "pyqt",
     "python",
     "r-irkernel",
     "unixodbc",

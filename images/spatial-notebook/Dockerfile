@@ -28,10 +28,11 @@ RUN mamba install --yes \
     # Python \
     'napari-spatialdata' \
     'pyproj' \
+    'pyqt' \
     'spatial-image' \
-    'spatialdata' \
     'spatialdata-io' \
     'spatialdata-plot' \
+    'spatialdata' \
     'squidpy' \
     && \
     mamba clean --all -f -y && \
