@@ -44,6 +44,7 @@ RUN mamba install --yes \
     'r-ashr' \
     'r-base' \
     'r-dendextend' \
+    'r-magick' \
     'r-robustrankaggreg' \
     && \
     mamba clean --all -f -y && \
