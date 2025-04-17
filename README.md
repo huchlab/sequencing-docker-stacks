@@ -5,6 +5,15 @@
 
 Sequencing Docker Stacks are a set of ready-to-run [Docker images](https://quay.io/organization/fbnrst) containing sequencing data analysis tools. They are based on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and the [singularity single cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
 
+## Available containers
+
+- `rnaseq-notebook`: for bulkRNAseq analysis, built around [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+- `singlecell-notebook`: for single-cell RNAseq analysis, contains [scanpy](https://scanpy.readthedocs.io) and [Seurat](https://satijalab.org/seurat/)
+- `spatial-notebook`: for spatial RNAseq analysis, contains [squidpy](https://squidpy.readthedocs.io) and [spatialdata](https://spatialdata.scverse.org)
+- `multiomics-notebook`: for multiomics analysis, contains [mofapy2](https://biofam.github.io/MOFA2/) and [muon](https://github.com/scverse/muon)]
+
+Build manifests documenting the full software stack are available in the [wiki](https://github.com/fbnrst/sequencing-docker-stacks/wiki).
+
 ## Quick Start
 
 Make sure to try [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) first.
