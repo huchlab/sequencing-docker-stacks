@@ -33,5 +33,5 @@ docker run -it --rm  -p 10000:8888 -v "${PWD}":/home/jovyan/work quay.io/fbnrst/
 ## CPU Architectures
 
 - We publish containers for both `x86_64` and `aarch64` platforms
-- Single-platform images have either `aarch64-` or `x86_64-` tag prefixes, for example, `quay.io/jupyter/base-notebook:aarch64-python-3.11.6`
+- Single-platform images have either `aarch64-` or `x86_64-` tag prefixes, for example, `quay.io/fbnrst/rnaseq-notebook:aarch64-python-3.12.10`
 
