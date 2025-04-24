@@ -42,6 +42,7 @@ RUN mamba install --yes \
     'leidenalg' \
     'loompy' \
     'louvain' \
+    'marsilea' \
     'mudata' \
     'muon' \
     'palantir' \
