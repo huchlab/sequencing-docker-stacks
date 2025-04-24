@@ -35,7 +35,6 @@ RUN mamba install --yes \
     'bbknn' \
     'cellrank>=2.0' \
     'celltypist' \
-    'decoupler-py' \
     'harmonypy' \ 
     # optional dependency of scvelo
     'hnswlib' \ 
@@ -82,7 +81,10 @@ USER ${NB_UID}
 RUN pip install --no-cache-dir \
     fastcluster \
     liana \
-    scikit-misc
+    scikit-misc 
+
+RUN pip install --no-cache-dir \
+    'decoupler>=1.9.2'
 
 # do not install dependencies for cellbender (they include jupyter)
 RUN pip install --no-cache-dir --no-deps \
