@@ -38,6 +38,7 @@ RUN mamba install --yes \
     'session-info' \
     # R \
     'bioconductor-complexheatmap' \
+    'bioconductor-zellkonverter' \
     'r-base' \
     'r-ggally' \
     'r-ggpubr' \
