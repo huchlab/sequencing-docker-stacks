@@ -47,6 +47,8 @@ RUN mamba install --yes \
     'palantir' \
     # optional dependency of scvelo 
     'pybind11' \ 
+    # scvi needs pydantic<2
+    'pydantic<2' \
     'pydeseq2>=0.5.0' \
     'python-igraph' \
     'scanorama' \
