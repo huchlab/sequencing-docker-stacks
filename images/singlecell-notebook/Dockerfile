@@ -43,6 +43,7 @@ RUN mamba install --yes \
     'lightning>=2.5' \
     'loompy' \
     'louvain' \
+    'marsilea' \
     'mudata' \
     'muon' \
     'palantir' \
