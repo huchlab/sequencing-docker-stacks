@@ -40,6 +40,8 @@ RUN mamba install --yes \
     # optional dependency of scvelo
     'hnswlib' \ 
     'leidenalg' \
+    # fixed #40
+    'lightning>=2.5' \
     'loompy' \
     'louvain' \
     'marsilea' \
@@ -48,8 +50,6 @@ RUN mamba install --yes \
     'palantir' \
     # optional dependency of scvelo 
     'pybind11' \ 
-    # scvi needs pydantic<2
-    'pydantic<2' \
     'pydeseq2>=0.5.0' \
     'python-igraph' \
     'scanorama' \
