@@ -28,7 +28,11 @@ jobs:
       - name: Create or reset local upstream branch to match upstream/main
         run: |
           git checkout -B upstream upstream/main
+    
+      - name: Use PAT-authenticated origin remote
+        run: |
+            git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
 
       - name: Push updated upstream branch to origin
         run: |
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} upstream --force
+          git push origin upstream --force
