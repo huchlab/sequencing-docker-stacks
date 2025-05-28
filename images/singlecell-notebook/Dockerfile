@@ -79,6 +79,7 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps \
     cellbender
 
-RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
+RUN R -e 'devtools::install_github("cellgeni/sceasy", threads = 4)' && \
+    R -e 'remotes::install_github("corceslab/CHOIR", ref="main", repos = BiocManager::repositories(), upgrade = "never", threads = 4)'
 
 USER ${NB_UID}
