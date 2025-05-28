@@ -2,7 +2,7 @@
 
 [![GitHub actions badge](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/docker.yml/badge.svg)](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/docker.yml?query=branch%3Amain "Docker images build status")
 
-Sequencing Docker Stacks are a set of ready-to-run [Docker images](https://quay.io/organization/fbnrst) that contain sequencing data analysis tools. They are based on the
+Sequencing Docker Stacks are a set of ready-to-run [Docker images](https://quay.io/fbnrst) that contain sequencing data analysis tools. They are based on the
 [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and the [singularity single cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
 
 ## Available containers
