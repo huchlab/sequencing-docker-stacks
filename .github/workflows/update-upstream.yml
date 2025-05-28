@@ -36,3 +36,22 @@ jobs:
       - name: Push updated upstream branch to origin
         run: |
           git push origin upstream --force
+      
+      - name: Create rebased branch from main on top of upstream
+        run: |
+          git checkout main
+          git checkout -B rebase-main-on-upstream
+          git rebase upstream
+      
+      - name: Push rebased branch
+        run: |
+          git push origin rebase-main-on-upstream --force
+
+      - name: Create or update pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PAT }}
+          branch: rebase-main-on-upstream
+          title: "Rebase main on latest upstream"
+          body: "This PR rebases main onto the latest upstream/main"
+          base: main
