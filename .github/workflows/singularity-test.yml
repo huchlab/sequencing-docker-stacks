@@ -1,0 +1,68 @@
+name: Test using the images with Singularity
+
+env:
+  REGISTRY: quay.io
+  OWNER: ${{ github.repository_owner }}
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Image name
+        required: true
+        type: string
+      timeout-minutes:
+        description: Timeout in minutes
+        default: 20
+        type: number
+      platform:
+        description: Image platform
+        required: true
+        type: string
+      runs-on:
+        description: GitHub Actions Runner image
+        required: true
+        type: string
+      variant:
+        description: Variant tag prefix
+        required: false
+        type: string
+        default: default
+
+jobs:
+  singularity-test:
+    runs-on: ${{ inputs.runs-on }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+
+    steps:
+      - name: Free disk space 🧹
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@v4
+
+      - name: Download built image 📥
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          path: /tmp/jupyter/images/
+
+      - name: Uncompress downloaded image 📥
+        run: |
+          unzstd /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
+
+      - name: Test Singularity image 🧪
+        run: |
+          docker run --rm -v /tmp/jupyter/images/:/workspace -w /workspace \
+            quay.io/singularity/singularity:v3.8.4 \
+            singularity exec --writable-tmpfs \
+              docker-archive:/workspace/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
+              pip install --target=/opt/conda natsort

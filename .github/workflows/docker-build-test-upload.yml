@@ -158,12 +158,3 @@ jobs:
             --owner ${{ env.OWNER }} \
             --image ${{ inputs.image }}
         shell: bash
-
-      - name: Run singularity tests ✅
-        run: |
-          unzstd /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
-          docker run --rm -v /tmp/jupyter/images/:/workspace -w /workspace \
-            quay.io/singularity/singularity:v3.8.4 \
-            singularity exec --writable-tmpfs \
-              docker-archive:/workspace/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
-              pip install --target=/opt/conda natsort
