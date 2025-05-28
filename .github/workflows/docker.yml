@@ -185,7 +185,6 @@ jobs:
       platform: ${{ matrix.architecture.platform }}
       runs-on: ${{ matrix.architecture.runs-on }}
       timeout-minutes: 20
-    needs: aarch64-sequencing-base
     strategy:
       matrix:
         image:
@@ -199,6 +198,20 @@ jobs:
         architecture:
           - { platform: aarch64, runs-on: ubuntu-24.04-arm }
           - { platform: x86_64, runs-on: ubuntu-24.04 }
+        needs:
+          [
+            aarch64-sequencing-base,
+            aarch64-rnaseq,
+            aarch64-singlecell,
+            aarch64-multiomics,
+            aarch64-spatial,
+
+            x86_64-sequencing-base,
+            x86_64-rnaseq,
+            x86_64-singlecell,
+            x86_64-multiomics,
+            x86_64-spatial,
+          ]
 
   tag-push:
     uses: ./.github/workflows/docker-tag-push.yml
@@ -222,6 +235,7 @@ jobs:
     needs:
       [
         contributed-recipes,
+        singularity-test,
 
         aarch64-sequencing-base,
         aarch64-rnaseq,
