@@ -1,0 +1,36 @@
+name: Track upstream jupyter/docker-stacks
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # every day at 03:00 UTC
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout your repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # So all refs and branches are available
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote and fetch
+        run: |
+          git remote add upstream https://github.com/jupyter/docker-stacks.git
+          git fetch upstream
+
+      - name: Create or reset local upstream branch to match upstream/main
+        run: |
+          git checkout -B upstream upstream/main
+
+      - name: Push updated upstream branch to origin
+        run: |
+          git push origin upstream --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
