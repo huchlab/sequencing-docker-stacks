@@ -32,7 +32,7 @@ RUN mamba install --yes \
     'bbknn' \
     'cellrank>=2.0' \
     'celltypist' \
-    'decoupler-py' \
+    'decoupler-py>=2.0.2' \
     'harmonypy' \
     # optional dependency of scvelo
     'hnswlib' \
