@@ -7,7 +7,10 @@ from scipy.cluster.vq import kmeans2
 adata = sc.datasets.blobs()
 
 
-def cluster_fn(data, K):
+def cluster_fn(
+    data: np.typing.NDArray[np.float64], K: int
+) -> np.typing.NDArray[np.float64]:
+    """Custom clustering function for Harmony integration."""
     centroid, label = kmeans2(data, K, minit="++", seed=0)
     return centroid
 
