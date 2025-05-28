@@ -34,29 +34,66 @@ LOGGER = logging.getLogger(__name__)
 PACKAGE_MAPPING = {
     # Python
     "beautifulsoup4": "bs4",
+    "biopython": "Bio",
+    "decoupler-py": "decoupler",
     "jupyter-pluto-proxy": "jupyter_pluto_proxy",
     "matplotlib-base": "matplotlib",
+    "napari-spatialdata": "napari_spatialdata",
     "pytables": "tables",
+    "python-igraph": "igraph",
     "scikit-image": "skimage",
     "scikit-learn": "sklearn",
+    "scikit-misc": "skmisc",
+    "scvi-tools": "scvi",
+    "session-info": "session_info",
+    "spatial-image": "spatial_image",
+    "spatialdata-io": "spatialdata_io",
+    "spatialdata-plot": "spatialdata_plot",
     # R
+    "biocparallel": "BiocParallel",
+    "biomart": "biomaRt",
+    "clusterprofiler": "clusterProfiler",
+    "complexheatmap": "ComplexHeatmap",
+    "deseq2": "DESeq2",
+    "ggally": "GGally",
+    "glmgampoi": "glmGamPoi",
+    "gseabase": "GSEABase",
+    "gsva": "GSVA",
+    "loomexperiment": "LoomExperiment",
+    "mast": "MAST",
+    "milor": "miloR",
+    "mofa2": "MOFA2",
+    "org.hs.eg.db": "org.Hs.eg.db",
+    "org.mm.eg.db": "org.Mm.eg.db",
+    "paralleldist": "parallelDist",
     "randomforest": "randomForest",
     "rcurl": "RCurl",
+    "reactomepa": "ReactomePA",
+    "robustrankaggreg": "RobustRankAggreg",
     "rodbc": "RODBC",
     "rsqlite": "DBI",
+    "seurat": "Seurat",
+    "singlecellexperiment": "SingleCellExperiment",
+    "variancepartition": "variancePartition",
 }
 
 # List of packages that cannot be tested in a standard way
 EXCLUDED_PACKAGES = [
+    "bzip2",
+    "ca-certificates",
     "conda-forge::blas=*",
     "grpcio-status",
     "grpcio",
+    "hdf5",
     "jupyter-server-proxy",
     "jupyterhub-singleuser",
+    "jupyterlab_execute_time", 
     "jupyterlab-git",
     "mamba",
     "notebook>",
+    "openssl",
     "protobuf",
+    "pyqt",
     "python",
     "r-irkernel",
     "unixodbc",
@@ -65,13 +102,23 @@ EXCLUDED_PACKAGES = [
 
 def is_r_package(package: str) -> bool:
     """Check if a package is an R package"""
-    return package.startswith("r-")
+    return package.startswith("r-") or package.startswith("bioconductor-")
 
 
 def get_package_import_name(package: str) -> str:
     """Perform a mapping between the package name and the name used for the import"""
     if is_r_package(package):
-        package = package[2:]
+        if package.startswith('r-'):
+            package = package[2:]
+        elif package.startswith('bioconductor-'):
+            package = package[13:]
+
+    if ('<' in package):
+        package = package.split('<')[0]
+    elif ('>' in package):
+        package = package.split('>')[0]
+    elif ('=' in package):
+        package = package.split('=')[0]
     return PACKAGE_MAPPING.get(package, package)
 
 
