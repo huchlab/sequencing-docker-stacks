@@ -45,6 +45,7 @@ RUN mamba install --yes \
     # because it contains `mixedsort`
     'r-gtools' \
     'r-languageserver' \
+    'r-paletteer' \
     'r-paralleldist' \
     'r-pheatmap' \
     'r-plotly' \
