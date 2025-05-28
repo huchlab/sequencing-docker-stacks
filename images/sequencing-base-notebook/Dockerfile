@@ -22,6 +22,8 @@ ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
 ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
 ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
+COPY scripts/fix-permissions /usr/local/bin/fix-permissions
+
 USER ${NB_UID}
 
 RUN conda config --append channels bioconda
