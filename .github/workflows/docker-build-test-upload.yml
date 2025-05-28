@@ -164,4 +164,6 @@ jobs:
           unzstd /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
           docker run --rm -v /tmp/jupyter/images/:/workspace -w /workspace \
             quay.io/singularity/singularity:v3.8.4 \
-            singularity exec docker-archive://${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst pip install --target /opt/conda natsort
+            singularity exec --writable-tmpfs \
+              docker-archive:/workspace/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
+              pip install --target=/opt/conda natsort
