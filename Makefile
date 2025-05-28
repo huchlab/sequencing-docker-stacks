@@ -4,24 +4,18 @@
 
 SHELL:=bash
 REGISTRY?=quay.io
-OWNER?=jupyter
+OWNER?=fbnrst
 
 # Enable BuildKit for Docker build
 export DOCKER_BUILDKIT:=1
 
 # All the images listed in the build dependency order
 ALL_IMAGES:= \
-	docker-stacks-foundation \
-	base-notebook \
-	minimal-notebook \
-	scipy-notebook \
-	r-notebook \
-	julia-notebook \
-	tensorflow-notebook \
-	pytorch-notebook \
-	datascience-notebook \
-	pyspark-notebook \
-	all-spark-notebook
+	sequencing-base-notebook \
+	rnaseq-notebook \
+	singlecell-notebook \
+	multiomics-notebook \
+	spatial-notebook 
 
 
 
