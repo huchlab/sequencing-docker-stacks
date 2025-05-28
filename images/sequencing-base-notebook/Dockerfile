@@ -32,6 +32,7 @@ RUN mamba install --yes \
     'biopython' \
     'gseapy' \
     'jupyterlab_execute_time' \
+    'natsort' \
     'plotnine' \
     'pybiomart' \
     'openpyxl' \
