@@ -34,6 +34,7 @@ RUN mamba install --yes \
     'bioconductor-glmgampoi' \
     'bioconductor-gseabase' \
     'bioconductor-gsva' \
+    'bioconductor-gviz' \
     'bioconductor-org.hs.eg.db' \
     'bioconductor-org.mm.eg.db' \
     'bioconductor-reactomepa' \
