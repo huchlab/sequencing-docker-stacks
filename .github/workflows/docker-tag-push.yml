@@ -3,7 +3,7 @@ name: Download a Docker image and its tags from GitHub artifacts, apply them, an
 env:
   REGISTRY: quay.io
   OWNER: ${{ github.repository_owner }}
-  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+  PUSH_TO_REGISTRY: ${{ github.repository_owner == 'fbnrst' && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
 
 on:
   workflow_call:
@@ -32,9 +32,7 @@ jobs:
     timeout-minutes: ${{ inputs.timeout-minutes }}
 
     steps:
-      # Image with CUDA needs extra disk space
       - name: Free disk space 🧹
-        if: contains(inputs.variant, 'cuda')
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
         with:
           tool-cache: false

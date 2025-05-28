@@ -62,278 +62,110 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  aarch64-foundation:
+  aarch64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
-      image: docker-stacks-foundation
+      image: sequencing-base-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 10
 
-  x86_64-foundation:
+  x86_64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
-      image: docker-stacks-foundation
+      image: sequencing-base-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 10
 
-  aarch64-base:
+  aarch64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: docker-stacks-foundation
-      image: base-notebook
+      parent-image: sequencing-base-notebook
+      image: rnaseq-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 15
-    needs: aarch64-foundation
+    needs: aarch64-sequencing-base
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-base:
+  x86_64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: docker-stacks-foundation
-      image: base-notebook
+      parent-image: sequencing-base-notebook
+      image: rnaseq-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 15
-    needs: x86_64-foundation
+    needs: x86_64-sequencing-base
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  aarch64-minimal:
+  aarch64-singlecell:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: base-notebook
-      image: minimal-notebook
+      parent-image: sequencing-base-notebook
+      image: singlecell-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 15
-    needs: aarch64-base
+    needs: aarch64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-minimal:
+  x86_64-singlecell:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: base-notebook
-      image: minimal-notebook
+      parent-image: sequencing-base-notebook
+      image: singlecell-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 15
-    needs: x86_64-base
+    needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  aarch64-scipy:
+  aarch64-multiomics:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: minimal-notebook
-      image: scipy-notebook
+      parent-image: singlecell-notebook
+      image: multiomics-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 15
-    needs: aarch64-minimal
+    needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-scipy:
+  x86_64-multiomics:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: minimal-notebook
-      image: scipy-notebook
+      parent-image: singlecell-notebook
+      image: multiomics-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 15
-    needs: x86_64-minimal
+    needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  aarch64-r:
+  aarch64-spatial:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: minimal-notebook
-      image: r-notebook
+      parent-image: singlecell-notebook
+      image: spatial-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 15
-    needs: aarch64-minimal
+    needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-r:
+  x86_64-spatial:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: minimal-notebook
-      image: r-notebook
+      parent-image: singlecell-notebook
+      image: spatial-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 15
-    needs: x86_64-minimal
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  aarch64-julia:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: minimal-notebook
-      image: julia-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      # This workflow sometimes takes quite long to build
-      timeout-minutes: 30
-    needs: aarch64-minimal
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-julia:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: minimal-notebook
-      image: julia-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 20
-    needs: x86_64-minimal
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  aarch64-tensorflow:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: tensorflow-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 15
-    needs: aarch64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-tensorflow:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: tensorflow-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 15
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-tensorflow-cuda:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: tensorflow-notebook
-      variant: cuda
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 20
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  aarch64-pytorch:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: pytorch-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 20
-    needs: aarch64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-pytorch:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: pytorch-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 20
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-pytorch-cuda11:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: pytorch-notebook
-      variant: cuda11
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 20
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-pytorch-cuda12:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: pytorch-notebook
-      variant: cuda12
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 20
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  aarch64-datascience:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: datascience-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      # This workflow sometimes takes quite long to build
-      timeout-minutes: 30
-    needs: aarch64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-datascience:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: datascience-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 25
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  aarch64-pyspark:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: pyspark-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 20
-    needs: aarch64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-pyspark:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: scipy-notebook
-      image: pyspark-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 15
-    needs: x86_64-scipy
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  aarch64-all-spark:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: pyspark-notebook
-      image: all-spark-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 20
-    needs: aarch64-pyspark
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
-
-  x86_64-all-spark:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: pyspark-notebook
-      image: all-spark-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 15
-    needs: x86_64-pyspark
+    needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   contributed-recipes:
@@ -344,7 +176,7 @@ jobs:
     # If recipes using other images will be added, they should be added here as well
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
-    needs: [aarch64-base, x86_64-base, aarch64-minimal, x86_64-minimal]
+    needs: [aarch64-sequencing-base, x86_64-sequencing-base]
 
   tag-push:
     uses: ./.github/workflows/docker-tag-push.yml
@@ -358,56 +190,28 @@ jobs:
       matrix:
         image:
           [
-            docker-stacks-foundation,
-            base-notebook,
-            minimal-notebook,
-            scipy-notebook,
-            r-notebook,
-            julia-notebook,
-            tensorflow-notebook,
-            pytorch-notebook,
-            datascience-notebook,
-            pyspark-notebook,
-            all-spark-notebook,
+            sequencing-base-notebook,
+            rnaseq-notebook,
+            singlecell-notebook,
+            multiomics-notebook,
+            spatial-notebook,
           ]
         variant: [default]
-        include:
-          - image: tensorflow-notebook
-            variant: cuda
-          - image: pytorch-notebook
-            variant: cuda11
-          - image: pytorch-notebook
-            variant: cuda12
     needs:
       [
         contributed-recipes,
 
-        aarch64-foundation,
-        aarch64-base,
-        aarch64-minimal,
-        aarch64-scipy,
-        aarch64-r,
-        aarch64-julia,
-        aarch64-tensorflow,
-        aarch64-pytorch,
-        aarch64-datascience,
-        aarch64-pyspark,
-        aarch64-all-spark,
+        aarch64-sequencing-base,
+        aarch64-rnaseq,
+        aarch64-singlecell,
+        aarch64-multiomics,
+        aarch64-spatial,
 
-        x86_64-foundation,
-        x86_64-base,
-        x86_64-minimal,
-        x86_64-scipy,
-        x86_64-r,
-        x86_64-julia,
-        x86_64-tensorflow,
-        x86_64-tensorflow-cuda,
-        x86_64-pytorch,
-        x86_64-pytorch-cuda11,
-        x86_64-pytorch-cuda12,
-        x86_64-datascience,
-        x86_64-pyspark,
-        x86_64-all-spark,
+        x86_64-sequencing-base,
+        x86_64-rnaseq,
+        x86_64-singlecell,
+        x86_64-multiomics,
+        x86_64-spatial,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -421,9 +225,9 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [docker-stacks-foundation, base-notebook]
+        image: [sequencing-base-notebook]
         variant: [default]
-    needs: [aarch64-foundation, aarch64-base, x86_64-foundation, x86_64-base]
+    needs: [aarch64-sequencing-base, x86_64-sequencing-base]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   wiki-update:
