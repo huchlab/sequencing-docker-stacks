@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "docker-stacks"
-copyright = "2025, Project Jupyter"
-author = "Project Jupyter"
+project = "sequencing-docker-stacks"
+copyright = "2025, Fabian Rost"
+author = "Fabian Rost"
 
 version = "latest"
 release = "latest"
@@ -34,7 +34,7 @@ html_static_path = ["_static"]
 # These are custom options for this project
 
 html_theme = "sphinx_book_theme"
-html_title = "Docker Stacks documentation"
+html_title = "Sequencing Docker Stacks documentation"
 html_logo = "_static/jupyter-logo.svg"
 html_theme_options = {
     "logo": {
@@ -43,7 +43,7 @@ html_theme_options = {
     "navigation_with_keys": False,
     "path_to_docs": "docs",
     "repository_branch": "main",
-    "repository_url": "https://github.com/jupyter/docker-stacks",
+    "repository_url": "https://github.com/fbnrst/sequencing-docker-stacks",
     "use_download_button": True,
     "use_edit_page_button": True,
     "use_issues_button": True,
@@ -70,7 +70,7 @@ linkcheck_ignore = [
 ]
 
 linkcheck_allowed_redirects = {
-    r"https://results\.pre-commit\.ci/latest/github/jupyter/docker-stacks/main": r"https://results\.pre-commit\.ci/run/github/.*",  # Latest main CI build
-    r"https://github\.com/jupyter/docker-stacks/issues/new.*": r"https://github\.com/login.*",  # GitHub wants user to be logon to use this features
+    r"https://results\.pre-commit\.ci/latest/github/fbnrst/sequencing-docker-stacks/main": r"https://results\.pre-commit\.ci/run/github/.*",  # Latest main CI build
+    r"https://github\.com/fbnrst/sequencing-docker-stacks/issues/new.*": r"https://github\.com/login.*",  # GitHub wants user to be logon to use this features
     r"https://github\.com/orgs/jupyter/teams/docker-image-maintainers/members": r"https://github\.com/login.*",
 }

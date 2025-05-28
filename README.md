@@ -1,6 +1,9 @@
 # Sequencing Jupyter Docker Stacks
 
 [![GitHub actions badge](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/docker.yml/badge.svg)](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/docker.yml?query=branch%3Amain "Docker images build status")
+[![Read the Docs badge](https://img.shields.io/readthedocs/sequencing-docker-stacks.svg)](https://sequencing-docker-stacks.readthedocs.io/en/latest/ "Documentation build status")
+[![Run pre-commit hooks](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/pre-commit.yml/badge.svg?branch=main)](https://github.com/fbnrst/sequencing-docker-stacks/actions/workflows/pre-commit.yml)
+[![Binder badge](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fbnrst/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb "Launch a quay.io/jupyter/base-notebook container on mybinder.org")
 
 Sequencing Docker Stacks are a set of ready-to-run [Docker images](https://quay.io/fbnrst) that contain sequencing data analysis tools. They are based on the
 [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and the [singularity single cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
