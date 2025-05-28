@@ -42,6 +42,7 @@ RUN mamba install --yes \
     'r-fastcluster' \
     'r-ggally' \
     'r-ggpubr' \
+    'r-gtools' \
     'r-languageserver' \
     'r-paralleldist' \
     'r-pheatmap' \
