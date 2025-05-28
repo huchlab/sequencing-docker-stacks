@@ -52,6 +52,9 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT }}
           branch: rebase-main-on-upstream
-          title: "Rebase main on latest upstream"
-          body: "This PR rebases main onto the latest upstream/main"
+          title: "Rebase main on latest upstream (cc: @fbnrst)"
+          body: |
+            This PR rebases `main` onto the latest `upstream/main`.
+
+            cc: @fbnrst
           base: main
