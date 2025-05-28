@@ -87,7 +87,7 @@ EXCLUDED_PACKAGES = [
     "hdf5",
     "jupyter-server-proxy",
     "jupyterhub-singleuser",
-    "jupyterlab_execute_time", 
+    "jupyterlab_execute_time",
     "jupyterlab-git",
     "mamba",
     "notebook>",
@@ -108,17 +108,17 @@ def is_r_package(package: str) -> bool:
 def get_package_import_name(package: str) -> str:
     """Perform a mapping between the package name and the name used for the import"""
     if is_r_package(package):
-        if package.startswith('r-'):
+        if package.startswith("r-"):
             package = package[2:]
-        elif package.startswith('bioconductor-'):
+        elif package.startswith("bioconductor-"):
             package = package[13:]
 
-    if ('<' in package):
-        package = package.split('<')[0]
-    elif ('>' in package):
-        package = package.split('>')[0]
-    elif ('=' in package):
-        package = package.split('=')[0]
+    if "<" in package:
+        package = package.split("<")[0]
+    elif ">" in package:
+        package = package.split(">")[0]
+    elif "=" in package:
+        package = package.split("=")[0]
     return PACKAGE_MAPPING.get(package, package)
 
 

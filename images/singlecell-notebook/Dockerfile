@@ -33,9 +33,9 @@ RUN mamba install --yes \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py' \
-    'harmonypy' \ 
+    'harmonypy' \
     # optional dependency of scvelo
-    'hnswlib' \ 
+    'hnswlib' \
     'leidenalg' \
     # fixed #40
     'lightning>=2.5' \
@@ -45,8 +45,8 @@ RUN mamba install --yes \
     'mudata' \
     'muon' \
     'palantir' \
-    # optional dependency of scvelo 
-    'pybind11' \ 
+    # optional dependency of scvelo
+    'pybind11' \
     'pydeseq2>=0.5.0' \
     'python-igraph' \
     'scanorama' \
@@ -70,15 +70,14 @@ RUN mamba install --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# packages not available for arm64 on conda 
+# packages not available for arm64 on conda
 RUN pip install --no-cache-dir \
     fastcluster \
     liana \
-    scikit-misc
-
-# do not install dependencies for cellbender (they include jupyter)
-RUN pip install --no-cache-dir --no-deps \
-    cellbender 
+    scikit-misc && \
+    # do not install dependencies for cellbender (they include jupyter)
+    pip install --no-cache-dir --no-deps \
+    cellbender
 
 RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
 

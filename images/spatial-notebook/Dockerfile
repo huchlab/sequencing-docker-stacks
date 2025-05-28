@@ -43,7 +43,7 @@ RUN pip --no-cache-dir install --upgrade \
     spatial-image \
     spatialdata \
     spatialdata-io \
-    spatialdata-plot 
+    spatialdata-plot
 
 
 USER ${NB_UID}

@@ -17,7 +17,9 @@ Build manifests documenting the full software stack are available in the [wiki](
 ## Quick Start
 
 To get started, you might want to try [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) first.
+
 <!-- You can [try a relatively recent build of the quay.io/jupyter/base-notebook image on mybinder.org](https://mybinder.org/v2/gh/fbnrst/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb). -->
+
 The examples below may help you get started if you [have Docker installed](https://docs.docker.com/get-started/get-docker/),
 know which Docker image you want to use, and want to launch a single Jupyter Application in a container.
 

@@ -12,7 +12,7 @@ jobs:
       - name: Checkout full history
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Important to get all branches/tags
+          fetch-depth: 0 # Important to get all branches/tags
 
       - name: Push all local branches and tags to GitLab
         run: |

@@ -15,7 +15,7 @@ ALL_IMAGES:= \
 	rnaseq-notebook \
 	singlecell-notebook \
 	multiomics-notebook \
-	spatial-notebook 
+	spatial-notebook
 
 
 

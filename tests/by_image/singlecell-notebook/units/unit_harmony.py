@@ -6,23 +6,24 @@ from scipy.cluster.vq import kmeans2
 
 adata = sc.datasets.blobs()
 
+
 def cluster_fn(data, K):
-    centroid, label = kmeans2(data, K, minit='++', seed=0)
+    centroid, label = kmeans2(data, K, minit="++", seed=0)
     return centroid
 
-sc.pp.pca(adata)
-sc.external.pp.harmony_integrate(adata, 'blobs', cluster_fn=cluster_fn)
 
-X_harmony = adata.obsm['X_pca_harmony'].copy()
+sc.pp.pca(adata)
+sc.external.pp.harmony_integrate(adata, "blobs", cluster_fn=cluster_fn)
+
+X_harmony = adata.obsm["X_pca_harmony"].copy()
 
 for i in range(2):
     print(i)
-    sc.external.pp.harmony_integrate(adata, 'blobs', cluster_fn=cluster_fn)
+    sc.external.pp.harmony_integrate(adata, "blobs", cluster_fn=cluster_fn)
     try:
-        np.testing.assert_equal(
-            X_harmony, 
-            adata.obsm['X_pca_harmony']
-        )
+        np.testing.assert_equal(X_harmony, adata.obsm["X_pca_harmony"])
     except AssertionError:
-        max_diff = np.abs(X_harmony - adata.obsm['X_pca_harmony']).max()
-        raise AssertionError(f"Re-computed Harmony is not the same. Maximum absolute difference: {max_diff}")
+        max_diff = np.abs(X_harmony - adata.obsm["X_pca_harmony"]).max()
+        raise AssertionError(
+            f"Re-computed Harmony is not the same. Maximum absolute difference: {max_diff}"
+        )
