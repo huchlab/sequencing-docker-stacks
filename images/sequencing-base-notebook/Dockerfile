@@ -42,6 +42,7 @@ RUN mamba install --yes \
     'r-fastcluster' \
     'r-ggally' \
     'r-ggpubr' \
+    # because it contains `mixedsort`
     'r-gtools' \
     'r-languageserver' \
     'r-paralleldist' \
