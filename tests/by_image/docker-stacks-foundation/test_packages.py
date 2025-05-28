@@ -59,6 +59,7 @@ PACKAGE_MAPPING = {
     "glmgampoi": "glmGamPoi",
     "gseabase": "GSEABase",
     "gsva": "GSVA",
+    "gviz": "Gviz",
     "loomexperiment": "LoomExperiment",
     "mast": "MAST",
     "milor": "miloR",
