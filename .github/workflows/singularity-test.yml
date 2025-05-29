@@ -49,11 +49,6 @@ jobs:
       #     docker-images: true
       #     swap-storage: true
 
-      - name: Install zstd 🧩
-        run: |
-          apk update && \
-          apk add --no-cache zstd
-
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
 
