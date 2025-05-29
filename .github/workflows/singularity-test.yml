@@ -63,12 +63,11 @@ jobs:
           unzstd /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
 
       - name: Test Singularity image 🧪
-        run: >
-          docker run --rm
-              -v /tmp/jupyter/images:/tmp/jupyter/images
-              --entrypoint /bin/bash
-              --platform ${{ inputs.platform }}
-              docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar
-              -c "singularity exec --writable-tmpfs
-                /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar
-                pip install --target=/opt/conda natsort"
+        run: |
+          docker run --rm \
+            -v /tmp/jupyter/images:/tmp/jupyter/images \
+            --entrypoint /bin/bash \
+            quay.io/singularity/singularity:v3.8.4 \
+            singularity exec --writable-tmpfs \
+              docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
+              pip install --target=/opt/conda natsort
