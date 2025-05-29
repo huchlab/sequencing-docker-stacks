@@ -54,6 +54,7 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
+        if: ${{ inputs.image != 'sequencing-base-notebook' }}
 
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
