@@ -206,7 +206,6 @@ jobs:
     needs:
       [
         contributed-recipes,
-        singularity-test,
 
         aarch64-sequencing-base,
         aarch64-rnaseq,
@@ -219,6 +218,8 @@ jobs:
         x86_64-singlecell,
         x86_64-multiomics,
         x86_64-spatial,
+
+        singularity-test-x86_64-sequencing-base,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
