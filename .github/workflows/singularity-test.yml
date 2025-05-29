@@ -52,6 +52,10 @@ jobs:
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
 
+      - uses: eWaterCycle/setup-singularity@v7
+        with:
+          singularity-version: 3.8.6
+
       - name: Download built image 📥
         uses: actions/download-artifact@v4
         with:
@@ -64,9 +68,6 @@ jobs:
 
       - name: Test Singularity image 🧪
         run: |
-          docker run --rm \
-            -v /tmp/jupyter/images:/tmp/jupyter/images \
-            quay.io/singularity/singularity:v3.8.4-slim \
-            exec --writable-tmpfs \
+          singularity exec --writable-tmpfs \
               docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
               pip install --target=/opt/conda natsort
