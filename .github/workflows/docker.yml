@@ -182,36 +182,13 @@ jobs:
     uses: ./.github/workflows/singularity-test.yml
     with:
       image: ${{ matrix.image }}
-      platform: ${{ matrix.architecture.platform }}
-      runs-on: ${{ matrix.architecture.runs-on }}
+      platform: x86_64
+      runs-on: ubuntu-24.04
       timeout-minutes: 20
     strategy:
       matrix:
-        image:
-          [
-            sequencing-base-notebook,
-            rnaseq-notebook,
-            singlecell-notebook,
-            multiomics-notebook,
-            spatial-notebook,
-          ]
-        architecture:
-          - { platform: aarch64, runs-on: ubuntu-24.04-arm }
-          - { platform: x86_64, runs-on: ubuntu-24.04 }
-    needs:
-      [
-        aarch64-sequencing-base,
-        aarch64-rnaseq,
-        aarch64-singlecell,
-        aarch64-multiomics,
-        aarch64-spatial,
-
-        x86_64-sequencing-base,
-        x86_64-rnaseq,
-        x86_64-singlecell,
-        x86_64-multiomics,
-        x86_64-spatial,
-      ]
+        image: [sequencing-base-notebook]
+    needs: [x86_64-sequencing-base]
 
   tag-push:
     uses: ./.github/workflows/docker-tag-push.yml

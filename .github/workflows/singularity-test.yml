@@ -17,12 +17,14 @@ on:
         type: number
       platform:
         description: Image platform
-        required: true
+        required: false
         type: string
+        default: x86_64
       runs-on:
         description: GitHub Actions Runner image
-        required: true
+        required: false
         type: string
+        default: ubuntu-24.04
       variant:
         description: Variant tag prefix
         required: false
@@ -33,6 +35,9 @@ jobs:
   singularity-test:
     runs-on: ${{ inputs.runs-on }}
     timeout-minutes: ${{ inputs.timeout-minutes }}
+    container:
+      image: quay.io/singularity/singularity:v3.8.4
+      options: --entrypoint /bin/bash
 
     steps:
       - name: Free disk space 🧹
@@ -45,6 +50,11 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
+
+      - name: Install zstd 🧩
+        run: |
+          apk update && \
+          apk add --no-cache zstd
 
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
@@ -61,8 +71,6 @@ jobs:
 
       - name: Test Singularity image 🧪
         run: |
-          docker run --rm -v /tmp/jupyter/images/:/workspace -w /workspace \
-            quay.io/singularity/singularity:v3.8.4 \
-              exec --writable-tmpfs \
-              docker-archive:/workspace/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
+          singularity exec --writable-tmpfs \
+              docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
               pip install --target=/opt/conda natsort
