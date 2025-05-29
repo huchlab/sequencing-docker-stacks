@@ -178,16 +178,10 @@ jobs:
     # contributed-recipes will give an error if the image is not yet built and uploaded
     needs: [aarch64-sequencing-base, x86_64-sequencing-base]
 
-  singularity-test:
+  singularity-test-x86_64-sequencing-base:
     uses: ./.github/workflows/singularity-test.yml
     with:
-      image: ${{ matrix.image }}
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 20
-    strategy:
-      matrix:
-        image: [sequencing-base-notebook]
+      image: sequencing-base-notebook
     needs: [x86_64-sequencing-base]
 
   tag-push:

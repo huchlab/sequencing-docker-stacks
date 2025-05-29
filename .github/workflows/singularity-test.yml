@@ -13,6 +13,7 @@ on:
         type: string
       timeout-minutes:
         description: Timeout in minutes
+        required: false
         default: 20
         type: number
       platform:
@@ -35,9 +36,6 @@ jobs:
   singularity-test:
     runs-on: ${{ inputs.runs-on }}
     timeout-minutes: ${{ inputs.timeout-minutes }}
-    container:
-      image: quay.io/singularity/singularity:v3.8.4
-      options: --entrypoint /bin/bash
 
     steps:
       - name: Free disk space 🧹
@@ -70,7 +68,12 @@ jobs:
           unzstd /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
 
       - name: Test Singularity image 🧪
-        run: |
-          singularity exec --writable-tmpfs \
-              docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
-              pip install --target=/opt/conda natsort
+        run: >
+          docker run --rm
+              -v /tmp/jupyter/images:/tmp/jupyter/images
+              --entrypoint /bin/bash
+              --platform ${{ inputs.platform }}
+              docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar
+              -c "singularity exec --writable-tmpfs
+                /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar
+                pip install --target=/opt/conda natsort"
