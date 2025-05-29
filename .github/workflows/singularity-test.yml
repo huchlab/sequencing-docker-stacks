@@ -66,8 +66,7 @@ jobs:
         run: |
           docker run --rm \
             -v /tmp/jupyter/images:/tmp/jupyter/images \
-            --entrypoint /bin/bash \
             quay.io/singularity/singularity:v3.8.4 \
-            singularity exec --writable-tmpfs \
+            exec --writable-tmpfs \
               docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
               pip install --target=/opt/conda natsort
