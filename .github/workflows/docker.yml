@@ -178,8 +178,8 @@ jobs:
     # contributed-recipes will give an error if the image is not yet built and uploaded
     needs: [aarch64-sequencing-base, x86_64-sequencing-base]
 
-  singularity-test-x86_64-sequencing-base:
-    uses: ./.github/workflows/singularity-test.yml
+  apptainer-test-x86_64-sequencing-base:
+    uses: ./.github/workflows/apptainer-test.yml
     with:
       image: sequencing-base-notebook
     needs: [x86_64-sequencing-base]
@@ -219,7 +219,7 @@ jobs:
         x86_64-multiomics,
         x86_64-spatial,
 
-        singularity-test-x86_64-sequencing-base,
+        apptainer-test-x86_64-sequencing-base,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 

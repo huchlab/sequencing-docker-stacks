@@ -1,4 +1,4 @@
-name: Test using the images with Singularity
+name: Test using the images with apptainer
 
 env:
   REGISTRY: quay.io
@@ -33,7 +33,7 @@ on:
         default: default
 
 jobs:
-  singularity-test:
+  apptainer-test:
     runs-on: ${{ inputs.runs-on }}
     timeout-minutes: ${{ inputs.timeout-minutes }}
 
