@@ -69,11 +69,10 @@ jobs:
       - name: Test image with Apptainer 🧪
         run: |
           apptainer exec --writable-tmpfs \
-            docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
-              bash -c "$(cat <<'EOF'
-                echo "Installing humanize with pip to test pip install..."
-                pip install --target=/opt/conda --upgrade --force-reinstall humanize
-                echo "Installing docopt in R to test R install.packages..."
-                Rscript -e "install.packages('docopt', repos='https://cloud.r-project.org', Ncpus = 4)"
-            EOF
-                  )"
+          docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
+            bash -c "
+            echo 'Installing humanize with pip to test pip install...'
+            pip install --target=/opt/conda --upgrade --force-reinstall humanize
+            echo 'Installing docopt in R to test R install.packages...'
+            Rscript -e \"install.packages('docopt', repos='https://cloud.r-project.org', Ncpus = 4)\"
+            "
