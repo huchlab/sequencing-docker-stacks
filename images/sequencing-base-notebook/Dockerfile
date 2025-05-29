@@ -28,38 +28,35 @@ USER ${NB_UID}
 
 RUN conda config --append channels bioconda
 
-# # keeping 'r-base' makes this much faster
-# RUN mamba install --yes \
-#     # Python \
-#     'biopython' \
-#     'gseapy' \
-#     'jupyterlab_execute_time' \
-#     'natsort' \
-#     'plotnine' \
-#     'pybiomart' \
-#     'openpyxl' \
-#     'session-info' \
-#     # R \
-#     'bioconductor-complexheatmap' \
-#     'r-base' \
-#     'r-fastcluster' \
-#     'r-ggally' \
-#     'r-ggpubr' \
-#     # because it contains `mixedsort`
-#     'r-gtools' \
-#     'r-languageserver' \
-#     'r-paletteer' \
-#     'r-paralleldist' \
-#     'r-pheatmap' \
-#     'r-plotly' \
-#     'r-viridis' \
-#     'r-writexl' \
-#     && \
-#     mamba clean --all -f -y && \
-#     fix-permissions-all "${CONDA_DIR}" && \
-#     fix-permissions "/home/${NB_USER}"
-
-RUN fix-permissions-all "${CONDA_DIR}" && \
+# keeping 'r-base' makes this much faster
+RUN mamba install --yes \
+    # Python \
+    'biopython' \
+    'gseapy' \
+    'jupyterlab_execute_time' \
+    'natsort' \
+    'plotnine' \
+    'pybiomart' \
+    'openpyxl' \
+    'session-info' \
+    # R \
+    'bioconductor-complexheatmap' \
+    'r-base' \
+    'r-fastcluster' \
+    'r-ggally' \
+    'r-ggpubr' \
+    # because it contains `mixedsort`
+    'r-gtools' \
+    'r-languageserver' \
+    'r-paletteer' \
+    'r-paralleldist' \
+    'r-pheatmap' \
+    'r-plotly' \
+    'r-viridis' \
+    'r-writexl' \
+    && \
+    mamba clean --all -f -y && \
+    fix-permissions-all "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}
