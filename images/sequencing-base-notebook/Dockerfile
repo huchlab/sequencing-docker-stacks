@@ -55,8 +55,9 @@ RUN mamba install --yes \
     'r-viridis' \
     'r-writexl' \
     && \
-    mamba clean --all -f -y && \
-    fix-permissions-all "${CONDA_DIR}" && \
+    mamba clean --all -f -y
+
+RUN fix-permissions-all "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}
