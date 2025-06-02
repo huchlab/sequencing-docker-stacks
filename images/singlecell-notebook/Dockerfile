@@ -66,9 +66,7 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+    mamba clean --all -f -y
 
 # packages not available for arm64 on conda
 RUN pip install --no-cache-dir \
@@ -80,5 +78,8 @@ RUN pip install --no-cache-dir \
     cellbender
 
 RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
+
+RUN fix-permissions-all "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}

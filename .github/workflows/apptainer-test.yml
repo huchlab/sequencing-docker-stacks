@@ -1,0 +1,78 @@
+name: Test using the images with apptainer
+
+env:
+  REGISTRY: quay.io
+  OWNER: ${{ github.repository_owner }}
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Image name
+        required: true
+        type: string
+      timeout-minutes:
+        description: Timeout in minutes
+        required: false
+        default: 20
+        type: number
+      platform:
+        description: Image platform
+        required: false
+        type: string
+        default: x86_64
+      runs-on:
+        description: GitHub Actions Runner image
+        required: false
+        type: string
+        default: ubuntu-24.04
+      variant:
+        description: Variant tag prefix
+        required: false
+        type: string
+        default: default
+
+jobs:
+  apptainer-test:
+    runs-on: ${{ inputs.runs-on }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+
+    steps:
+      - name: Free disk space 🧹
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@v4
+
+      - uses: eWaterCycle/setup-apptainer@v2
+        with:
+          apptainer-version: 1.4.1
+
+      - name: Download built image 📥
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          path: /tmp/jupyter/images/
+
+      - name: Uncompress downloaded image 📥
+        run: |
+          unzstd /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
+
+      - name: Test image with Apptainer 🧪
+        run: |
+          apptainer exec --writable-tmpfs \
+          docker-archive:/tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar \
+            bash -c "
+            echo 'Installing humanize with pip to test pip install...'
+            pip install --target=/opt/conda --upgrade --force-reinstall humanize
+            echo 'Installing docopt in R to test R install.packages...'
+            Rscript -e \"install.packages('docopt', repos='https://cloud.r-project.org', Ncpus = 4)\"
+            "

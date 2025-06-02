@@ -69,7 +69,7 @@ jobs:
       image: sequencing-base-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 15
+      timeout-minutes: 25
 
   x86_64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
@@ -78,7 +78,7 @@ jobs:
       image: sequencing-base-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 15
+      timeout-minutes: 25
 
   aarch64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
@@ -87,7 +87,7 @@ jobs:
       image: rnaseq-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 20
+      timeout-minutes: 30
     needs: aarch64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -98,7 +98,7 @@ jobs:
       image: rnaseq-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 20
+      timeout-minutes: 30
     needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -109,7 +109,7 @@ jobs:
       image: singlecell-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 20
+      timeout-minutes: 30
     needs: aarch64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -120,7 +120,7 @@ jobs:
       image: singlecell-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 20
+      timeout-minutes: 30
     needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -131,7 +131,7 @@ jobs:
       image: multiomics-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 30
+      timeout-minutes: 45
     needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -142,7 +142,7 @@ jobs:
       image: multiomics-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 30
+      timeout-minutes: 45
     needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -153,7 +153,7 @@ jobs:
       image: spatial-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 20
+      timeout-minutes: 30
     needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -164,7 +164,7 @@ jobs:
       image: spatial-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 20
+      timeout-minutes: 30
     needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -177,6 +177,12 @@ jobs:
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
     needs: [aarch64-sequencing-base, x86_64-sequencing-base]
+
+  apptainer-test-x86_64-sequencing-base:
+    uses: ./.github/workflows/apptainer-test.yml
+    with:
+      image: sequencing-base-notebook
+    needs: [x86_64-sequencing-base]
 
   tag-push:
     uses: ./.github/workflows/docker-tag-push.yml
@@ -212,6 +218,8 @@ jobs:
         x86_64-singlecell,
         x86_64-multiomics,
         x86_64-spatial,
+
+        apptainer-test-x86_64-sequencing-base,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 

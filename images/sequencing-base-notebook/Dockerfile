@@ -22,6 +22,8 @@ ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
 ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
 ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
+COPY scripts/fix-permissions-all /usr/local/bin/fix-permissions-all
+
 USER ${NB_UID}
 
 RUN conda config --append channels bioconda
@@ -53,8 +55,9 @@ RUN mamba install --yes \
     'r-viridis' \
     'r-writexl' \
     && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
+    mamba clean --all -f -y
+
+RUN fix-permissions-all "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}
