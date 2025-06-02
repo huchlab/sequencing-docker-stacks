@@ -131,7 +131,7 @@ jobs:
       image: multiomics-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 30
+      timeout-minutes: 45
     needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -142,7 +142,7 @@ jobs:
       image: multiomics-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 30
+      timeout-minutes: 45
     needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
