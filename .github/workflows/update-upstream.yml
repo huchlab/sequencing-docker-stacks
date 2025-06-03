@@ -48,7 +48,7 @@ jobs:
           git push origin rebase-main-on-upstream --force
 
       - name: Create or update pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_PAT }}
           branch: rebase-main-on-upstream
