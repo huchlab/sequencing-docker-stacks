@@ -35,7 +35,9 @@ RUN mamba install --yes \
     'spatialdata' \
     'squidpy' \
     && \
-    mamba clean --all -f -y
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
 RUN pip --no-cache-dir install --upgrade \
     spatial-image \
@@ -43,7 +45,5 @@ RUN pip --no-cache-dir install --upgrade \
     spatialdata-io \
     spatialdata-plot
 
-RUN fix-permissions-all "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}

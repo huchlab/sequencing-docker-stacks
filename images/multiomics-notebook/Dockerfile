@@ -29,11 +29,10 @@ RUN mamba install --yes \
     'mofapy2' \
     'muon' \
     && \
-    mamba clean --all -f -y
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
 RUN R -e "BiocManager::install('MOFA2', ask = FALSE, Ncpus = 4)"
-
-RUN fix-permissions-all "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}

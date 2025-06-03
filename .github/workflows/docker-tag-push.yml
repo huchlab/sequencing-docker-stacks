@@ -18,7 +18,7 @@ on:
         type: string
       timeout-minutes:
         description: Timeout in minutes
-        default: 60
+        default: 20
         type: number
     secrets:
       REGISTRY_USERNAME:
@@ -28,10 +28,21 @@ on:
 
 jobs:
   tag-push:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ inputs.timeout-minutes }}
 
     steps:
+      - name: Free disk space 🧹
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: false
+          swap-storage: false
+
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
       - name: Create dev environment 📦
