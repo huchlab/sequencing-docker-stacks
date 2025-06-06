@@ -19,17 +19,12 @@ body:
       description: Select as many images as applicable
       multiple: true
       options:
-        - all-spark-notebook
-        - base-notebook
-        - datascience-notebook
-        - docker-stacks-foundation
-        - julia-notebook
-        - minimal-notebook
-        - pyspark-notebook
-        - pytorch-notebook
-        - r-notebook
-        - scipy-notebook
-        - tensorflow-notebook
+        - sequencing-base-notebook
+        - rnaseq-notebook
+        - singlecell-notebook
+        - multiomics-notebook
+        - spatial-notebook
+        - other
     validations:
       required: true
 
@@ -40,7 +35,7 @@ body:
         Example:
         Ubuntu 24.04
     validations:
-      required: true
+      required: false
 
   - type: dropdown
     attributes:
@@ -49,7 +44,7 @@ body:
         - x86_64
         - aarch64
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
@@ -60,7 +55,7 @@ body:
         Example:
         `docker run -it --rm -p 8888:8888 quay.io/jupyter/base-notebook`
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
@@ -75,7 +70,7 @@ body:
 
         3. ...
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
@@ -108,7 +103,7 @@ body:
       placeholder: |
         Example: No output is visible in the notebook and the Server log contains messages about ...
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
@@ -126,4 +121,4 @@ body:
       description: You should try to use the latest Docker version
       options:
         - label: I've updated my Docker version to the latest available, and the issue persists
-          required: true
+          required: false
