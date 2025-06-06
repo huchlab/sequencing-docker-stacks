@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Hi! Thanks for using the Jupyter Docker Stacks and taking some time to contribute to this project.
+        Hi! Thanks for using the Sequencing Docker Stacks and taking some time to contribute to this project.
 
         We'd appreciate it if you could check out the [Suggesting a new feature](https://jupyter-docker-stacks.readthedocs.io/en/latest/contributing/features.html#suggesting-a-new-feature)
         section in the documentation for our preferred processes before submitting a feature request.
@@ -17,18 +17,12 @@ body:
       description: Select as many images as applicable
       multiple: true
       options:
-        - all-spark-notebook
-        - base-notebook
-        - datascience-notebook
-        - docker-stacks-foundation
-        - julia-notebook
-        - minimal-notebook
-        - pyspark-notebook
-        - pytorch-notebook
-        - r-notebook
-        - scipy-notebook
-        - tensorflow-notebook
-        - new community stack
+        - sequencing-base-notebook
+        - rnaseq-notebook
+        - singlecell-notebook
+        - multiomics-notebook
+        - spatial-notebook
+        - other
     validations:
       required: true
 
@@ -56,7 +50,7 @@ body:
           - Altair's API is simple, friendly, and consistent and built on top of the powerful Vega-Lite visualization grammar.
           - This elegant simplicity produces beautiful and effective visualizations with a minimal amount of code.
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
