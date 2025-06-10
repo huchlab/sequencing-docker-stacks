@@ -44,23 +44,25 @@ jobs:
     timeout-minutes: ${{ inputs.timeout-minutes }}
 
     steps:
-      # Image with CUDA needs extra disk space
       - name: Free disk space 🧹
-        if: contains(inputs.variant, 'cuda')
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
         with:
           tool-cache: false
           android: true
           dotnet: true
           haskell: true
-          large-packages: false
-          docker-images: false
-          swap-storage: false
+          large-packages: true
+          docker-images: true
+          swap-storage: true
 
       - name: Checkout Repo ⚡️
         uses: actions/checkout@v4
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
+
+      - name: Get commit SHA
+        id: get_sha
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
@@ -82,7 +84,12 @@ jobs:
             --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} \
-            --build-arg OWNER=${{ env.OWNER }}
+            --build-arg OWNER=${{ env.OWNER }} \
+            --build-arg GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+            --build-arg CONTAINER_BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+            --build-arg CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
+            --build-arg CONTAINER_GIT_REPOSITORY=${{ github.repository }} \
+            --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha }}
         env:
           DOCKER_BUILDKIT: 1
           # Full logs for CI build

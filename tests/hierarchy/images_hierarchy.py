@@ -15,4 +15,9 @@ IMAGE_PARENT = {
     "datascience-notebook": "scipy-notebook",
     "pyspark-notebook": "scipy-notebook",
     "all-spark-notebook": "pyspark-notebook",
+    "sequencing-base-notebook": "datascience-notebook",
+    "rnaseq-notebook": "sequencing-base-notebook",
+    "singlecell-notebook": "sequencing-base-notebook",
+    "multiomics-notebook": "singlecell-notebook",
+    "spatial-notebook": "singlecell-notebook",
 }
