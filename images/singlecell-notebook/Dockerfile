@@ -62,6 +62,7 @@ RUN mamba install --yes \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
+    'presto' \
     'r-data.table' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
