@@ -30,7 +30,6 @@ RUN mamba install --yes \
     'bioconductor-biocparallel' \
     'bioconductor-biomart' \
     'bioconductor-clusterprofiler' \
-    'bioconductor-deseq2' \
     'bioconductor-glmgampoi' \
     'bioconductor-gseabase' \
     'bioconductor-gsva' \
