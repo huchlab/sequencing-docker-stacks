@@ -40,6 +40,7 @@ RUN mamba install --yes \
     # R \
     'bioconductor-complexheatmap' \
     'bioconductor-deseq2' \
+    'bioconductor-fgsea' \
     'r-base' \
     'r-fastcluster' \
     'r-ggally' \
