@@ -39,6 +39,7 @@ PACKAGE_MAPPING = {
     "jupyter-pluto-proxy": "jupyter_pluto_proxy",
     "matplotlib-base": "matplotlib",
     "napari-spatialdata": "napari_spatialdata",
+    "opencv": "cv2",
     "pytables": "tables",
     "python-igraph": "igraph",
     "scikit-image": "skimage",

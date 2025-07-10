@@ -27,6 +27,7 @@ USER ${NB_UID}
 RUN mamba install --yes \
     # Python \
     'napari-spatialdata' \
+    '' \
     'pyproj' \
     'pyqt' \
     'spatial-image' \
