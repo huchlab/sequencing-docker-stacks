@@ -18,7 +18,7 @@ on:
         type: string
       timeout-minutes:
         description: Timeout in minutes
-        default: 20
+        default: 30
         type: number
     secrets:
       REGISTRY_USERNAME:
