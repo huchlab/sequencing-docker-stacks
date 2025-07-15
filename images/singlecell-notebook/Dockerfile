@@ -76,7 +76,9 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     fastcluster \
     liana \
-    scikit-misc && \
+    scikit-misc \
+    tangram-sc \
+    && \
     # do not install dependencies for cellbender (they include jupyter)
     pip install --no-cache-dir --no-deps \
     cellbender

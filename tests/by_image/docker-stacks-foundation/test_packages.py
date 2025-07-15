@@ -50,6 +50,7 @@ PACKAGE_MAPPING = {
     "spatial-image": "spatial_image",
     "spatialdata-io": "spatialdata_io",
     "spatialdata-plot": "spatialdata_plot",
+    "tangram-sc": "tangram",
     # R
     "biocparallel": "BiocParallel",
     "biomart": "biomaRt",
