@@ -44,7 +44,8 @@ RUN pip --no-cache-dir install --upgrade \
     spatial-image \
     spatialdata \
     spatialdata-io \
-    spatialdata-plot
+    spatialdata-plot \
+    tangram-sc
 
 
 USER ${NB_UID}
