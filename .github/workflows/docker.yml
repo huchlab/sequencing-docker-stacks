@@ -33,7 +33,7 @@ on:
       - "wiki/**"
       - "requirements-dev.txt"
     merge_group:
-  
+
   push:
     branches:
       - main
