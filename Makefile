@@ -4,7 +4,7 @@
 
 SHELL:=bash
 REGISTRY?=quay.io
-OWNER?=fbnrst
+OWNER?=huchlab
 
 # Enable BuildKit for Docker build
 export DOCKER_BUILDKIT:=1

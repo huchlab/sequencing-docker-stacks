@@ -2,9 +2,9 @@
 # Distributed under the terms of the Modified BSD License.
 # Modified by Fabian Rost
 
-# https://quay.io/repository/fbnrst/singlecell-notebook?tab=tags
+# https://quay.io/repository/huchlab/singlecell-notebook?tab=tags
 ARG REGISTRY=quay.io
-ARG OWNER=fbnrst
+ARG OWNER=huchlab
 ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook:2025-05-26
 FROM $BASE_IMAGE
 
