@@ -2,7 +2,7 @@
 # Copyright (c) 2025-, Fabian Rost
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
-ARG OWNER=fbnrst
+ARG OWNER=huchlab
 ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook
 FROM $BASE_IMAGE
 
