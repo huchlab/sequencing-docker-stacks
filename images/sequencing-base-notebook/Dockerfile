@@ -24,15 +24,13 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git-lfs && \
-    git lfs install && \
     rm -rf /var/lib/apt/lists/*
 
 USER ${NB_UID}
 
-RUN conda config --append channels bioconda
-
-# keeping 'r-base' makes this much faster
-RUN mamba install --yes \
+RUN git lfs install && \
+    conda config --append channels bioconda && \
+    mamba install --yes \
     # Python \
     'biopython' \
     'gseapy' \
@@ -46,6 +44,7 @@ RUN mamba install --yes \
     'bioconductor-complexheatmap' \
     'bioconductor-deseq2' \
     'bioconductor-fgsea' \
+    # keeping 'r-base' makes this much faster
     'r-base' \
     'r-fastcluster' \
     'r-ggally' \
