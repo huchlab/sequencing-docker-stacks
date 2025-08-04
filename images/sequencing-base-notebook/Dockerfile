@@ -8,6 +8,8 @@ FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 
+bar
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
