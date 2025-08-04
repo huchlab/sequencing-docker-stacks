@@ -86,3 +86,5 @@ RUN pip install --no-cache-dir \
 RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
 
 USER ${NB_UID}
+
+foo
