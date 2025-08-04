@@ -1,6 +1,8 @@
-queue_rules:
-  - name: default
-    queue_conditions: []
-    branch_protection_injection_mode: merge
 merge_queue:
   max_parallel_checks: 10
+
+queue_rules:
+  - name: default
+    queue_conditions:
+      - check-success: run-hooks
+    branch_protection_injection_mode: merge
