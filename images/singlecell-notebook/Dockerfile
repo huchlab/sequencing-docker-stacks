@@ -83,6 +83,7 @@ RUN pip install --no-cache-dir \
     # do not install dependencies for cellbender (they include jupyter)
     pip install --no-cache-dir --no-deps cellbender
 
-RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
+RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
 
 USER ${NB_UID}
