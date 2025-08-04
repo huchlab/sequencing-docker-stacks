@@ -1,4 +1,8 @@
 queue_rules:
   - name: default
     queue_conditions:
-      - check-success = run-hooks
+      - or:
+        - check-success = run-hooks
+    merge_conditions:
+      - or:
+        - check-success = wiki-update
