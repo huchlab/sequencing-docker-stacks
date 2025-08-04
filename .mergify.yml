@@ -1,6 +1,2 @@
-queue_rules:
-  - name: standard
-    queue_conditions:
-      - check-success = run-hooks
-    merge_conditions:
-      - check-success = wiki-update
+merge_queue:
+  max_parallel_checks: 3
