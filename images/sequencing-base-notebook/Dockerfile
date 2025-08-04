@@ -6,6 +6,8 @@ ARG OWNER=huchlab
 ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook
 FROM $BASE_IMAGE
 
+foo
+
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
