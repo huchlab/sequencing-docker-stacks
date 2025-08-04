@@ -10,6 +10,8 @@ foo
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 
+bar
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
