@@ -22,6 +22,11 @@ ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
 ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
 ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git-lfs && \
+    git lfs install && \
+    rm -rf /var/lib/apt/lists/*
+
 USER ${NB_UID}
 
 RUN conda config --append channels bioconda
