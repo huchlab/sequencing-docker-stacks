@@ -32,7 +32,6 @@ on:
       - "!tests/README.md"
       - "wiki/**"
       - "requirements-dev.txt"
-  merge_group:
 
   push:
     branches:
