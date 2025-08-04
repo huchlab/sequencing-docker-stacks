@@ -1,28 +1,8 @@
 queue_rules:
   - name: default
-    queue_conditions: []
+    queue_conditions:
+      - check-success = run-hooks
     branch_protection_injection_mode: merge
+
 merge_queue:
   max_parallel_checks: 10
-pull_request_rules:
-  - name: Notify when a PR is removed from the queue
-    description: Notify the PR author when its pull request is removed from the merge queue.
-    conditions:
-      - queue-dequeue-reason != none
-      - queue-dequeue-reason != pr-merged
-    actions:
-      comment:
-        message: >
-          Hey @{{author}}, your pull request has been dequeued due to the
-          following reason: {{queue_dequeue_reason}}.
-
-          Sorry about that, but you can requeue the PR by using `@mergifyio
-          requeue` if you think this was a mistake.
-  - name: Add a queue label when PR is queued
-    description: Toggle the queue label when a pull request is (un)queued.
-    conditions:
-      - queue-position > 0
-    actions:
-      label:
-        toggle:
-          - merge-queued
