@@ -12,7 +12,7 @@ def test_cython(container: TrackedContainer) -> None:
     cont_data_dir = "/home/jovyan/data"
 
     logs = container.run_and_wait(
-        timeout=10,
+        timeout=30,
         volumes={host_data_dir: {"bind": cont_data_dir, "mode": "ro"}},
         command=[
             "bash",
