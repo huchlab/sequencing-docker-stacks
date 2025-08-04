@@ -83,6 +83,7 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps \
     cellbender
 
-RUN R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
+RUN --mount=type=secret,id=github_token \
+    R -e "devtools::install_github('cellgeni/sceasy', auth_token = '$(cat /run/secrets/github_token)', threads = 4)"
 
 USER ${NB_UID}
