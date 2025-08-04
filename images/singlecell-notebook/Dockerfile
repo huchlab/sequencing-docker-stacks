@@ -75,9 +75,10 @@ RUN mamba install --yes \
 # packages not available for arm64 on conda
 RUN pip install --no-cache-dir \
     fastcluster \
-    liana \
     scikit-misc \
     && \
+    # install liana from source because old version is installed for python 3.12
+    pip install --no-cache-dir git+https://github.com/saezlab/liana-py.git \
     # do not install dependencies for cellbender (they include jupyter)
     pip install --no-cache-dir --no-deps \
     cellbender
