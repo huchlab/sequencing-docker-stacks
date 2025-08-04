@@ -2,3 +2,5 @@ queue_rules:
   - name: default
     queue_conditions: []
     branch_protection_injection_mode: merge
+merge_queue:
+  max_parallel_checks: 10
