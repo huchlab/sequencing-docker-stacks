@@ -6,7 +6,7 @@
 [![Binder Badge](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb "Launch a quay.io/jupyter/base-notebook container on mybinder.org")
 
 **Sequencing Docker Stacks** provide ready-to-run [Docker images](https://quay.io/user/huchlab/) tailored for sequencing data analysis.
-They are built upon the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and the [Singularity Single Cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
+They are a fork of the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and built upon the [Singularity Single Cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
 
 ## Available Containers
 
