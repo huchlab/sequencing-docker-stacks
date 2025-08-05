@@ -2,6 +2,8 @@ queue_rules:
   - name: default
     queue_conditions:
       - check-success = run-hooks
+    merge_conditions:
+      - check-success = wiki-update
     branch_protection_injection_mode: merge
     merge_method: rebase
 merge_queue:
