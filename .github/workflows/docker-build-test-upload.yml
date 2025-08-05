@@ -80,22 +80,21 @@ jobs:
 
       - name: Build image 🛠
         run: |
-          docker buildx build \
+          docker build \
             --rm --force-rm \
             --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} \
             --build-arg OWNER=${{ env.OWNER }} \
+            --build-arg GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
             --build-arg CONTAINER_BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
             --build-arg CONTAINER_GIT_REPOSITORY=${{ github.repository }} \
-            --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha }} \
-            --secret id=github_token,env=GITHUB_TOKEN
+            --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha }}
         env:
           DOCKER_BUILDKIT: 1
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
 
       - name: Write tags file 🏷
