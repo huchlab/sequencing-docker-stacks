@@ -2,7 +2,7 @@
 
 [![GitHub Actions Badge](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/docker.yml/badge.svg)](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/docker.yml?query=branch%3Amain "Docker image build status")
 [![Read the Docs Badge](https://img.shields.io/readthedocs/sequencing-docker-stacks.svg)](https://sequencing-docker-stacks.readthedocs.io/en/latest/ "Documentation build status")
-[![Run Pre-Commit Hooks](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/pre-commit.yml/badge.svg?branch=main)](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/pre-commit.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/huchlab/sequencing-docker-stacks/main.svg)](https://results.pre-commit.ci/latest/github/huchlab/sequencing-docker-stacks/main)
 [![Binder Badge](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb "Launch a quay.io/jupyter/base-notebook container on mybinder.org")
 
 **Sequencing Docker Stacks** provide ready-to-run [Docker images](https://quay.io/user/huchlab/) tailored for sequencing data analysis.
