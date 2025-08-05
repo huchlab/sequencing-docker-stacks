@@ -16,7 +16,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "pre-commit install-hooks",
+  "postCreateCommand": "pre-commit install --install-hooks",
 
   // Configure tool-specific properties.
   "customizations": {
