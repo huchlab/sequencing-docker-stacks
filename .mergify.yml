@@ -5,6 +5,5 @@ queue_rules:
     merge_conditions:
       - check-success = wiki-update
     branch_protection_injection_mode: merge
-    merge_method: rebase
 merge_queue:
   max_parallel_checks: 10
