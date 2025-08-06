@@ -3,7 +3,7 @@ queue_rules:
     queue_conditions:
       - check-success = run-hooks
     merge_conditions:
-      - check-success = wiki-update
+      - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: merge
 merge_queue:
   max_parallel_checks: 10
