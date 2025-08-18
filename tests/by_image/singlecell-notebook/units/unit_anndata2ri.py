@@ -1,6 +1,11 @@
 import anndata2ri
-import scanpy as sc
-import scipy as sp
+from anndata import AnnData
+from rpy2.robjects import globalenv
+from rpy2.robjects.conversion import localconverter
+from scipy.sparse import csr_matrix
 
-adata = sc.AnnData(X=sp.sparse.csr_matrix([[0.0, 1.0], [1.0, 0.0]]))
-anndata2ri.py2rpy(adata)
+adata = AnnData(X=csr_matrix([[0.0, 1.0], [1.0, 0.0]]))
+
+# Python2R
+with localconverter(anndata2ri.converter):
+    globalenv["sce"] = adata
