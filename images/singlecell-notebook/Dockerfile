@@ -24,7 +24,8 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
-RUN mamba install --yes \
+RUN conda config --append channels dnachun && \
+    mamba install --yes \
     # Python
     'anndata' \
     'anndata2ri' \
@@ -63,8 +64,9 @@ RUN mamba install --yes \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-zellkonverter' \
-    'presto' \
+    'r-presto' \
     'r-anndata' \
+    'r-cellchat' \
     'r-data.table' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
