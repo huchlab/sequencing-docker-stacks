@@ -49,13 +49,14 @@ RUN git lfs install && \
     'r-fastcluster' \
     'r-ggally' \
     'r-ggpubr' \
-    # because it contains `mixedsort`
-    'r-gtools' \
+    'r-ggvenn' \
     'r-languageserver' \
     'r-paletteer' \
     'r-paralleldist' \
     'r-pheatmap' \
     'r-plotly' \
+    # because it contains `mixedsort`
+    'r-gtools' \
     'r-viridis' \
     'r-writexl' \
     && \
