@@ -75,6 +75,7 @@ PACKAGE_MAPPING = {
     "robustrankaggreg": "RobustRankAggreg",
     "rodbc": "RODBC",
     "rsqlite": "DBI",
+    "sccustomize": "scCustomize",
     "seurat": "Seurat",
     "singlecellexperiment": "SingleCellExperiment",
     "variancepartition": "variancePartition",
