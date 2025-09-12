@@ -79,11 +79,12 @@ RUN pip install --no-cache-dir \
     scikit-misc \
     && \
     # install liana from source because old version is installed for python 3.12
-    pip install --no-cache-dir git+https://github.com/saezlab/liana-py.git && \
+    pip install --no-cache-dir git+https://github.git som/saezlab/liana-py.git && \
     # do not install dependencies for cellbender (they include jupyter)
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
+    R -e "devtools::install_github('cellgeni/sceasy', threads = 4)" && \
+    R -e "devtools::install_github('jinworks/CellChat', threads = 4)"
 
 USER ${NB_UID}
