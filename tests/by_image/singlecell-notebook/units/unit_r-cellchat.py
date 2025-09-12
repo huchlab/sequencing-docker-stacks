@@ -1,3 +1,3 @@
-import rpy2.robjects as robjects
+from rpy2.robjects import r
 
-robjects.r("library(CellChat)")
+r("library(CellChat)")
