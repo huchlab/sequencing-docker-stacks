@@ -18,6 +18,6 @@ queue_rules:
       - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot
-    batch_size: 10
+    batch_size: 3
 merge_queue:
   max_parallel_checks: 4
