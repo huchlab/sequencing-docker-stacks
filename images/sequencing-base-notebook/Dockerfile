@@ -33,7 +33,7 @@ RUN git lfs install && \
     mamba install --yes \
     # Python \
     'biopython' \
-    'gseapy' \
+    # 'gseapy' \
     'jupyterlab_execute_time' \
     'natsort' \
     'plotnine' \
