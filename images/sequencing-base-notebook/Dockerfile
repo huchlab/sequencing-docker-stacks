@@ -56,6 +56,7 @@ RUN git lfs install && \
     'r-paralleldist' \
     'r-pheatmap' \
     'r-plotly' \
+    'r-svglite' \
     'r-viridis' \
     'r-writexl' \
     && \
