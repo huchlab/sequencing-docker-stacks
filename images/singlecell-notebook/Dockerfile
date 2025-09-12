@@ -67,6 +67,7 @@ RUN mamba install --yes \
     'r-anndata' \
     'r-data.table' \
     'r-reticulate' \
+    'r-sccustomize' \
     'r-seurat>=5.1.0' \
     && \
     mamba clean --all -f -y && \
