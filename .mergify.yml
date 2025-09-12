@@ -1,6 +1,7 @@
 queue_rules:
   - name: default
     queue_conditions:
+      - check-success = pre-commit.ci - pr
       - check-success = run-hooks
     merge_conditions:
       - check-success = pre-commit.ci - pr
