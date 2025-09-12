@@ -59,6 +59,7 @@ RUN mamba install --yes \
     'bioconductor-mast' \
     'bioconductor-milor' \
     'bioconductor-monocle' \
+    'bioconductor-nebulosa' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
