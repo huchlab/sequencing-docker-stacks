@@ -64,7 +64,7 @@ RUN conda config --append channels dnachun && \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-zellkonverter' \
-    'presto' \
+    'r-presto' \
     'r-anndata' \
     'r-cellchat' \
     'r-data.table' \
