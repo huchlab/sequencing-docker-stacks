@@ -3,7 +3,19 @@ queue_rules:
     queue_conditions:
       - check-success = run-hooks
     merge_conditions:
+      - check-success = pre-commit.ci - pr
+      - check-success = x86_64-sequencing-base / build-test-upload
+      - check-success = aarch64-sequencing-base / build-test-upload
+      - check-success = x86_64-rnaseq / build-test-upload
+      - check-success = aarch64-rnaseq / build-test-upload
+      - check-success = x86_64-singlecell / build-test-upload
+      - check-success = aarch64-singlecell / build-test-upload
+      - check-success = x86_64-spatial / build-test-upload
+      - check-success = aarch64-spatial / build-test-upload
+      - check-success = x86_64-multiomics / build-test-upload
+      - check-success = aarch64-multiomics / build-test-upload
+      - check-success = tag-push
       - check-success = wiki-update / wiki-update
-    branch_protection_injection_mode: merge
+    branch_protection_injection_mode: none
 merge_queue:
   max_parallel_checks: 10
