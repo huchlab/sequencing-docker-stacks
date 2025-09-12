@@ -67,7 +67,6 @@ RUN mamba install --yes \
     'r-anndata' \
     'r-data.table' \
     'r-reticulate' \
-    'r-sccustomize' \
     'r-seurat>=5.1.0' \
     && \
     mamba clean --all -f -y && \
@@ -85,6 +84,7 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "install.packages('scCustomize', Ncpus = 4)" && \
     R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
 
 USER ${NB_UID}
