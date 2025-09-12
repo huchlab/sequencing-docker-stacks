@@ -79,6 +79,7 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     fastcluster \
     scikit-misc \
+    "vitessce[all]" \
     && \
     # install liana from source because old version is installed for python 3.12
     pip install --no-cache-dir git+https://github.com/saezlab/liana-py.git && \
