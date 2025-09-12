@@ -18,23 +18,6 @@ queue_rules:
       - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot
+    batch_size: 10
 merge_queue:
-  max_parallel_checks: 10
-pull_request_rules:
-  - name: Label conflicting pull requests
-    description: Add a label to a pull request with conflict to spot it easily
-    conditions:
-      - conflict
-      - -closed
-    actions:
-      label:
-        toggle:
-          - conflict
-  - name: Add a queue label when PR is queued
-    description: Toggle the queue label when a pull request is (un)queued.
-    conditions:
-      - queue-position > 0
-    actions:
-      label:
-        toggle:
-          - merge-queued
+  max_parallel_checks: 4
