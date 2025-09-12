@@ -36,4 +36,4 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 
 - Containers are available for both `x86_64` and `aarch64` platforms.
 - Single-platform images use architecture-specific tag prefixes, such as:
-  `quay.io/huchlab/rnaseq-notebook:aarch64-python-3.12.10`
+  `quay.io/huchlab/rnaseq-notebook:x86_64-latest`
