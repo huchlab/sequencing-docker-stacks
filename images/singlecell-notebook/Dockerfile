@@ -27,7 +27,7 @@ USER ${NB_UID}
 RUN mamba install --yes \
     # Python
     'anndata' \
-    # 'anndata2ri' \
+    'anndata2ri' \
     'arboreto' \
     'cellrank>=2.0' \
     'celltypist' \
