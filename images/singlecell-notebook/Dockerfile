@@ -90,4 +90,5 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)"
 
+
 USER ${NB_UID}
