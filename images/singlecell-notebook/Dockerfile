@@ -27,7 +27,7 @@ USER ${NB_UID}
 RUN mamba install --yes \
     # Python
     'anndata' \
-    'anndata2ri' \
+    # 'anndata2ri' \
     'arboreto' \
     'bbknn' \
     'cellrank>=2.0' \
@@ -36,11 +36,11 @@ RUN mamba install --yes \
     'harmonypy' \
     # optional dependency of scvelo
     'hnswlib' \
-    'leidenalg' \
+    # 'leidenalg' \
     # fixed #40
     'lightning>=2.5' \
     'loompy' \
-    'louvain' \
+    # 'louvain' \
     'marsilea' \
     'mudata' \
     'muon' \
@@ -51,19 +51,19 @@ RUN mamba install --yes \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
-    'scrublet' \
+    # 'scrublet' \
     'scvelo' \
     'scvi-tools>=1.2.2' \
     # R
-    'bioconductor-loomexperiment' \
+    # 'bioconductor-loomexperiment' \
     'bioconductor-mast' \
-    'bioconductor-milor' \
+    # 'bioconductor-milor' \
     'bioconductor-monocle' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-zellkonverter' \
-    'presto' \
+    # 'presto' \
     'r-anndata' \
     'r-data.table' \
     'r-reticulate' \
