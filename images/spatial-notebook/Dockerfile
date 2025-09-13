@@ -26,24 +26,20 @@ USER ${NB_UID}
 
 RUN mamba install --yes \
     # Python \
-    'napari-spatialdata' \
+    # 'napari-spatialdata' \
     'pyproj' \
     'pyqt' \
     'spatial-image' \
     'spatialdata-io' \
     'spatialdata-plot' \
     'spatialdata' \
-    'squidpy' \
+    # 'squidpy' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 RUN pip --no-cache-dir install --upgrade \
-    spatial-image \
-    spatialdata \
-    spatialdata-io \
-    spatialdata-plot \
     tangram-sc
 
 
