@@ -54,6 +54,7 @@ PACKAGE_MAPPING = {
     # R
     "biocparallel": "BiocParallel",
     "biomart": "biomaRt",
+    "cellchat": "CellChat",
     "clusterprofiler": "clusterProfiler",
     "complexheatmap": "ComplexHeatmap",
     "deseq2": "DESeq2",
