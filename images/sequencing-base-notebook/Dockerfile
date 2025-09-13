@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook:python-3.12
+ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook:python-3.13
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
@@ -30,16 +30,18 @@ USER ${NB_UID}
 
 RUN git lfs install && \
     conda config --append channels bioconda && \
+    echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
     mamba install --yes \
     # Python \
     'biopython' \
-    'gseapy' \
+    # 'gseapy' \
     'jupyterlab_execute_time' \
     'natsort' \
     'plotnine' \
     'pybiomart' \
     'openpyxl' \
     'session-info' \
+    'uv' \
     # R \
     'bioconductor-complexheatmap' \
     'bioconductor-deseq2' \
@@ -64,5 +66,8 @@ RUN git lfs install && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN uv pip install --system --no-cache-dir \
+    gseapy
 
 USER ${NB_UID}

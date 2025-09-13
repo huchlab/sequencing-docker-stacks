@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/python:3.12
+FROM mcr.microsoft.com/devcontainers/python:3.13
 
 COPY requirements-dev.txt /tmp/
 RUN pip3 install --no-cache-dir uv && \

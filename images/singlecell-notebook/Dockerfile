@@ -29,7 +29,6 @@ RUN mamba install --yes \
     'anndata' \
     'anndata2ri' \
     'arboreto' \
-    'bbknn' \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
@@ -40,7 +39,6 @@ RUN mamba install --yes \
     # fixed #40
     'lightning>=2.5' \
     'loompy' \
-    'louvain' \
     'marsilea' \
     'mudata' \
     'muon' \
@@ -57,7 +55,6 @@ RUN mamba install --yes \
     # R
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
-    'bioconductor-milor' \
     'bioconductor-monocle' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
@@ -75,17 +72,17 @@ RUN mamba install --yes \
     fix-permissions "/home/${NB_USER}"
 
 # packages not available for arm64 on conda
-RUN pip install --no-cache-dir \
+RUN uv pip install --system --no-cache-dir \
     fastcluster \
     scikit-misc \
     "vitessce[all]" \
     && \
-    # install liana from source because old version is installed for python 3.12
-    pip install --no-cache-dir git+https://github.com/saezlab/liana-py.git && \
+    uv pip install --system --no-cache-dir git+https://github.com/fbnrst/liana-py.git && \
     # do not install dependencies for cellbender (they include jupyter)
-    pip install --no-cache-dir --no-deps cellbender
+    uv pip install --system --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "options(warn = 2); BiocManager::install('miloR', Ncpus = 4, ask = FALSE, update = FALSE)" && \
     R -e "install.packages('scCustomize', repos = 'https://cloud.r-project.org/', Ncpus = 4)" && \
     R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)"
