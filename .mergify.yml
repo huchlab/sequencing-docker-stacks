@@ -24,4 +24,4 @@ queue_rules:
     merge_bot_account: huchlab-bot
     batch_size: 3
 merge_queue:
-  max_parallel_checks: 4
+  max_parallel_checks: 6
