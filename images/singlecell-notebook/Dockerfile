@@ -29,14 +29,13 @@ RUN mamba install --yes \
     'anndata' \
     # 'anndata2ri' \
     'arboreto' \
-    # 'bbknn' \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
     'harmonypy' \
     # optional dependency of scvelo
     'hnswlib' \
-    # 'leidenalg' \
+    'leidenalg' \
     # fixed #40
     'lightning>=2.5' \
     'loompy' \
