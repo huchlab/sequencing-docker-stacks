@@ -62,7 +62,7 @@ RUN mamba install --yes \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-zellkonverter' \
-    # 'presto' \
+    'r-presto' \
     'r-anndata' \
     'r-data.table' \
     'r-reticulate' \
