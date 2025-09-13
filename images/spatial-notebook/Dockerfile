@@ -31,7 +31,7 @@ RUN mamba install --yes \
     'pyqt' \
     'spatial-image' \
     'spatialdata-io' \
-    'spatialdata-plot' \
+    # 'spatialdata-plot' \
     'spatialdata' \
     # 'squidpy' \
     && \
