@@ -53,7 +53,7 @@ RUN mamba install --yes \
     'scvelo' \
     'scvi-tools>=1.2.2' \
     # R
-    # 'bioconductor-loomexperiment' \
+    'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     # 'bioconductor-milor' \
     'bioconductor-monocle' \
