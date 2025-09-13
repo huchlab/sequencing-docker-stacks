@@ -54,6 +54,7 @@ PACKAGE_MAPPING = {
     # R
     "biocparallel": "BiocParallel",
     "biomart": "biomaRt",
+    "cellchat": "CellChat",
     "clusterprofiler": "clusterProfiler",
     "complexheatmap": "ComplexHeatmap",
     "deseq2": "DESeq2",
@@ -66,6 +67,7 @@ PACKAGE_MAPPING = {
     "mast": "MAST",
     "milor": "miloR",
     "mofa2": "MOFA2",
+    "nebulosa": "Nebulosa",
     "org.hs.eg.db": "org.Hs.eg.db",
     "org.mm.eg.db": "org.Mm.eg.db",
     "paralleldist": "parallelDist",
