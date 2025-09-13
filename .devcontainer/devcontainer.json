@@ -6,7 +6,9 @@
   },
 
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
   },
 
   "postCreateCommand": "pre-commit install --install-hooks",
