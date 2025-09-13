@@ -57,7 +57,7 @@ RUN mamba install --yes \
     # R
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
-    'bioconductor-milor' \
+    # 'bioconductor-milor' \
     'bioconductor-monocle' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
