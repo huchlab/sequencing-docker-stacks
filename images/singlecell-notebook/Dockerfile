@@ -84,6 +84,7 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "BiocManager::install('anndataR', Ncpus = 4, ask = FALSE, update = FALSE)" && \
     R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
 
 USER ${NB_UID}
