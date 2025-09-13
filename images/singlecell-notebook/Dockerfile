@@ -39,7 +39,6 @@ RUN mamba install --yes \
     # fixed #40
     'lightning>=2.5' \
     'loompy' \
-    # 'louvain' \
     'marsilea' \
     'mudata' \
     'muon' \
@@ -50,7 +49,7 @@ RUN mamba install --yes \
     'python-igraph' \
     'scanorama' \
     'scanpy>=1.10.4' \
-    # 'scrublet' \
+    'scrublet' \
     'scvelo' \
     'scvi-tools>=1.2.2' \
     # R
