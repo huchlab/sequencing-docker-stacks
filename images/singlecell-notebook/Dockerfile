@@ -77,7 +77,7 @@ RUN uv pip install --system --no-cache-dir \
     scikit-misc \
     "vitessce[all]" \
     && \
-    # uv pip install --system --no-cache-dir git+https://github.com/saezlab/liana-py.git && \
+    uv pip install --system --no-cache-dir git+https://github.com/fbnrst/liana-py.git && \
     # do not install dependencies for cellbender (they include jupyter)
     uv pip install --system --no-cache-dir --no-deps cellbender
 
