@@ -33,7 +33,7 @@ RUN git lfs install && \
     mamba install --yes \
     # Python \
     'biopython' \
-    'gseapy' \
+    # 'gseapy' \
     'jupyterlab_execute_time' \
     'natsort' \
     'plotnine' \
@@ -64,5 +64,8 @@ RUN git lfs install && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN pip install --no-cache-dir --upgrade \
+    gseapy
 
 USER ${NB_UID}
