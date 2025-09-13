@@ -59,11 +59,12 @@ RUN mamba install --yes \
     'bioconductor-mast' \
     'bioconductor-milor' \
     'bioconductor-monocle' \
+    'bioconductor-nebulosa' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-zellkonverter' \
-    'presto' \
+    'r-presto' \
     'r-anndata' \
     'r-data.table' \
     'r-reticulate' \
@@ -77,6 +78,7 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     fastcluster \
     scikit-misc \
+    "vitessce[all]" \
     && \
     # install liana from source because old version is installed for python 3.12
     pip install --no-cache-dir git+https://github.com/saezlab/liana-py.git && \
@@ -84,7 +86,8 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
     R -e "install.packages('scCustomize', Ncpus = 4)" && \
-    R -e "devtools::install_github('cellgeni/sceasy', threads = 4)"
+    R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)"
 
 USER ${NB_UID}
