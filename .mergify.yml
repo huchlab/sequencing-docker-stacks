@@ -25,3 +25,21 @@ queue_rules:
     batch_size: 3
 merge_queue:
   max_parallel_checks: 6
+pull_request_rules:
+  - name: Label conflicting pull requests
+    description: Add a label to a pull request with conflict to spot it easily
+    conditions:
+      - conflict
+      - -closed
+    actions:
+      label:
+        toggle:
+          - conflict
+  - name: Add a queue label when PR is queued
+    description: Toggle the queue label when a pull request is (un)queued.
+    conditions:
+      - queue-position >= 0
+    actions:
+      label:
+        toggle:
+          - merge-queued
