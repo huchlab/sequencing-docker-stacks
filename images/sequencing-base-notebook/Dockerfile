@@ -67,7 +67,7 @@ RUN git lfs install && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN pip install --no-cache-dir --upgrade \
+RUN uv pip install --system --no-cache-dir \
     gseapy
 
 USER ${NB_UID}

@@ -34,7 +34,7 @@ RUN mamba install --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN uv pip --no-cache-dir install --upgrade \
+RUN uv pip --system --no-cache-dir install \
     "spatialdata[extra]" \
     squidpy \
     tangram-sc
