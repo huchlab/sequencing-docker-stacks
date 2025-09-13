@@ -29,7 +29,7 @@ RUN mamba install --yes \
     'anndata' \
     # 'anndata2ri' \
     'arboreto' \
-    'bbknn' \
+    # 'bbknn' \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
