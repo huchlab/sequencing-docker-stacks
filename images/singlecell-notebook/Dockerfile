@@ -85,6 +85,7 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "BiocManager::install('anndataR', Ncpus = 4, update = FALSE, ask = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)" && \
     R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)"
 
