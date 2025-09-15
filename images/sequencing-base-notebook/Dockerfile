@@ -46,6 +46,7 @@ RUN git lfs install && \
     'bioconductor-complexheatmap' \
     'bioconductor-deseq2' \
     'bioconductor-fgsea' \
+    'bioconductor-trackviewer' \
     # keeping 'r-base' makes this much faster
     'r-base' \
     'r-fastcluster' \

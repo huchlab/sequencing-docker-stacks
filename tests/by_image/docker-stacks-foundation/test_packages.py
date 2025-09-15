@@ -80,6 +80,7 @@ PACKAGE_MAPPING = {
     "sccustomize": "scCustomize",
     "seurat": "Seurat",
     "singlecellexperiment": "SingleCellExperiment",
+    "trackViewer": "trackViewer",
     "variancepartition": "variancePartition",
 }
 
