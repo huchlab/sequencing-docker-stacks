@@ -54,6 +54,7 @@ RUN git lfs install && \
     # because it contains `mixedsort`
     'r-gtools' \
     'r-ggvenn' \
+    'r-janitor' \
     'r-languageserver' \
     'r-paletteer' \
     'r-paralleldist' \
