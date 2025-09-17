@@ -80,6 +80,7 @@ PACKAGE_MAPPING = {
     "sccustomize": "scCustomize",
     "seurat": "Seurat",
     "singlecellexperiment": "SingleCellExperiment",
+    "trackviewer": "trackViewer",
     "variancepartition": "variancePartition",
 }
 
@@ -103,6 +104,7 @@ EXCLUDED_PACKAGES = [
     "python",
     "r-irkernel",
     "unixodbc",
+    "uv",
 ]
 
 

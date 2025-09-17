@@ -25,25 +25,18 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 USER ${NB_UID}
 
 RUN mamba install --yes \
-    # Python \
-    'napari-spatialdata' \
+    # Python
     'pyproj' \
     'pyqt' \
     'spatial-image' \
-    'spatialdata-io' \
-    'spatialdata-plot' \
-    'spatialdata' \
-    'squidpy' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN pip --no-cache-dir install --upgrade \
-    spatial-image \
-    spatialdata \
-    spatialdata-io \
-    spatialdata-plot \
+RUN uv pip install --system --no-cache-dir  \
+    "spatialdata[extra]" \
+    squidpy \
     tangram-sc
 
 

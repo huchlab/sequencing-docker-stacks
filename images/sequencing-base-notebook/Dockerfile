@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook:python-3.12
+ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook:python-3.13
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
@@ -45,6 +45,7 @@ RUN git lfs install && \
     'bioconductor-complexheatmap' \
     'bioconductor-deseq2' \
     'bioconductor-fgsea' \
+    'bioconductor-trackviewer' \
     # keeping 'r-base' makes this much faster
     'r-base' \
     'r-fastcluster' \
@@ -53,6 +54,7 @@ RUN git lfs install && \
     # because it contains `mixedsort`
     'r-gtools' \
     'r-ggvenn' \
+    'r-janitor' \
     'r-languageserver' \
     'r-paletteer' \
     'r-paralleldist' \
@@ -65,5 +67,8 @@ RUN git lfs install && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN uv pip install --system --no-cache-dir \
+    gseapy
 
 USER ${NB_UID}
