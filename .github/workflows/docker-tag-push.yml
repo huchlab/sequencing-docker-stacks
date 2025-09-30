@@ -26,6 +26,9 @@ on:
       REGISTRY_TOKEN:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   tag-push:
     runs-on: ubuntu-24.04
@@ -45,7 +48,7 @@ jobs:
           remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
 
       - name: Checkout Repo ⚡️
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
