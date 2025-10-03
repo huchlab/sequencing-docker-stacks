@@ -62,6 +62,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   aarch64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
