@@ -15,6 +15,9 @@ on:
       - ".github/workflows/registry-move.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   registry-move:
     # To be able to use the latest skopeo
@@ -24,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout Repo ⚡️
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Install skopeo and Docker 📦
         run: |
