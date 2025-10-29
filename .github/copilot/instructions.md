@@ -2,7 +2,8 @@
 
 ## Repository Overview
 
-This repository provides **Sequencing Docker Stacks** - ready-to-run Docker images tailored for sequencing data analysis. The images are based on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and built upon the Singularity Single Cell container.
+This repository provides **Sequencing Docker Stacks** - ready-to-run Docker images tailored for sequencing data analysis. The images are based on the
+[jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and built upon the Singularity Single Cell container.
 
 ## Available Containers
 
@@ -39,10 +40,17 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 ### Code Style
 
 - Follow existing code conventions
-- Use pre-commit hooks (configured in `.pre-commit-config.yaml`)
+- **Always run and fix pre-commit hooks before committing** (configured in `.pre-commit-config.yaml`)
 - Python code should follow PEP 8 (enforced by flake8)
+- Python imports should be properly sorted (enforced by isort with black profile)
 - Dockerfiles should follow best practices (checked by hadolint)
-- Markdown should follow markdownlint rules
+- Markdown should follow markdownlint rules (max line length: 200 characters)
+- **Before finalizing any PR, ensure all linting checks pass:**
+  - `flake8` for Python code quality
+  - `isort` for import ordering
+  - `black` for Python code formatting
+  - `hadolint` for Dockerfile linting
+  - `markdownlint-cli2` for Markdown formatting
 
 ### Development Environment
 
@@ -134,7 +142,11 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 1. Check GitHub Actions logs in `.github/workflows/`
 2. Review test failures in pytest output
 3. Verify Docker build steps
-4. Ensure all pre-commit hooks pass
+4. **Ensure all pre-commit hooks pass** - common issues:
+   - **flake8**: Check for code quality issues (unused imports, line length, etc.)
+   - **isort**: Ensure imports are sorted correctly (no blank lines between third-party imports)
+   - **markdownlint**: Check line length (max 200 chars) and formatting
+   - Run locally: `pre-commit run --all-files` to catch issues before pushing
 
 ## Security Considerations
 
@@ -145,6 +157,6 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 ## External Resources
 
-- Main documentation: https://sequencing-docker-stacks.readthedocs.io/
-- Docker registry: https://quay.io/organization/huchlab
-- Jupyter Docker Stacks guide: https://github.com/jupyter/docker-stacks
+- Main documentation: <https://sequencing-docker-stacks.readthedocs.io/>
+- Docker registry: <https://quay.io/organization/huchlab>
+- Jupyter Docker Stacks guide: <https://github.com/jupyter/docker-stacks>
