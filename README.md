@@ -38,6 +38,19 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 - Single-platform images use architecture-specific tag prefixes, such as:
   `quay.io/huchlab/rnaseq-notebook:x86_64-latest`
 
+## Development
+
+### GitHub Copilot Integration
+
+This repository is configured with GitHub Copilot to assist contributors with automated coding tasks. The configuration files are located in `.github/copilot/` and provide:
+
+- Repository-specific context and guidelines
+- Technical knowledge about the project structure
+- Code style and testing preferences
+- Common development workflows
+
+For more information about the Copilot setup, see [`.github/copilot/README.md`](.github/copilot/README.md).
+
 ## LICENSE
 
 This project is licensed under the terms of the Modified BSD License (also known as New or Revised or 3-Clause BSD).
