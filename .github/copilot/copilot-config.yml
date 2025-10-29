@@ -1,0 +1,75 @@
+# GitHub Copilot Configuration for Sequencing Docker Stacks
+
+# This configuration enables GitHub Copilot to provide better assistance
+# for contributors working on the Sequencing Docker Stacks repository.
+
+version: 1
+
+# Repository context
+repository:
+  name: sequencing-docker-stacks
+  owner: huchlab
+  description: Ready-to-run Docker images tailored for sequencing data analysis
+
+# Primary languages and frameworks
+languages:
+  - python
+  - r
+  - dockerfile
+  - bash
+  - yaml
+  - markdown
+
+# Key technologies
+technologies:
+  - docker
+  - jupyter
+  - bioconductor
+  - conda
+  - pytest
+  - sphinx
+  - github-actions
+
+# Code style preferences
+style:
+  python:
+    formatter: black
+    linter: flake8
+    line_length: 88
+  dockerfile:
+    linter: hadolint
+  markdown:
+    linter: markdownlint
+
+# Testing framework
+testing:
+  framework: pytest
+  location: tests/
+  run_command: "make test/<image-name>"
+
+# Documentation
+documentation:
+  tool: sphinx
+  location: docs/
+  build_command: "make docs"
+  format: rst
+
+# Build system
+build:
+  tool: make
+  dockerfile_location: images/
+  build_command: "make build/<image-name>"
+
+# Conventions
+conventions:
+  commit_style: conventional
+  branch_naming: feature/, bugfix/, hotfix/
+  pr_template: .github/pull_request_template.md
+
+# Important directories
+directories:
+  source: images/
+  tests: tests/
+  docs: docs/
+  workflows: .github/workflows/
+  examples: examples/

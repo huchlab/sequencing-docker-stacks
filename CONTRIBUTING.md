@@ -7,6 +7,16 @@ for information about how to contribute
 [tests](https://jupyter-docker-stacks.readthedocs.io/en/latest/contributing/tests.html),
 and [community-maintained stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/contributing/stacks.html).
 
+## GitHub Copilot Integration
+
+This repository is configured to work with GitHub Copilot to enhance the development experience. The `.github/copilot/` directory contains:
+
+- **instructions.md**: Comprehensive guidelines for working with this repository
+- **knowledge.md**: Technical knowledge about image hierarchy, build process, and testing
+- **copilot-config.yml**: Configuration for code style, testing, and documentation preferences
+
+When using GitHub Copilot in this repository, it will automatically leverage these files to provide more contextually relevant suggestions that align with our coding standards and practices.
+
 ## Our Copyright Policy
 
 Jupyter uses a shared copyright model. Each contributor maintains copyright
