@@ -101,6 +101,16 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 - Build all images: `make build-all`
 - Clean containers: `make cont-clean-all`
 - Remove images: `make img-rm`
+- **Before submitting code for review:**
+  - **Only test build the specific image(s) you modified or created**
+  - Use: `docker build -t test-image:latest ./images/<image-name>/`
+  - For variants: `docker build -t test-image:latest ./images/<image-name>/<variant>/`
+  - Do NOT build all images - only test what you changed
+  - **Note:** If the build fails due to an out-of-date upstream base image, the full CI pipeline may need to run first to build fresh base images
+  - If build fails due to environment issues (e.g., SSL certificates), document the failure and verify that:
+    - Dockerfile syntax is valid (hadolint passes)
+    - All critical build steps that can complete do complete successfully
+    - The failure is environment-specific and won't occur in CI/CD
 
 ### Documentation
 
