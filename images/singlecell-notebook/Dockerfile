@@ -45,6 +45,7 @@ RUN mamba install --yes \
     'mudata' \
     'muon' \
     'palantir' \
+    'pooch' \
     # optional dependency of scvelo
     'pybind11' \
     'pydeseq2>=0.5.0' \
