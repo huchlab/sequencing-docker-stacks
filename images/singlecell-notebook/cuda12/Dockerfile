@@ -53,7 +53,6 @@ RUN mamba install --yes -c rapidsai -c nvidia -c conda-forge -c bioconda \
     'rapids-singlecell' \
     'gdown' \
     'wget' \
-    'scikit-misc' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
