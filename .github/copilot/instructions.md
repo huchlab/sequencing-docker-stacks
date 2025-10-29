@@ -52,10 +52,15 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 ### Testing
 
-- Run tests with `make test/<image-name>` or `python3 -m tests.run_tests`
+- Run tests with `make test/<image-name>`
 - Tests are organized by image in `tests/by_image/`
 - Shared tests are in `tests/shared_checks/`
 - All tests use pytest framework
+- **Import tests**: Automatically test that all mamba-installed packages can be imported
+  - Located in `tests/by_image/docker-stacks-foundation/test_packages.py`
+  - Uses `PACKAGE_MAPPING` dictionary to map package names to import names
+  - When adding new packages, update `PACKAGE_MAPPING` if package name differs from import name
+  - No new unit test needed for simple package imports
 
 ### Building
 
@@ -95,16 +100,21 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 1. Create directory in `/images/<new-image-name>/`
 2. Add Dockerfile with appropriate FROM statement
-3. Update `ALL_IMAGES` in Makefile
-4. Add tests in `/tests/by_image/<new-image-name>/`
-5. Update documentation
+3. Update `ALL_IMAGES` in Makefile (in dependency order)
+4. Update package hierarchy in `.github/workflows/docker.yml`
+5. Update test dependencies in `tests/hierarchy/`
+6. Add tests in `/tests/by_image/<new-image-name>/`
+7. Update documentation
 
 ### Updating Dependencies
 
-1. Modify Dockerfile or conda/pip requirements
-2. Rebuild image to test
-3. Run tests to ensure nothing breaks
-4. Update manifest documentation
+1. **Prefer mamba for package installation** (check availability for both x86_64 and aarch64)
+2. If not available via mamba for both architectures, use pip (Python) or R install methods
+3. Modify Dockerfile with new package requirements
+4. If package name differs from import name, update `PACKAGE_MAPPING` in `tests/by_image/docker-stacks-foundation/test_packages.py`
+5. Rebuild image to test
+6. Run tests to ensure nothing breaks
+7. Update manifest documentation
 
 ### Fixing CI/CD Issues
 

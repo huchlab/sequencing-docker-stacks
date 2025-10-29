@@ -15,7 +15,8 @@ sequencing-base-notebook (base)
 ## Python Environment
 
 - Base Python version: 3.13
-- Package manager: mamba/conda (preferred) and pip
+- Package manager: **mamba/conda (preferred)** - must be available for both x86_64 and aarch64
+- If package not available via mamba for both architectures, use pip as fallback
 - Virtual environment: conda environments within containers
 - Jupyter kernels: Python and R (IRkernel)
 
@@ -24,7 +25,8 @@ sequencing-base-notebook (base)
 - R is installed via conda/mamba
 - Bioconductor packages are primary focus
 - Key packages: DESeq2, Seurat, BiocManager
-- Use `BiocManager::install()` for Bioconductor packages
+- **Prefer mamba for R package installation** (check availability for both x86_64 and aarch64)
+- Use `install.packages()` or `BiocManager::install()` only when packages are not available via mamba
 
 ## Docker Build Process
 
@@ -41,8 +43,14 @@ sequencing-base-notebook (base)
 
 1. **Hierarchy tests**: Verify image inheritance and dependencies
 2. **Package tests**: Check installed packages and versions
-3. **Functionality tests**: Run sample code/notebooks
-4. **Integration tests**: Test Jupyter server startup
+3. **Import tests**: Automatically test that all mamba-installed packages can be imported
+   - Located in `tests/by_image/docker-stacks-foundation/test_packages.py`
+   - Tests both Python and R packages
+   - Uses `PACKAGE_MAPPING` to map package names to import names
+   - When adding packages, update `PACKAGE_MAPPING` if package name differs from import name
+   - No new unit test needed for simple package imports
+4. **Functionality tests**: Run sample code/notebooks
+5. **Integration tests**: Test Jupyter server startup
 
 ### Test Execution
 
