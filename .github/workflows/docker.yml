@@ -128,6 +128,18 @@ jobs:
     needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  x86_64-singlecell-cuda12:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-notebook
+      variant: cuda12
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 45
+    needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   aarch64-multiomics:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
@@ -201,6 +213,9 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
+        include:
+          - image: singlecell-notebook
+            variant: cuda12
     needs:
       [
         contributed-recipes,
@@ -214,6 +229,7 @@ jobs:
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
+        x86_64-singlecell-cuda12,
         x86_64-multiomics,
         x86_64-spatial,
       ]

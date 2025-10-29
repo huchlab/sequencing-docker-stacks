@@ -2,7 +2,8 @@
 
 ## Repository Overview
 
-This repository provides **Sequencing Docker Stacks** - ready-to-run Docker images tailored for sequencing data analysis. The images are based on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and built upon the Singularity Single Cell container.
+This repository provides **Sequencing Docker Stacks** - ready-to-run Docker images tailored for sequencing data analysis. The images are based on the
+[jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) and built upon the Singularity Single Cell container.
 
 ## Available Containers
 
@@ -39,10 +40,30 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 ### Code Style
 
 - Follow existing code conventions
-- Use pre-commit hooks (configured in `.pre-commit-config.yaml`)
+- **Always run and fix pre-commit hooks before committing** (configured in `.pre-commit-config.yaml`)
 - Python code should follow PEP 8 (enforced by flake8)
+- Python imports should be properly sorted (enforced by isort with black profile)
 - Dockerfiles should follow best practices (checked by hadolint)
-- Markdown should follow markdownlint rules
+- Markdown should follow markdownlint rules (max line length: 200 characters)
+- **Before finalizing any PR, ensure all linting checks pass:**
+  - `flake8` for Python code quality
+  - `isort` for import ordering
+  - `black` for Python code formatting
+  - `hadolint` for Dockerfile linting
+  - `markdownlint-cli2` for Markdown formatting
+  - `mypy` for static type checking (may require adding packages to `mypy.ini`)
+  - **`make docs`** to verify documentation builds without errors
+  - **`make linkcheck-docs`** to verify all external links are valid (no redirects or broken links)
+- **When adding new test files with third-party imports:**
+  - If mypy reports "Cannot find implementation or library stub" errors
+  - Add the missing packages to `mypy.ini` with `ignore_missing_imports = True`
+  - Format: `[mypy-package_name.*]` followed by `ignore_missing_imports = True`
+- **When modifying README.md or adding documentation:**
+  - Run `make docs` to ensure Sphinx can build the documentation
+  - Run `make linkcheck-docs` to verify all external links (redirects cause warnings)
+  - Fix any cross-reference warnings or build errors
+  - Use absolute GitHub URLs for links that need to work in both GitHub and Sphinx docs
+  - Use final/stable URLs (e.g., `https://docs.scvi-tools.org/en/stable/` not `https://docs.scvi-tools.org/`) to avoid redirect warnings
 
 ### Development Environment
 
@@ -80,6 +101,16 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 - Build all images: `make build-all`
 - Clean containers: `make cont-clean-all`
 - Remove images: `make img-rm`
+- **Before submitting code for review:**
+  - **Only test build the specific image(s) you modified or created**
+  - Use: `docker build -t test-image:latest ./images/<image-name>/`
+  - For variants: `docker build -t test-image:latest ./images/<image-name>/<variant>/`
+  - Do NOT build all images - only test what you changed
+  - **Note:** If the build fails due to an out-of-date upstream base image, the full CI pipeline may need to run first to build fresh base images
+  - If build fails due to environment issues (e.g., SSL certificates), document the failure and verify that:
+    - Dockerfile syntax is valid (hadolint passes)
+    - All critical build steps that can complete do complete successfully
+    - The failure is environment-specific and won't occur in CI/CD
 
 ### Documentation
 
@@ -114,10 +145,35 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 1. Create directory in `/images/<new-image-name>/`
 2. Add Dockerfile with appropriate FROM statement
 3. Update `ALL_IMAGES` in Makefile (in dependency order)
-4. Update package hierarchy in `.github/workflows/docker.yml`
-5. Update test dependencies in `tests/hierarchy/`
-6. Add tests in `/tests/by_image/<new-image-name>/`
-7. Update documentation
+4. Update package hierarchy in `.github/workflows/docker.yml`:
+   - Add build jobs for each architecture (e.g., `x86_64-<image-name>`, `aarch64-<image-name>`)
+   - Add to tag-push matrix or include section
+   - Add to needs list in tag-push job
+5. **Update `.mergify.yml`** to include CI checks for the new image:
+   - Add build-test-upload checks for each architecture
+   - Add tag-push checks for each variant
+   - Format: `check-success = <platform>-<image> / build-test-upload`
+   - Format: `check-success=tag-push (<image-name>, <variant>) / tag-push`
+6. Update test dependencies in `tests/hierarchy/`
+7. Add tests in `/tests/by_image/<new-image-name>/`
+8. Update documentation
+
+### Adding an Image Variant (e.g., CUDA)
+
+When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
+
+1. Create variant subdirectory in `/images/<image-name>/<variant>/`
+2. Add variant Dockerfile with appropriate FROM statement
+3. Update `.github/workflows/docker.yml`:
+   - Add build job for the variant (e.g., `x86_64-<image>-<variant>`)
+   - Add to tag-push matrix include section
+   - Add to needs list in tag-push job
+4. **Update `.mergify.yml`** to include CI checks:
+   - Add build-test-upload check: `check-success = x86_64-<image>-<variant> / build-test-upload`
+   - Add tag-push check: `check-success=tag-push (<image-name>, <variant>) / tag-push`
+5. Add tests in `/tests/by_image/<image-name>/<variant>/`
+   - **If tests import packages not in mypy.ini:** Add them to `mypy.ini` with `ignore_missing_imports = True`
+6. Update documentation
 
 ### Updating Dependencies
 
@@ -134,7 +190,11 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 1. Check GitHub Actions logs in `.github/workflows/`
 2. Review test failures in pytest output
 3. Verify Docker build steps
-4. Ensure all pre-commit hooks pass
+4. **Ensure all pre-commit hooks pass** - common issues:
+   - **flake8**: Check for code quality issues (unused imports, line length, etc.)
+   - **isort**: Ensure imports are sorted correctly (no blank lines between third-party imports)
+   - **markdownlint**: Check line length (max 200 chars) and formatting
+   - Run locally: `pre-commit run --all-files` to catch issues before pushing
 
 ## Security Considerations
 
@@ -145,6 +205,6 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 ## External Resources
 
-- Main documentation: https://sequencing-docker-stacks.readthedocs.io/
-- Docker registry: https://quay.io/organization/huchlab
-- Jupyter Docker Stacks guide: https://github.com/jupyter/docker-stacks
+- Main documentation: <https://sequencing-docker-stacks.readthedocs.io/>
+- Docker registry: <https://quay.io/organization/huchlab>
+- Jupyter Docker Stacks guide: <https://github.com/jupyter/docker-stacks>
