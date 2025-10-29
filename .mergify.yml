@@ -19,7 +19,8 @@ queue_rules:
       - check-success=tag-push (rnaseq-notebook, default) / tag-push
       - check-success=tag-push (sequencing-base-notebook, default) / tag-push
       - check-success=tag-push (singlecell-notebook, default) / tag-push
-      - check-success=tag-push (singlecell-notebook, cuda12) / tag-push
+      - check-success=tag-push (singlecell-gpu-notebook, default) / tag-push
+      - check-success=tag-push (singlecell-gpu-notebook, cuda12) / tag-push
       - check-success=tag-push (spatial-notebook, default) / tag-push
       - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none

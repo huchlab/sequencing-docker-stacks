@@ -128,7 +128,18 @@ jobs:
     needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-singlecell-cuda12:
+  x86_64-singlecell-gpu:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 45
+    needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-singlecell-gpu-cuda12:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: singlecell-notebook
@@ -209,12 +220,13 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            singlecell-gpu-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]
         include:
-          - image: singlecell-notebook
+          - image: singlecell-gpu-notebook
             variant: cuda12
     needs:
       [
@@ -229,7 +241,8 @@ jobs:
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
-        x86_64-singlecell-cuda12,
+        x86_64-singlecell-gpu,
+        x86_64-singlecell-gpu-cuda12,
         x86_64-multiomics,
         x86_64-spatial,
       ]
