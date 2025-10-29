@@ -4,7 +4,7 @@
 
 The images follow a strict dependency hierarchy:
 
-```
+```text
 sequencing-base-notebook (base)
 ├── rnaseq-notebook
 ├── singlecell-notebook
