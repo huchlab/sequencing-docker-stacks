@@ -119,6 +119,7 @@ pip freeze               # Export requirements
 ## Volume Mounting
 
 Typical usage pattern:
+
 ```bash
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work <image>
 ```
@@ -161,24 +162,28 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work <image>
 ## Key Dependencies by Image
 
 ### rnaseq-notebook
+
 - DESeq2 (R/Bioconductor)
 - edgeR, limma
 - Gene set enrichment tools
 - Visualization packages (ggplot2, etc.)
 
 ### singlecell-notebook
+
 - Scanpy (Python)
 - Seurat (R)
 - scRNA-seq analysis tools
 - Visualization tools (UMAP, t-SNE)
 
 ### spatial-notebook
+
 - Squidpy (Python)
 - SpatialData
 - Spatial transcriptomics tools
 - Image analysis tools
 
 ### multiomics-notebook
+
 - MOFA2 (R)
 - muon (Python)
 - Integration tools
@@ -201,6 +206,7 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work <image>
 ## Pre-commit Hooks
 
 Active hooks:
+
 - Black (Python formatting)
 - Flake8 (Python linting)
 - Hadolint (Dockerfile linting)

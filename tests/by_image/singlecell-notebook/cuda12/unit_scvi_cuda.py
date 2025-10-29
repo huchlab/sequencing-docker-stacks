@@ -2,9 +2,10 @@
 # Copyright (c) 2025-, Fabian Rost
 # Distributed under the terms of the Modified BSD License.
 
+import scvi
+
 # Test scVI-tools with CUDA support
 import torch
-import scvi
 
 print("scVI-tools version:", scvi.__version__)
 print("PyTorch CUDA available:", torch.cuda.is_available())

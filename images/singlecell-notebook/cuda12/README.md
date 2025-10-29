@@ -37,6 +37,7 @@ To verify GPU access within the container:
 
 ```python
 import torch
+
 print(f"CUDA available: {torch.cuda.is_available()}")
 print(f"CUDA devices: {torch.cuda.device_count()}")
 ```
@@ -45,6 +46,7 @@ For RAPIDSai:
 
 ```python
 import cudf
+
 print(cudf.__version__)
 ```
 

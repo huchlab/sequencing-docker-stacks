@@ -145,6 +145,6 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 ## External Resources
 
-- Main documentation: https://sequencing-docker-stacks.readthedocs.io/
-- Docker registry: https://quay.io/organization/huchlab
-- Jupyter Docker Stacks guide: https://github.com/jupyter/docker-stacks
+- Main documentation: <https://sequencing-docker-stacks.readthedocs.io/>
+- Docker registry: <https://quay.io/organization/huchlab>
+- Jupyter Docker Stacks guide: <https://github.com/jupyter/docker-stacks>
