@@ -28,20 +28,16 @@ ENV NVIDIA_VISIBLE_DEVICES="all" \
 
 # Puts the nvidia-smi binary (system management interface) on path
 # with associated library files to execute it
-ENV PATH="${PATH}:/usr/local/nvidia/bin" \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/nvidia/lib64"
+ENV PATH="${PATH}:/usr/local/nvidia/bin"
+ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:${LD_LIBRARY_PATH:-}"
 
 USER ${NB_UID}
 
 # Install PyTorch with CUDA support
 # https://pytorch.org/get-started/locally/
+# Note: Only torch is needed for scVI-tools, torchvision and torchaudio are not required
 RUN uv pip install --system --no-cache-dir --extra-index-url=https://pypi.nvidia.com --index-url 'https://download.pytorch.org/whl/cu121' \
-    'torch' \
-    'torchvision' \
-    'torchaudio' && \
-    # Reinstall scvi-tools to ensure it uses CUDA-enabled PyTorch
-    uv pip install --system --no-cache-dir --force-reinstall --no-deps \
-    'scvi-tools>=1.2.2'
+    'torch'
 
 # Install RAPIDSai libraries for GPU-accelerated data science
 # https://docs.rapids.ai/install
