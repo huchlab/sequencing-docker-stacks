@@ -7,8 +7,6 @@ FROM $BASE_CONTAINER
 
 LABEL maintainer="Huch Lab <huchlab@users.noreply.github.com>"
 
-USER root
-
 # Install rapids-singlecell CPU version via pip
 RUN mamba install --yes \
     'rapids=25.10' \
@@ -26,4 +24,11 @@ RUN mamba install --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-USER ${NB_UID}
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/docker-specialized.html#dockerfiles
+ENV NVIDIA_VISIBLE_DEVICES="all" \
+NVIDIA_DRIVER_CAPABILITIES="compute,utility"
+
+# Puts the nvidia-smi binary (system management interface) on path
+# with associated library files to execute it
+ENV PATH="${PATH}:/usr/local/nvidia/bin" \
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/nvidia/lib64"
