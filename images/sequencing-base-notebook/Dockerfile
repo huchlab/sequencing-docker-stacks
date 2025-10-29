@@ -57,6 +57,7 @@ RUN git lfs install && \
     'r-ggvenn' \
     'r-janitor' \
     'r-languageserver' \
+    'r-openxlsx' \
     'r-paletteer' \
     'r-paralleldist' \
     'r-pheatmap' \
