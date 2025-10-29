@@ -51,6 +51,11 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
   - `black` for Python code formatting
   - `hadolint` for Dockerfile linting
   - `markdownlint-cli2` for Markdown formatting
+  - `mypy` for static type checking (may require adding packages to `mypy.ini`)
+- **When adding new test files with third-party imports:**
+  - If mypy reports "Cannot find implementation or library stub" errors
+  - Add the missing packages to `mypy.ini` with `ignore_missing_imports = True`
+  - Format: `[mypy-package_name.*]` followed by `ignore_missing_imports = True`
 
 ### Development Environment
 
@@ -149,6 +154,7 @@ When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
    - Add build-test-upload check: `check-success = x86_64-<image>-<variant> / build-test-upload`
    - Add tag-push check: `check-success=tag-push (<image-name>, <variant>) / tag-push`
 5. Add tests in `/tests/by_image/<image-name>/<variant>/`
+   - **If tests import packages not in mypy.ini:** Add them to `mypy.ini` with `ignore_missing_imports = True`
 6. Update documentation
 
 ### Updating Dependencies
