@@ -42,14 +42,14 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 
 ### GitHub Copilot Integration
 
-This repository is configured with GitHub Copilot to assist contributors with automated coding tasks. The configuration files are located in `.github/copilot/` and provide:
+This repository includes GitHub Copilot reference configuration to assist contributors with AI-assisted development. The configuration files are located in `.github/copilot/` and provide:
 
 - Repository-specific context and guidelines
 - Technical knowledge about the project structure
 - Code style and testing preferences
 - Common development workflows
 
-For more information about the Copilot setup, see [`.github/copilot/README.md`](.github/copilot/README.md).
+These files serve as a reference for contributors using GitHub Copilot or other AI assistants. For more information about the Copilot setup, see [`.github/copilot/README.md`](.github/copilot/README.md).
 
 ## LICENSE
 

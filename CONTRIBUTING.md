@@ -13,9 +13,9 @@ This repository is configured to work with GitHub Copilot to enhance the develop
 
 - **instructions.md**: Comprehensive guidelines for working with this repository
 - **knowledge.md**: Technical knowledge about image hierarchy, build process, and testing
-- **copilot-config.yml**: Configuration for code style, testing, and documentation preferences
+- **copilot-config.yml**: Reference configuration documenting code style, testing, and documentation preferences
 
-When using GitHub Copilot in this repository, it will automatically leverage these files to provide more contextually relevant suggestions that align with our coding standards and practices.
+These files serve as a knowledge base that contributors can reference when working with GitHub Copilot or other AI assistants to ensure suggestions align with our coding standards and practices.
 
 ## Our Copyright Policy
 
