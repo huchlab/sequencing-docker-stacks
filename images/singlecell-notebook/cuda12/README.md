@@ -53,5 +53,5 @@ print(cudf.__version__)
 ## More Information
 
 - [RAPIDSai Documentation](https://docs.rapids.ai/)
-- [scVI-tools Documentation](https://docs.scvi-tools.org/)
+- [scVI-tools Documentation](https://docs.scvi-tools.org/en/stable/)
 - [PyTorch CUDA Documentation](https://pytorch.org/docs/stable/cuda.html)

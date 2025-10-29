@@ -53,14 +53,17 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
   - `markdownlint-cli2` for Markdown formatting
   - `mypy` for static type checking (may require adding packages to `mypy.ini`)
   - **`make docs`** to verify documentation builds without errors
+  - **`make linkcheck-docs`** to verify all external links are valid (no redirects or broken links)
 - **When adding new test files with third-party imports:**
   - If mypy reports "Cannot find implementation or library stub" errors
   - Add the missing packages to `mypy.ini` with `ignore_missing_imports = True`
   - Format: `[mypy-package_name.*]` followed by `ignore_missing_imports = True`
 - **When modifying README.md or adding documentation:**
   - Run `make docs` to ensure Sphinx can build the documentation
+  - Run `make linkcheck-docs` to verify all external links (redirects cause warnings)
   - Fix any cross-reference warnings or build errors
   - Use absolute GitHub URLs for links that need to work in both GitHub and Sphinx docs
+  - Use final/stable URLs (e.g., `https://docs.scvi-tools.org/en/stable/` not `https://docs.scvi-tools.org/`) to avoid redirect warnings
 
 ### Development Environment
 
