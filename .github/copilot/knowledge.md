@@ -12,6 +12,18 @@ sequencing-base-notebook (base)
 │   └── spatial-notebook
 ```
 
+## Development Environment
+
+- **VS Code Dev Containers** (`.devcontainer/`): Defines the development environment
+  - Base: Python 3.13 from Microsoft's devcontainer images
+  - Features: Docker-in-Docker for building images locally
+  - Dependencies: Automatically installs from `requirements-dev.txt` using uv
+  - Pre-commit: Auto-installs hooks on container creation
+  - VS Code Extensions: Pre-configured with GitHub Copilot, Docker, Python tools
+- Provides consistent environment across all contributors
+- Eliminates "works on my machine" issues
+- Recommended setup for repository contributions
+
 ## Python Environment
 
 - Base Python version: 3.13
