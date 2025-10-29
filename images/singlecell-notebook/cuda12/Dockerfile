@@ -43,7 +43,7 @@ RUN uv pip install --system --no-cache-dir --extra-index-url=https://pypi.nvidia
 # https://docs.rapids.ai/install
 # https://github.com/scverse/rapids_singlecell
 RUN mamba install --yes -c rapidsai -c nvidia -c conda-forge -c bioconda \
-    'rapids=25.08' \
+    'rapids=25.10' \
     'cuda-version=12.9' \
     'cudnn' \
     'cutensor' \
@@ -51,10 +51,9 @@ RUN mamba install --yes -c rapidsai -c nvidia -c conda-forge -c bioconda \
     && \
     uv pip install --system --no-cache-dir \
     'rapids-singlecell' \
-    'decoupler' \
-    'omnipath' \
     'gdown' \
     'wget' \
+    'scikit-misc' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
