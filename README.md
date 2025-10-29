@@ -12,6 +12,7 @@ They are a fork of the [jupyter/docker-stacks](https://github.com/jupyter/docker
 
 - **`rnaseq-notebook`**: Supports bulk RNA-seq analysis, powered by [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html).
 - **`singlecell-notebook`**: Enables single-cell RNA-seq analysis, incorporating [Scanpy](https://scanpy.readthedocs.io/en/stable/) and [Seurat](https://satijalab.org/seurat/).
+  - **`singlecell-notebook:cuda12-*`**: CUDA-enabled variant with GPU acceleration via [RAPIDSai](https://rapids.ai/) and PyTorch CUDA support for [scVI-tools](https://docs.scvi-tools.org/).
 - **`spatial-notebook`**: Facilitates spatial transcriptomics, featuring [Squidpy](https://squidpy.readthedocs.io/en/stable/) and [SpatialData](https://spatialdata.scverse.org/en/stable/).
 - **`multiomics-notebook`**: Designed for multi-omics analysis, including [MOFA2](https://biofam.github.io/MOFA2/) and [muon](https://github.com/scverse/muon).
 
