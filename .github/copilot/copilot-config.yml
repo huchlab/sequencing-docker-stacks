@@ -1,7 +1,12 @@
-# GitHub Copilot Configuration for Sequencing Docker Stacks
+# GitHub Copilot Reference Configuration for Sequencing Docker Stacks
 
-# This configuration enables GitHub Copilot to provide better assistance
-# for contributors working on the Sequencing Docker Stacks repository.
+# This configuration serves as a reference for contributors working with
+# GitHub Copilot and other AI assistants on this repository.
+# It documents the repository's structure, conventions, and preferences.
+
+# Note: This is a project-specific documentation file and not part of the
+# official GitHub Copilot API. Use it as a reference when working with
+# AI coding assistants to ensure suggestions align with project conventions.
 
 version: 1
 

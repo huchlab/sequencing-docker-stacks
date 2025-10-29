@@ -49,13 +49,14 @@ These configuration files enable GitHub Copilot to:
 
 ## How It Works
 
-When GitHub Copilot is active in this repository, it automatically reads these configuration files to understand the project context. This allows it to:
+These configuration files serve as a reference for contributors and can be used with GitHub Copilot in various ways:
 
-- Suggest code that follows the project's style guidelines
-- Recommend appropriate testing approaches
-- Help with Docker-specific tasks
-- Understand the bioinformatics domain context
-- Provide relevant examples from the codebase
+- **Context Sharing**: Contributors can reference these files when asking Copilot for help
+- **Documentation**: They provide comprehensive context about the project that can be shared with AI assistants
+- **Onboarding**: New contributors can use these files to understand the project structure
+- **Consistency**: They document coding standards and best practices for the project
+
+When working with GitHub Copilot, contributors can explicitly reference these files to get more contextually relevant suggestions aligned with the project's patterns and conventions.
 
 ## Maintaining These Files
 
