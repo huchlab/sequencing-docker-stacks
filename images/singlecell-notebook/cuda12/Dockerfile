@@ -39,13 +39,22 @@ USER ${NB_UID}
 RUN uv pip install --system --no-cache-dir --extra-index-url=https://pypi.nvidia.com --index-url 'https://download.pytorch.org/whl/cu121' \
     'torch'
 
-# Install RAPIDSai libraries for GPU-accelerated data science
+# Install RAPIDS and rapids-singlecell for GPU-accelerated single-cell analysis
 # https://docs.rapids.ai/install
-# Note: Installing core RAPIDS components that are available
-RUN mamba install --yes -c rapidsai -c conda-forge -c nvidia \
-    'cudf-cu12' \
-    'cuml-cu12' \
-    'cugraph-cu12' \
+# https://github.com/scverse/rapids_singlecell
+RUN mamba install --yes -c rapidsai -c nvidia -c conda-forge -c bioconda \
+    'rapids=25.08' \
+    'cuda-version=12.9' \
+    'cudnn' \
+    'cutensor' \
+    'cusparselt' \
+    && \
+    uv pip install --system --no-cache-dir \
+    'rapids-singlecell' \
+    'decoupler' \
+    'omnipath' \
+    'gdown' \
+    'wget' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
