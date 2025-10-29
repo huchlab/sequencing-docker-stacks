@@ -52,10 +52,15 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
   - `hadolint` for Dockerfile linting
   - `markdownlint-cli2` for Markdown formatting
   - `mypy` for static type checking (may require adding packages to `mypy.ini`)
+  - **`make docs`** to verify documentation builds without errors
 - **When adding new test files with third-party imports:**
   - If mypy reports "Cannot find implementation or library stub" errors
   - Add the missing packages to `mypy.ini` with `ignore_missing_imports = True`
   - Format: `[mypy-package_name.*]` followed by `ignore_missing_imports = True`
+- **When modifying README.md or adding documentation:**
+  - Run `make docs` to ensure Sphinx can build the documentation
+  - Fix any cross-reference warnings or build errors
+  - Use absolute GitHub URLs for links that need to work in both GitHub and Sphinx docs
 
 ### Development Environment
 
