@@ -32,6 +32,7 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 - `/examples/`: Example notebooks demonstrating usage
 - `.github/workflows/`: CI/CD workflows for building and testing
 - `.github/actions/`: Reusable GitHub Actions
+- `.devcontainer/`: Development environment configuration for VS Code Dev Containers
 
 ## Development Guidelines
 
@@ -42,6 +43,17 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 - Python code should follow PEP 8 (enforced by flake8)
 - Dockerfiles should follow best practices (checked by hadolint)
 - Markdown should follow markdownlint rules
+
+### Development Environment
+
+- **`.devcontainer/`**: Defines the development environment for VS Code Dev Containers
+  - Uses Python 3.13 base image from Microsoft
+  - Installs development dependencies from `requirements-dev.txt`
+  - Includes Docker-in-Docker feature for building images
+  - Pre-configures VS Code extensions (GitHub Copilot, Docker, Python, etc.)
+  - Auto-installs pre-commit hooks on container creation
+- Provides consistent development setup across contributors
+- Recommended for contributing to this repository
 
 ### Docker Images
 
@@ -90,6 +102,7 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 - `.pre-commit-config.yaml`: Pre-commit hook configuration
 - `pytest.ini`: Pytest configuration
 - `requirements-dev.txt`: Development dependencies
+- `.devcontainer/`: Development environment configuration (Python 3.13, dev tools, VS Code extensions)
 - `.flake8`: Python linting configuration
 - `.hadolint.yaml`: Dockerfile linting configuration
 - `.markdownlint.yaml`: Markdown linting configuration
