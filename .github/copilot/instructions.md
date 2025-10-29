@@ -122,10 +122,34 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 1. Create directory in `/images/<new-image-name>/`
 2. Add Dockerfile with appropriate FROM statement
 3. Update `ALL_IMAGES` in Makefile (in dependency order)
-4. Update package hierarchy in `.github/workflows/docker.yml`
-5. Update test dependencies in `tests/hierarchy/`
-6. Add tests in `/tests/by_image/<new-image-name>/`
-7. Update documentation
+4. Update package hierarchy in `.github/workflows/docker.yml`:
+   - Add build jobs for each architecture (e.g., `x86_64-<image-name>`, `aarch64-<image-name>`)
+   - Add to tag-push matrix or include section
+   - Add to needs list in tag-push job
+5. **Update `.mergify.yml`** to include CI checks for the new image:
+   - Add build-test-upload checks for each architecture
+   - Add tag-push checks for each variant
+   - Format: `check-success = <platform>-<image> / build-test-upload`
+   - Format: `check-success=tag-push (<image-name>, <variant>) / tag-push`
+6. Update test dependencies in `tests/hierarchy/`
+7. Add tests in `/tests/by_image/<new-image-name>/`
+8. Update documentation
+
+### Adding an Image Variant (e.g., CUDA)
+
+When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
+
+1. Create variant subdirectory in `/images/<image-name>/<variant>/`
+2. Add variant Dockerfile with appropriate FROM statement
+3. Update `.github/workflows/docker.yml`:
+   - Add build job for the variant (e.g., `x86_64-<image>-<variant>`)
+   - Add to tag-push matrix include section
+   - Add to needs list in tag-push job
+4. **Update `.mergify.yml`** to include CI checks:
+   - Add build-test-upload check: `check-success = x86_64-<image>-<variant> / build-test-upload`
+   - Add tag-push check: `check-success=tag-push (<image-name>, <variant>) / tag-push`
+5. Add tests in `/tests/by_image/<image-name>/<variant>/`
+6. Update documentation
 
 ### Updating Dependencies
 
