@@ -4,7 +4,6 @@
 
 import anndata
 import numpy as np
-
 import scvi
 import torch
 

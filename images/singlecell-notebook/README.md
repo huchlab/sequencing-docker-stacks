@@ -8,7 +8,8 @@ Please visit the [project site](https://github.com/huchlab/sequencing-docker-sta
 
 A CUDA-enabled variant of this image is available with GPU acceleration support:
 
-- **`singlecell-notebook:cuda12-*`**: Includes CUDA 12.8 support with RAPIDSai libraries (cuDF, cuML, cuGraph) for GPU-accelerated data science operations and scVI-tools with PyTorch CUDA backend for GPU-accelerated variational inference.
+- **`singlecell-notebook:cuda12-*`**: Includes CUDA 12.8 support with RAPIDSai libraries (cuDF, cuML, cuGraph) for GPU-accelerated data science operations and scVI-tools with PyTorch CUDA
+  backend for GPU-accelerated variational inference.
 
 ### Usage
 
