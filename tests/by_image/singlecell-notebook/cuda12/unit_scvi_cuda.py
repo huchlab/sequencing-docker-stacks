@@ -2,11 +2,13 @@
 # Copyright (c) 2025-, Fabian Rost
 # Distributed under the terms of the Modified BSD License.
 
-import scvi
+import anndata
+import numpy as np
 
-# Test scVI-tools with CUDA support
+import scvi
 import torch
 
+# Test scVI-tools with CUDA support
 print("scVI-tools version:", scvi.__version__)
 print("PyTorch CUDA available:", torch.cuda.is_available())
 
@@ -15,8 +17,6 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device for scvi: {device}")
 
 # Create a simple synthetic dataset for testing
-import anndata
-import numpy as np
 
 n_obs = 100
 n_vars = 50
