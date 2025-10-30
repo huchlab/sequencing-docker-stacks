@@ -12,6 +12,8 @@ They are a fork of the [jupyter/docker-stacks](https://github.com/jupyter/docker
 
 - **`rnaseq-notebook`**: Supports bulk RNA-seq analysis, powered by [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html).
 - **`singlecell-notebook`**: Enables single-cell RNA-seq analysis, incorporating [Scanpy](https://scanpy.readthedocs.io/en/stable/) and [Seurat](https://satijalab.org/seurat/).
+- **`singlecell-gpu-notebook`**: GPU-accelerated single-cell analysis with [RAPIDS](https://rapids.ai/), [rapids-singlecell](https://github.com/scverse/rapids_singlecell), and GPU-enabled [scVI-tools](https://docs.scvi-tools.org/en/stable/).
+  - **`singlecell-gpu-notebook:cuda12-*`**: CUDA 12.9 variant with full GPU acceleration for large-scale single-cell datasets.
 - **`spatial-notebook`**: Facilitates spatial transcriptomics, featuring [Squidpy](https://squidpy.readthedocs.io/en/stable/) and [SpatialData](https://spatialdata.scverse.org/en/stable/).
 - **`multiomics-notebook`**: Designed for multi-omics analysis, including [MOFA2](https://biofam.github.io/MOFA2/) and [muon](https://github.com/scverse/muon).
 
@@ -49,7 +51,7 @@ This repository includes GitHub Copilot reference configuration to assist contri
 - Code style and testing preferences
 - Common development workflows
 
-These files serve as a reference for contributors using GitHub Copilot or other AI assistants. For more information about the Copilot setup, see [`.github/copilot/README.md`](.github/copilot/README.md).
+These files serve as a reference for contributors using GitHub Copilot or other AI assistants. For more information about the Copilot setup, see [`.github/copilot/README.md`](https://github.com/huchlab/sequencing-docker-stacks/blob/main/.github/copilot/README.md).
 
 ## LICENSE
 
