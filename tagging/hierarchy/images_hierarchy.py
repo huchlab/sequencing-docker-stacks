@@ -80,6 +80,7 @@ ALL_IMAGES = {
     "sequencing-base-notebook": ImageDescription(parent_image="datascience-notebook"),
     "rnaseq-notebook": ImageDescription(parent_image="sequencing-base-notebook"),
     "singlecell-notebook": ImageDescription(parent_image="sequencing-base-notebook"),
+    "singlecell-gpu-notebook": ImageDescription(parent_image="singlecell-notebook"),
     "multiomics-notebook": ImageDescription(parent_image="singlecell-notebook"),
     "spatial-notebook": ImageDescription(parent_image="singlecell-notebook"),
 }
