@@ -8,10 +8,12 @@ FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 
-# Install rapids-singlecell CPU version via pip
 RUN mamba install --yes \
+    -c rapidsai \
+    -c nvidia \
+    -c conda-forge \
+    -c bioconda \
     'rapids=25.10' \
-    'cuda-version=12.9' \
     'cudnn' \
     'cutensor' \
     'cusparselt' \
