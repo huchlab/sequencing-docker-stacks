@@ -1,9 +1,10 @@
 # Copyright (c) Jupyter Development Team.
 # Copyright (c) 2025-, Fabian Rost
 # Distributed under the terms of the Modified BSD License.
+ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_CONTAINER=$OWNER/singlecell-notebook
-FROM $BASE_CONTAINER
+ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-gpu-notebook
+FROM $BASE_IMAGE
 
 LABEL maintainer="Huch Lab <huchlab@users.noreply.github.com>"
 
