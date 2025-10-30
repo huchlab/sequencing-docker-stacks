@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-gpu-notebook
+ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
