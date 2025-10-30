@@ -6,7 +6,7 @@ ARG OWNER=huchlab
 ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook
 FROM $BASE_IMAGE
 
-LABEL maintainer="Huch Lab <huchlab@users.noreply.github.com>"
+LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 
 # Install rapids-singlecell CPU version via pip
 RUN mamba install --yes \
