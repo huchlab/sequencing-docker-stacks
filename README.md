@@ -49,7 +49,7 @@ This repository includes GitHub Copilot reference configuration to assist contri
 - Code style and testing preferences
 - Common development workflows
 
-These files serve as a reference for contributors using GitHub Copilot or other AI assistants. For more information about the Copilot setup, see [`.github/copilot/README.md`](.github/copilot/README.md).
+These files serve as a reference for contributors using GitHub Copilot or other AI assistants. For more information about the Copilot setup, see [`.github/copilot/README.md`](https://github.com/huchlab/sequencing-docker-stacks/blob/main/.github/copilot/README.md).
 
 ## LICENSE
 
