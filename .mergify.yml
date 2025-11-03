@@ -10,6 +10,7 @@ queue_rules:
       - check-success = aarch64-rnaseq / build-test-upload
       - check-success = x86_64-singlecell / build-test-upload
       - check-success = aarch64-singlecell / build-test-upload
+      - check-success = x86_64-singlecell-cuda12 / build-test-upload
       - check-success = x86_64-spatial / build-test-upload
       - check-success = aarch64-spatial / build-test-upload
       - check-success = x86_64-multiomics / build-test-upload
@@ -18,6 +19,8 @@ queue_rules:
       - check-success=tag-push (rnaseq-notebook, default) / tag-push
       - check-success=tag-push (sequencing-base-notebook, default) / tag-push
       - check-success=tag-push (singlecell-notebook, default) / tag-push
+      - check-success=tag-push (singlecell-gpu-notebook, default) / tag-push
+      - check-success=tag-push (singlecell-gpu-notebook, cuda12) / tag-push
       - check-success=tag-push (spatial-notebook, default) / tag-push
       - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
