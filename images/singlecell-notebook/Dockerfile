@@ -34,7 +34,6 @@ RUN mamba install --yes \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
-    'fa2_modified' \
     'harmonypy' \
     # optional dependency of scvelo
     'hnswlib' \
@@ -77,6 +76,7 @@ RUN mamba install --yes \
 
 # packages not available for arm64 on conda
 RUN uv pip install --system --no-cache-dir \
+    fa2_modified \
     fastcluster \
     scikit-misc \
     "vitessce[all]" \
