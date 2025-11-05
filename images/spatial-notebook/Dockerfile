@@ -35,6 +35,7 @@ RUN mamba install --yes \
     fix-permissions "/home/${NB_USER}"
 
 RUN uv pip install --system --no-cache-dir  \
+    "zarr<3" \
     "spatialdata[extra]" \
     squidpy \
     tangram-sc
