@@ -38,6 +38,7 @@ RUN mamba install --yes \
     'bioconductor-org.mm.eg.db' \
     'bioconductor-reactomepa' \
     'bioconductor-scuttle' \
+    'bioconductor-sva' \
     'bioconductor-tximeta' \
     'bioconductor-tximport' \
     'bioconductor-variancepartition' \
