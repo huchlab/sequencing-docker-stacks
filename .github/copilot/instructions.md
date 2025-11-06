@@ -175,15 +175,16 @@ When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
    - **If tests import packages not in mypy.ini:** Add them to `mypy.ini` with `ignore_missing_imports = True`
 6. Update documentation
 
-### Updating Dependencies
+### Adding Packages to Images
 
 1. **Prefer mamba for package installation** (check availability for both x86_64 and aarch64)
-2. If not available via mamba for both architectures, use pip (Python) or R install methods
-3. Modify Dockerfile with new package requirements
-4. If package name differs from import name, update `PACKAGE_MAPPING` in `tests/by_image/docker-stacks-foundation/test_packages.py`
-5. Rebuild image to test
-6. Run tests to ensure nothing breaks
-7. Update manifest documentation
+2. Modify Dockerfile with new package requirements
+3. For mamba installation, no unit test with just import of package is needed. If package name differs from import name, update `PACKAGE_MAPPING` in `tests/by_image/docker-stacks-foundation/test_packages.py`.
+4. If not available via mamba for both architectures, use pip (Python) or R install methods.
+5. In this case, write a unit test for the import. Also add this package to `mypy.ini`.
+6. Rebuild image to test
+7. Run tests to ensure nothing breaks
+8. Update manifest documentation
 
 ### Fixing CI/CD Issues
 
