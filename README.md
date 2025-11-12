@@ -17,15 +17,6 @@ They are a fork of the [jupyter/docker-stacks](https://github.com/jupyter/docker
 
 Complete build manifests detailing the software stack are available in the [wiki](https://github.com/huchlab/sequencing-docker-stacks/wiki).
 
-### Finding Available Tags
-
-To view all available tags for a specific image, visit the image's repository page on Quay.io and click the "Tags" tab:
-
-- [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
-- [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
-- [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
-- [multiomics-notebook tags](https://quay.io/repository/huchlab/multiomics-notebook?tab=tags)
-
 ## Quick Start
 
 For a smooth start, consider exploring [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) first.
@@ -40,6 +31,15 @@ Run the following command to pull the `singlecell-notebook` image (tagged `lates
 ```bash
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:latest
 ```
+
+## Finding Available Tags
+
+To view all available tags for a specific image, visit the image's repository page on Quay.io and click the "Tags" tab:
+
+- [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
+- [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
+- [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
+- [multiomics-notebook tags](https://quay.io/repository/huchlab/multiomics-notebook?tab=tags)
 
 ## CPU Architectures
 
