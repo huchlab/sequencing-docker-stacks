@@ -32,6 +32,15 @@ Run the following command to pull the `singlecell-notebook` image (tagged `lates
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:latest
 ```
 
+## Finding Available Tags
+
+To view all available tags for a specific image, visit the image's repository page on Quay.io and click the "Tags" tab:
+
+- [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
+- [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
+- [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
+- [multiomics-notebook tags](https://quay.io/repository/huchlab/multiomics-notebook?tab=tags)
+
 ## CPU Architectures
 
 - Containers are available for both `x86_64` and `aarch64` platforms.
