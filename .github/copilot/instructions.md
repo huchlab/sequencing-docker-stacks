@@ -194,6 +194,7 @@ When asked to install an R package (e.g., "install r package ... into ...noteboo
    - Use `micromamba search -c conda-forge <package-name>` for x86_64
    - Use `micromamba search -c conda-forge <package-name> --platform linux-aarch64` for aarch64
    - R packages in conda-forge are typically named with `r-` prefix (e.g., `r-openxlsx2`)
+   - R packages from Bioconductor often start with `bioconductor-` prefix (e.g., `bioconductor-deseq2`)
 
 2. **If available via mamba for both architectures:**
    - Add to the mamba install section in the Dockerfile
