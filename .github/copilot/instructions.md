@@ -213,7 +213,7 @@ When asked to install an R package (e.g., "install r package ... into ...noteboo
      r("library(<library-name>)")
      ```
 
-   - Note: R package names are often different from library names (e.g., package `openxlsx2` loads as `library(openxlsx2)`)
+   - Note: R package names are often different from library names (e.g., package `cellchat` loads as `library(CellChat)`, or package `milor` loads as `library(miloR)`)
 
 4. **For packages from GitHub:**
    - Use `remotes::install_github()` (see `singlecell-notebook` Dockerfile for examples)

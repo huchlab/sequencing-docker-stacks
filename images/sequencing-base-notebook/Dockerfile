@@ -75,5 +75,3 @@ RUN uv pip install --system --no-cache-dir \
 
 # Install R packages not available for arm64 on conda
 RUN R -e "install.packages('openxlsx2', repos = 'https://cloud.r-project.org/', Ncpus = 4)"
-
-USER ${NB_UID}
