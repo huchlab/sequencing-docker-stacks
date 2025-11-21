@@ -187,10 +187,6 @@ If you're new to Jupyter or Docker containers, we recommend exploring the [jupyt
 - Running containers in different environments (cloud, HPC)
 - Security best practices
 
-### Example Workflows and Tutorials
-
-Check out the [examples](examples) directory for specific use cases and deployment scenarios.
-
 ### See What's Installed
 
 Each container comes with dozens of pre-installed tools. For complete lists of installed software and versions, visit the [build manifests in our wiki](https://github.com/huchlab/sequencing-docker-stacks/wiki).
