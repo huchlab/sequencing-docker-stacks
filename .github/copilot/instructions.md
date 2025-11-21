@@ -186,6 +186,40 @@ When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
 7. Run tests to ensure nothing breaks
 8. Update manifest documentation
 
+### Adding R Packages to Images
+
+When asked to install an R package (e.g., "install r package ... into ...notebook"):
+
+1. **Check mamba availability for both architectures:**
+   - Use `micromamba search -c conda-forge <package-name>` for x86_64
+   - Use `micromamba search -c conda-forge <package-name> --platform linux-aarch64` for aarch64
+   - R packages in conda-forge are typically named with `r-` prefix (e.g., `r-openxlsx2`)
+   - R packages from Bioconductor often start with `bioconductor-` prefix (e.g., `bioconductor-deseq2`)
+
+2. **If available via mamba for both architectures:**
+   - Add to the mamba install section in the Dockerfile
+   - No additional unit test needed (automatic import test via `test_packages.py`)
+   - Update `PACKAGE_MAPPING` only if package name differs from library name
+
+3. **If NOT available via mamba for both architectures:**
+   - Install using `install.packages()` in a separate RUN command
+   - Format: `RUN R -e "install.packages('<package-name>', repos = 'https://cloud.r-project.org/', Ncpus = 4)"`
+   - Create a unit test in `tests/by_image/<image-name>/units/unit_r-<package-name>.py`
+   - Test format:
+
+     ```python
+     from rpy2.robjects import r
+
+     r("library(<library-name>)")
+     ```
+
+   - Note: R package names are often different from library names (e.g., package `cellchat` loads as `library(CellChat)`, or package `milor` loads as `library(miloR)`)
+
+4. **For packages from GitHub:**
+   - Use `remotes::install_github()` (see `singlecell-notebook` Dockerfile for examples)
+   - Add unit test as above
+   - May require GITHUB_PAT secret for authentication
+
 ### Fixing CI/CD Issues
 
 1. Check GitHub Actions logs in `.github/workflows/`
