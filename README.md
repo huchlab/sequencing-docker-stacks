@@ -119,6 +119,8 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
    docker --version
    ```
 
+   You should see something like `Docker version 20.10.0` or higher.
+
 That's it! No need to install Python, R, or any bioinformatics tools.
 
 ### Launch Your First Analysis Environment
@@ -187,7 +189,7 @@ If you're new to Jupyter or Docker containers, we recommend exploring the [jupyt
 
 ### Example Workflows and Tutorials
 
-Check out the [examples](./examples) directory for specific use cases and deployment scenarios.
+Check out the [examples](examples) directory for specific use cases and deployment scenarios.
 
 ### See What's Installed
 
