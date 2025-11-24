@@ -109,8 +109,8 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 ### Prerequisites
 
 1. **Install Docker** on your computer
-   - [Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/)
-   - [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
+   - [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/)
+   - [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
    - [Docker Engine for Linux](https://docs.docker.com/engine/install/)
 
 2. **Verify Docker is running**
