@@ -1,4 +1,5 @@
 docker
+myst-parser
 plumbum
 pre-commit
 pytest
@@ -8,5 +9,9 @@ pytest-rerunfailures
 pytest-xdist
 python-dateutil
 requests
+sphinx
+sphinx-book-theme
+sphinx-copybutton
+sphinx-last-updated-by-git
 tabulate
 tenacity
