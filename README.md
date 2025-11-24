@@ -34,16 +34,9 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 
 **Key Tools:**
 
-- [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) — Industry-standard differential expression analysis
+- [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) — differential expression analysis
 - R/Bioconductor ecosystem for statistical analysis
 - Data visualization tools (ggplot2, heatmaps, volcano plots)
-
-**Common Use Cases:**
-
-- Compare gene expression between treatment groups
-- Identify differentially expressed genes in disease vs. control
-- Gene ontology and pathway enrichment analysis
-- Quality control and exploratory data analysis of RNA-seq data
 
 ### 🔬 Single-Cell Analysis — `singlecell-notebook`
 
@@ -56,14 +49,6 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - Dimensionality reduction (UMAP, t-SNE, PCA)
 - Cell clustering and annotation tools
 
-**Common Use Cases:**
-
-- Identify cell populations in heterogeneous samples
-- Discover rare cell types
-- Trace cell differentiation trajectories
-- Integrate multiple single-cell datasets
-- Compare cell populations across conditions
-
 ### 📍 Spatial Transcriptomics — `spatial-notebook`
 
 **Best for:** Spatial RNA-seq, tissue architecture, spatial patterns
@@ -75,14 +60,6 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - Spatial statistics and neighborhood analysis
 - Image processing capabilities
 
-**Common Use Cases:**
-
-- Analyze gene expression in tissue context
-- Identify spatial expression patterns
-- Study cell-cell interactions in tissue sections
-- Map cellular niches and microenvironments
-- Combine imaging and transcriptomics data
-
 ### 🧩 Multi-Omics Integration — `multiomics-notebook`
 
 **Best for:** Multi-modal data integration, CITE-seq, ATAC+RNA, multi-assay experiments
@@ -93,16 +70,6 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - [muon](https://github.com/scverse/muon) — Multi-modal omics analysis
 - Integration of transcriptomics, epigenomics, and proteomics
 - Factor analysis and dimensionality reduction across modalities
-
-**Common Use Cases:**
-
-- Integrate RNA-seq with ATAC-seq data
-- Analyze CITE-seq (protein + RNA) experiments
-- Discover coordinated patterns across data types
-- Multi-modal single-cell analysis
-- Systems-level understanding of biological processes
-
-**Not sure which to choose?** Start with the container matching your data type. You can always switch containers later — your notebooks will work across all of them!
 
 ## Getting Started
 
@@ -128,7 +95,7 @@ That's it! No need to install Python, R, or any bioinformatics tools.
 Here's how to start a Jupyter notebook environment for single-cell analysis:
 
 ```bash
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:latest
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:2025-11-10
 ```
 
 **What this command does:**
@@ -138,7 +105,8 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 - `--rm` — Clean up the container when you're done
 - `-p 8888:8888` — Access Jupyter at `http://localhost:8888`
 - `-v "${PWD}":/home/jovyan/work` — Mount your current directory (your data will be in the `work` folder)
-- `quay.io/huchlab/singlecell-notebook:latest` — The container image to use
+- `quay.io/huchlab/singlecell-notebook:2025-11-10` — The container image to use. Here, `2025-11-10` is the version of the container.
+  See [Choose Specific Versions](#choose-specific-versions) below for information on selecting specific image versions.
 
 **After running this command:**
 
@@ -160,14 +128,23 @@ Replace `singlecell-notebook` with your preferred container:
 
 ```bash
 # For RNA-seq analysis
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:latest
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:2025-11-10
 
 # For spatial transcriptomics
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/spatial-notebook:latest
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/spatial-notebook:2025-11-10
 
 # For multi-omics integration
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:latest
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:2025-11-10
 ```
+
+### Choose Specific Versions
+
+Images are tagged with dates and commit hashes for reproducibility. To view all available tags for a specific image:
+
+- [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
+- [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
+- [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
+- [multiomics-notebook tags](https://quay.io/repository/huchlab/multiomics-notebook?tab=tags)
 
 ### Working With Your Data
 
@@ -191,56 +168,16 @@ If you're new to Jupyter or Docker containers, we recommend exploring the [jupyt
 
 Each container comes with dozens of pre-installed tools. For complete lists of installed software and versions, visit the [build manifests in our wiki](https://github.com/huchlab/sequencing-docker-stacks/wiki).
 
-### Find Specific Versions
-
-Images are tagged with dates and commit hashes for reproducibility. To view all available tags for a specific image:
-
-- [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
-- [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
-- [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
-- [multiomics-notebook tags](https://quay.io/repository/huchlab/multiomics-notebook?tab=tags)
-
-**Pro tip:** Use specific tags (like `2024-01-15`) instead of `latest` in your analysis scripts to ensure reproducibility!
-
-## Troubleshooting
-
-### Port Already in Use
-
-If you see "port is already allocated", either:
-
-- Stop other Jupyter instances, or
-- Use a different port: `-p 8889:8888` (then access at `http://localhost:8889`)
-
-### Container Won't Start
-
-- Ensure Docker Desktop is running
-- Check that you have enough disk space (containers need ~5-10 GB)
-- Try pulling the image first: `docker pull quay.io/huchlab/singlecell-notebook:latest`
-
-### Files Not Showing Up
-
-- Make sure you're saving files in the `work` folder inside JupyterLab
-- Check that your `-v` mount path is correct
-- On Windows, you may need to use absolute paths: `-v C:/Users/YourName/data:/home/jovyan/work`
-
-### Need Help?
+## Need Help?
 
 - Open an issue on [GitHub](https://github.com/huchlab/sequencing-docker-stacks/issues)
 - Check existing issues for common problems
 - Provide your Docker version and OS when reporting issues
 
-## Platform Support
-
-- **x86_64** (Intel/AMD processors) — Fully supported
-- **aarch64** (ARM/Apple Silicon) — Fully supported
-
-Single-platform images use architecture-specific tags: `quay.io/huchlab/rnaseq-notebook:x86_64-latest`
-
 ## About This Project
 
-These containers are built on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) foundation and incorporate tools from the
+These containers are built on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) foundation and incorporates experience from the
 [Singularity Single Cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
-They are maintained to provide the bioinformatics community with reliable, reproducible analysis environments.
 
 ## Development
 
