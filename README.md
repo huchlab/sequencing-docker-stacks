@@ -1,4 +1,4 @@
-# Sequencing Jupyter Docker Stacks
+# Sequencing Docker Stacks
 
 [![GitHub Actions Badge](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/docker.yml/badge.svg)](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/docker.yml?query=branch%3Amain "Docker image build status")
 [![Read the Docs Badge](https://img.shields.io/readthedocs/sequencing-docker-stacks.svg)](https://sequencing-docker-stacks.readthedocs.io/en/latest/ "Documentation build status")
