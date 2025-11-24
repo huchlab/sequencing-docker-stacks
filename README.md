@@ -77,7 +77,7 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 
 **Want to try it first?** You can explore a live notebook environment in your browser without installing anything!
 
-Click the Binder badge at the top of this page or use this link: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb)
+Click the Binder badge at the top of this page or use this link: [![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb)
 
 This will launch a JupyterLab environment running the `singlecell-notebook` container on [mybinder.org](https://mybinder.org).
 You'll get a temporary workspace to experiment with single-cell analysis tools like Scanpy and Seurat.
