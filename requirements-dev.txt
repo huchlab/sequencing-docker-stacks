@@ -14,4 +14,3 @@ sphinx-book-theme
 sphinx-copybutton
 sphinx-last-updated-by-git
 tabulate
-tenacity
