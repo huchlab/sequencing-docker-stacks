@@ -3,7 +3,7 @@
 [![GitHub Actions Badge](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/docker.yml/badge.svg)](https://github.com/huchlab/sequencing-docker-stacks/actions/workflows/docker.yml?query=branch%3Amain "Docker image build status")
 [![Read the Docs Badge](https://img.shields.io/readthedocs/sequencing-docker-stacks.svg)](https://sequencing-docker-stacks.readthedocs.io/en/latest/ "Documentation build status")
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/huchlab/sequencing-docker-stacks/main.svg)](https://results.pre-commit.ci/latest/github/huchlab/sequencing-docker-stacks/main)
-[![Binder Badge](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb "Launch a quay.io/jupyter/base-notebook container on mybinder.org")
+[![Binder Badge](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb "Launch a singlecell-notebook container on mybinder.org")
 
 **Ready-to-use analysis environments for your sequencing data** — no installation headaches, just science.
 
@@ -72,6 +72,17 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - Factor analysis and dimensionality reduction across modalities
 
 ## Getting Started
+
+### Try Without Installing — Use Binder
+
+**Want to try it first?** You can explore a live notebook environment in your browser without installing anything!
+
+Click the Binder badge at the top of this page or use this link: [![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb)
+
+This will launch a JupyterLab environment running the `singlecell-notebook` container on [mybinder.org](https://mybinder.org).
+You'll get a temporary workspace to experiment with single-cell analysis tools like Scanpy and Seurat.
+
+**Note:** Binder sessions are temporary and have limited resources. For real analysis work, follow the installation steps below to run containers on your own computer.
 
 ### Prerequisites
 
