@@ -28,7 +28,7 @@ You don't need to be a Docker expert — just follow the Getting Started guide b
 Each container is a complete analysis environment with Jupyter notebooks, Python, R, and specialized bioinformatics tools.
 All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon) architectures.
 
-### 🧬 RNA-seq Analysis — `rnaseq-notebook`
+### RNA-seq Analysis — `rnaseq-notebook`
 
 **Best for:** Bulk RNA sequencing analysis, differential gene expression, gene set enrichment
 
@@ -38,7 +38,7 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - R/Bioconductor ecosystem for statistical analysis
 - Data visualization tools (ggplot2, heatmaps, volcano plots)
 
-### 🔬 Single-Cell Analysis — `singlecell-notebook`
+### Single-Cell Analysis — `singlecell-notebook`
 
 **Best for:** Single-cell RNA-seq (scRNA-seq), cell type identification, trajectory analysis
 
@@ -49,7 +49,7 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - Dimensionality reduction (UMAP, t-SNE, PCA)
 - Cell clustering and annotation tools
 
-### 📍 Spatial Transcriptomics — `spatial-notebook`
+### Spatial Transcriptomics — `spatial-notebook`
 
 **Best for:** Spatial RNA-seq, tissue architecture, spatial patterns
 
@@ -60,7 +60,7 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - Spatial statistics and neighborhood analysis
 - Image processing capabilities
 
-### 🧩 Multi-Omics Integration — `multiomics-notebook`
+### Multi-Omics Integration — `multiomics-notebook`
 
 **Best for:** Multi-modal data integration, CITE-seq, ATAC+RNA, multi-assay experiments
 
