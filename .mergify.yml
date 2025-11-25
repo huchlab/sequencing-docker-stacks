@@ -4,22 +4,44 @@ queue_rules:
       - check-success = pre-commit.ci - pr
     merge_conditions:
       - check-success = pre-commit.ci - pr
-      - check-success = x86_64-sequencing-base / build-test-upload
-      - check-success = aarch64-sequencing-base / build-test-upload
-      - check-success = x86_64-rnaseq / build-test-upload
-      - check-success = aarch64-rnaseq / build-test-upload
-      - check-success = x86_64-singlecell / build-test-upload
-      - check-success = aarch64-singlecell / build-test-upload
-      - check-success = x86_64-spatial / build-test-upload
-      - check-success = aarch64-spatial / build-test-upload
-      - check-success = x86_64-multiomics / build-test-upload
-      - check-success = aarch64-multiomics / build-test-upload
-      - check-success=tag-push (multiomics-notebook, default) / tag-push
-      - check-success=tag-push (rnaseq-notebook, default) / tag-push
-      - check-success=tag-push (sequencing-base-notebook, default) / tag-push
-      - check-success=tag-push (singlecell-notebook, default) / tag-push
-      - check-success=tag-push (spatial-notebook, default) / tag-push
-      - check-success = wiki-update / wiki-update
+      # If any build-triggering files changed, require all build checks; otherwise no build checks needed
+      - or:
+          - -or:
+              - files~=^\.github/workflows/docker\.yml$
+              - files~=^\.github/workflows/docker-build-test-upload\.yml$
+              - files~=^\.github/workflows/docker-tag-push\.yml$
+              - files~=^\.github/workflows/docker-wiki-update\.yml$
+              - files~=^\.github/actions/apply-single-tags/action\.yml$
+              - files~=^\.github/actions/create-dev-env/action\.yml$
+              - files~=^\.github/actions/load-image/action\.yml$
+              - and:
+                  - files~=^images/
+                  - -files~=^images/.*/README\.md$
+              - and:
+                  - files~=^tagging/
+                  - -files~=^tagging/README\.md$
+              - and:
+                  - files~=^tests/
+                  - -files~=^tests/README\.md$
+              - files~=^wiki/
+              - files=requirements-dev.txt
+          - and:
+              - check-success = x86_64-sequencing-base / build-test-upload
+              - check-success = aarch64-sequencing-base / build-test-upload
+              - check-success = x86_64-rnaseq / build-test-upload
+              - check-success = aarch64-rnaseq / build-test-upload
+              - check-success = x86_64-singlecell / build-test-upload
+              - check-success = aarch64-singlecell / build-test-upload
+              - check-success = x86_64-spatial / build-test-upload
+              - check-success = aarch64-spatial / build-test-upload
+              - check-success = x86_64-multiomics / build-test-upload
+              - check-success = aarch64-multiomics / build-test-upload
+              - check-success=tag-push (multiomics-notebook, default) / tag-push
+              - check-success=tag-push (rnaseq-notebook, default) / tag-push
+              - check-success=tag-push (sequencing-base-notebook, default) / tag-push
+              - check-success=tag-push (singlecell-notebook, default) / tag-push
+              - check-success=tag-push (spatial-notebook, default) / tag-push
+              - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot
     batch_size: 3
