@@ -6,25 +6,27 @@ queue_rules:
       - check-success = pre-commit.ci - pr
       # If any build-triggering files changed, require all build checks; otherwise no build checks needed
       - or:
-          - -or:
-              - files~=^\.github/workflows/docker\.yml$
-              - files~=^\.github/workflows/docker-build-test-upload\.yml$
-              - files~=^\.github/workflows/docker-tag-push\.yml$
-              - files~=^\.github/workflows/docker-wiki-update\.yml$
-              - files~=^\.github/actions/apply-single-tags/action\.yml$
-              - files~=^\.github/actions/create-dev-env/action\.yml$
-              - files~=^\.github/actions/load-image/action\.yml$
-              - and:
-                  - files~=^images/
-                  - -files~=^images/.*/README\.md$
-              - and:
-                  - files~=^tagging/
-                  - -files~=^tagging/README\.md$
-              - and:
-                  - files~=^tests/
-                  - -files~=^tests/README\.md$
-              - files~=^wiki/
-              - files=requirements-dev.txt
+          # Skip build checks if no build-triggering files changed
+          - and:
+              - -files~=^\.github/workflows/docker\.yml$
+              - -files~=^\.github/workflows/docker-build-test-upload\.yml$
+              - -files~=^\.github/workflows/docker-tag-push\.yml$
+              - -files~=^\.github/workflows/docker-wiki-update\.yml$
+              - -files~=^\.github/actions/apply-single-tags/action\.yml$
+              - -files~=^\.github/actions/create-dev-env/action\.yml$
+              - -files~=^\.github/actions/load-image/action\.yml$
+              - or:
+                  - -files~=^images/
+                  - files~=^images/.*/README\.md$
+              - or:
+                  - -files~=^tagging/
+                  - files~=^tagging/README\.md$
+              - or:
+                  - -files~=^tests/
+                  - files~=^tests/README\.md$
+              - -files~=^wiki/
+              - -files=requirements-dev.txt
+          # Build checks passed
           - and:
               - check-success = x86_64-sequencing-base / build-test-upload
               - check-success = aarch64-sequencing-base / build-test-upload
