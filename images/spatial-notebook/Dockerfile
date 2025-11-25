@@ -34,7 +34,7 @@ RUN mamba install --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN uv pip install --system --no-cache-dir  \
+RUN pip install --no-cache-dir  \
     "zarr<3" \
     "spatialdata[extra]" \
     squidpy \

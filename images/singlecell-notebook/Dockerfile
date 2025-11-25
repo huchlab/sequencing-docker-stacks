@@ -75,15 +75,15 @@ RUN mamba install --yes \
     fix-permissions "/home/${NB_USER}"
 
 # packages not available for arm64 on conda
-RUN uv pip install --system --no-cache-dir \
+RUN pip install --no-cache-dir \
     fa2_modified \
     fastcluster \
+    "liana>=1.6.1" \
     scikit-misc \
     "vitessce[all]" \
     && \
-    uv pip install --system --no-cache-dir "liana>=1.6.1" && \
     # do not install dependencies for cellbender (they include jupyter)
-    uv pip install --system --no-cache-dir --no-deps cellbender
+    pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "options(warn = 2); BiocManager::install('miloR', Ncpus = 4, ask = FALSE, update = FALSE)" && \

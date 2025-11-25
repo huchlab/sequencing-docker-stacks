@@ -70,7 +70,7 @@ RUN git lfs install && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN uv pip install --system --no-cache-dir \
+RUN pip install --no-cache-dir \
     gseapy && \
     # Install R packages not available for arm64 on conda
     R -e "install.packages('openxlsx2', repos = 'https://cloud.r-project.org/', Ncpus = 4)"
