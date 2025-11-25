@@ -162,8 +162,8 @@ Images are tagged with dates and commit hashes for reproducibility. To view all 
 - [singularity-single-cell](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell): singularity-based container for singlecell analysis.
   Usually, R packages are more up-to-date then in our singlecell-notebook
 - [scanpy](https://scanpy.readthedocs.io/en/stable/installation.html#docker): [gcfntnu/scanpy](https://hub.docker.com/r/gcfntnu/scanpy) image on Docker Hub
-- [scvi-tools](https://docs.scvi-tools.org/en/stable/installation.html#docker): scvi-tools from the scverse provides Docker images
-- [Seurat](https://satijalab.org/seurat/articles/install.html#docker): Seurat provides Docker images
+- [scvi-tools](https://docs.scvi-tools.org/en/stable/installation.html#docker) from the scverse provides Docker images
+- [Seurat](https://satijalab.org/seurat/articles/install.html#docker) provides Docker images
 
 ### Working With Your Data
 
