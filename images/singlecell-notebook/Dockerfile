@@ -76,6 +76,7 @@ RUN mamba install --yes \
 
 # packages not available for arm64 on conda
 RUN uv pip install --system --no-cache-dir \
+    cytetype \
     fa2_modified \
     fastcluster \
     scikit-misc \
