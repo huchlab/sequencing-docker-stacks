@@ -1,8 +1,10 @@
 queue_rules:
   - name: default
     queue_conditions:
+      - check-success = build-docs
       - check-success = pre-commit.ci - pr
     merge_conditions:
+      - check-success = build-docs
       - check-success = pre-commit.ci - pr
       # If any build-triggering files changed, require all build checks; otherwise no build checks needed
       - or:
@@ -38,11 +40,11 @@ queue_rules:
               - check-success = aarch64-spatial / build-test-upload
               - check-success = x86_64-multiomics / build-test-upload
               - check-success = aarch64-multiomics / build-test-upload
-              - check-success=tag-push (multiomics-notebook, default) / tag-push
-              - check-success=tag-push (rnaseq-notebook, default) / tag-push
-              - check-success=tag-push (sequencing-base-notebook, default) / tag-push
-              - check-success=tag-push (singlecell-notebook, default) / tag-push
-              - check-success=tag-push (spatial-notebook, default) / tag-push
+              - check-success = tag-push (multiomics-notebook, default) / tag-push
+              - check-success = tag-push (rnaseq-notebook, default) / tag-push
+              - check-success = tag-push (sequencing-base-notebook, default) / tag-push
+              - check-success = tag-push (singlecell-notebook, default) / tag-push
+              - check-success = tag-push (spatial-notebook, default) / tag-push
               - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot
