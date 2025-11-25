@@ -41,6 +41,7 @@ RUN git lfs install && \
     'pybiomart' \
     'openpyxl' \
     'session-info' \
+    'session-info2' \
     'uv' \
     # R \
     'bioconductor-complexheatmap' \
