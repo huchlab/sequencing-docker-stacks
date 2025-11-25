@@ -1,10 +1,8 @@
 queue_rules:
   - name: default
     queue_conditions:
-      - check-success = build-docs
       - check-success = pre-commit.ci - pr
     merge_conditions:
-      - check-success = build-docs
       - check-success = pre-commit.ci - pr
       # If any build-triggering files changed, require all build checks; otherwise no build checks needed
       - or:
