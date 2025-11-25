@@ -4,6 +4,21 @@ queue_rules:
       - check-success = pre-commit.ci - pr
     merge_conditions:
       - check-success = pre-commit.ci - pr
+      # If any docs-triggering files changed, require build-docs check; otherwise skip it
+      - or:
+          # Skip build-docs check if no docs-triggering files changed
+          - and:
+              - -files~=^\.github/workflows/sphinx\.yml$
+              - -files=Makefile
+              - -files~=^docs/
+              - -files=README.md
+              - -files=CHANGELOG.md
+              - -files=tagging/manifests/apt_packages.py
+              - -files=tagging/manifests/manifest_interface.py
+              - -files=tagging/taggers/sha.py
+              - -files=tagging/taggers/tagger_interface.py
+          # build-docs check passed
+          - check-success = build-docs
       # If any build-triggering files changed, require all build checks; otherwise no build checks needed
       - or:
           # Skip build checks if no build-triggering files changed
