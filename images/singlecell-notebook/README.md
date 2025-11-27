@@ -6,4 +6,5 @@ Please visit the [project site](https://github.com/huchlab/sequencing-docker-sta
 
 ## Notes
 
-- **HSMMSingleCell dependency**: The `bioconductor-hsmmsinglecell` package is explicitly installed because it is required by `monocle` at load time. Without it, loading `monocle` in R fails with "there is no package called 'HSMMSingleCell'".
+- **HSMMSingleCell dependency**: The `bioconductor-hsmmsinglecell` package is explicitly installed because it is required by `monocle` at load time.
+  Without it, loading `monocle` in R fails with "there is no package called 'HSMMSingleCell'".
