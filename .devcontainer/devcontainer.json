@@ -21,7 +21,6 @@
         "github.copilot",
         "github.vscode-github-actions",
         "github.vscode-pull-request-github",
-        "github.vscode-pull-request-github",
         "ms-azuretools.vscode-containers",
         "ms-azuretools.vscode-docker",
         "ms-python.autopep8",
