@@ -47,6 +47,7 @@ PACKAGE_MAPPING = {
     "scikit-misc": "skmisc",
     "scvi-tools": "scvi",
     "session-info": "session_info",
+    "session-info2": "session_info2",
     "spatial-image": "spatial_image",
     "spatialdata-io": "spatialdata_io",
     "spatialdata-plot": "spatialdata_plot",
