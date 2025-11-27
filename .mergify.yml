@@ -32,13 +32,19 @@ queue_rules:
               - -files~=^\.github/actions/load-image/action\.yml$
               - or:
                   - -files~=^images/
-                  - files~=^images/.*/README\.md$
+                  - and:
+                      - files~=^images/.*README\.md$
+                      - -files~=^images/(?!.*README\.md$).*
               - or:
                   - -files~=^tagging/
-                  - files~=^tagging/README\.md$
+                  - and:
+                      - files~=^tagging/.*README\.md$
+                      - -files~=^tagging/(?!.*README\.md$).*
               - or:
                   - -files~=^tests/
-                  - files~=^tests/README\.md$
+                  - and:
+                      - files~=^tests/.*README\.md$
+                      - -files~=^tests/(?!.*README\.md$).*
               - -files~=^wiki/
               - -files=requirements-dev.txt
           # Build checks passed
