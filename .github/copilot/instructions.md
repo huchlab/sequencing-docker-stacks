@@ -58,7 +58,9 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
   - If mypy reports "Cannot find implementation or library stub" errors
   - Add the missing packages to `mypy.ini` with `ignore_missing_imports = True`
   - Format: `[mypy-package_name.*]` followed by `ignore_missing_imports = True`
-- **When modifying README.md or adding documentation:**
+- **When modifying README.md or any Markdown file:**
+  - **CRITICAL: Run `npx markdownlint-cli2 <file.md>` on every Markdown file you modify before committing**
+  - **Line length limit is 200 characters** - split long lines to comply
   - Run `make docs` to ensure Sphinx can build the documentation
   - Run `make linkcheck-docs` to verify all external links (redirects cause warnings)
   - Fix any cross-reference warnings or build errors

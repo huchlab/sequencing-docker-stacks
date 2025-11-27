@@ -59,6 +59,8 @@ RUN mamba install --yes \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-monocle' \
+    # HSMMSingleCell is required by monocle at load time
+    'bioconductor-hsmmsinglecell' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
     'bioconductor-scran' \
