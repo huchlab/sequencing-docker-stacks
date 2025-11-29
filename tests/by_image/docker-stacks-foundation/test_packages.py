@@ -63,6 +63,7 @@ PACKAGE_MAPPING = {
     "gseabase": "GSEABase",
     "gsva": "GSVA",
     "gviz": "Gviz",
+    "hsmmsinglecell": "HSMMSingleCell",
     "loomexperiment": "LoomExperiment",
     "mast": "MAST",
     "milor": "miloR",
