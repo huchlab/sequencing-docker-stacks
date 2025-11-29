@@ -58,8 +58,6 @@ RUN mamba install --yes \
     # R
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
-    # version 2.34.0 has a bug that makes tests fail
-    'bioconductor-monocle!=2.34.0' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
     'bioconductor-scran' \
@@ -68,7 +66,6 @@ RUN mamba install --yes \
     'r-presto' \
     'r-anndata' \
     'r-data.table' \
-    'r-monocle3' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
