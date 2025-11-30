@@ -41,6 +41,7 @@ RUN git lfs install && \
     'pybiomart' \
     'openpyxl' \
     'session-info' \
+    'session-info2' \
     'uv' \
     # R \
     'bioconductor-complexheatmap' \
@@ -49,6 +50,7 @@ RUN git lfs install && \
     'bioconductor-trackviewer' \
     # keeping 'r-base' makes this much faster
     'r-base' \
+    'r-biocmanager' \
     'r-fastcluster' \
     'r-ggally' \
     'r-ggpubr' \

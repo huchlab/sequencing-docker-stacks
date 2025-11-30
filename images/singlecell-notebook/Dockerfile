@@ -58,9 +58,6 @@ RUN mamba install --yes \
     # R
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
-    'bioconductor-monocle' \
-    # HSMMSingleCell is required by monocle at load time
-    'bioconductor-hsmmsinglecell' \
     'r-monocle3' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
@@ -77,8 +74,9 @@ RUN mamba install --yes \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# packages not available for arm64 on conda
+# packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
+    cytetype \
     fa2_modified \
     fastcluster \
     "liana>=1.6.1" \
