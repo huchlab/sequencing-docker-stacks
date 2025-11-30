@@ -61,6 +61,7 @@ RUN mamba install --yes \
     'bioconductor-monocle' \
     # HSMMSingleCell is required by monocle at load time
     'bioconductor-hsmmsinglecell' \
+    'r-monocle3' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
     'bioconductor-scran' \
