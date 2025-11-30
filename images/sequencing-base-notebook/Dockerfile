@@ -49,6 +49,7 @@ RUN git lfs install && \
     'bioconductor-trackviewer' \
     # keeping 'r-base' makes this much faster
     'r-base' \
+    'r-biocmanager' \
     'r-fastcluster' \
     'r-ggally' \
     'r-ggpubr' \

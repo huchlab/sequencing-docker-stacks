@@ -52,6 +52,7 @@ PACKAGE_MAPPING = {
     "spatialdata-plot": "spatialdata_plot",
     "tangram-sc": "tangram",
     # R
+    "biocmanager": "BiocManager",
     "biocparallel": "BiocParallel",
     "biomart": "biomaRt",
     "cellchat": "CellChat",
@@ -63,6 +64,7 @@ PACKAGE_MAPPING = {
     "gseabase": "GSEABase",
     "gsva": "GSVA",
     "gviz": "Gviz",
+    "hsmmsinglecell": "HSMMSingleCell",
     "loomexperiment": "LoomExperiment",
     "mast": "MAST",
     "milor": "miloR",
