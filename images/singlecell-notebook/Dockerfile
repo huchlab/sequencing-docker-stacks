@@ -66,6 +66,7 @@ RUN mamba install --yes \
     'r-presto' \
     'r-anndata' \
     'r-data.table' \
+    'r-harmony' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
