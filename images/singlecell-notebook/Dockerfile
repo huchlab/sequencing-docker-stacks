@@ -65,6 +65,7 @@ RUN mamba install --yes \
     'bioconductor-zellkonverter' \
     'r-presto' \
     'r-anndata' \
+    'r-clustree' \
     'r-data.table' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
