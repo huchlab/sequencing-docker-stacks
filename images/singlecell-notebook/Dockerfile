@@ -67,6 +67,7 @@ RUN mamba install --yes \
     'r-anndata' \
     'r-clustree' \
     'r-data.table' \
+    'r-harmony' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
