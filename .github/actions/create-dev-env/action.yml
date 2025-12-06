@@ -23,4 +23,3 @@ runs:
       uses: docker/setup-docker-action@e61617a16c407a86262fb923c35a616ddbe070b3 # v4.6.0
       with:
         set-host: true
-        version: 28.5.2
