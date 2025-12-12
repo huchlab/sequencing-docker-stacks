@@ -44,6 +44,7 @@ RUN mamba install --yes \
     'marsilea' \
     'mudata' \
     'muon' \
+    'omnipath' \
     'palantir' \
     'pooch' \
     # optional dependency of scvelo
