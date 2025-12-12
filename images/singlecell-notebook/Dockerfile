@@ -44,7 +44,6 @@ RUN mamba install --yes \
     'marsilea' \
     'mudata' \
     'muon' \
-    'omnipath' \
     'palantir' \
     'pooch' \
     # optional dependency of scvelo
@@ -83,6 +82,7 @@ RUN pip install --no-cache-dir \
     fa2_modified \
     fastcluster \
     "liana>=1.6.1" \
+    "omnipath>=1.0.12" \
     scikit-misc \
     "vitessce[all]" \
     && \
