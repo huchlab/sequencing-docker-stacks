@@ -81,7 +81,7 @@ RUN pip install --no-cache-dir \
     cytetype \
     fa2_modified \
     fastcluster \
-    "liana>=1.6.1" \
+    "liana[extra]>=1.6.1" \
     scikit-misc \
     "vitessce[all]" \
     && \
