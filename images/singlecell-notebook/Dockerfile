@@ -82,6 +82,7 @@ RUN pip install --no-cache-dir \
     fa2_modified \
     fastcluster \
     "liana>=1.6.1" \
+    "omnipath>=1.0.12" \
     scikit-misc \
     "vitessce[all]" \
     && \
