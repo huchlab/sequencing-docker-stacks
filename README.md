@@ -198,6 +198,10 @@ Each container comes with dozens of pre-installed tools. For complete lists of i
 These containers are built on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) foundation and incorporates experience from the
 [Singularity Single Cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=huchlab/sequencing-docker-stacks&type=date&legend=top-left)](https://www.star-history.com/#huchlab/sequencing-docker-stacks&type=date&legend=top-left)
+
 ## Development
 
 ### GitHub Copilot Integration
