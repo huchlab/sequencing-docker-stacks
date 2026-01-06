@@ -148,6 +148,34 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:2025-11-10
 ```
 
+### Using Apptainer/Singularity Images
+
+For HPC environments that use Apptainer (formerly Singularity) instead of Docker, we provide pre-built Apptainer images on quay.io. These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages.
+
+**Note:** Apptainer images are platform-specific. Make sure to use the correct architecture for your system:
+- `-singularity-x86_64` for Intel/AMD processors
+- `-singularity-aarch64` for ARM processors
+
+Example usage:
+
+```bash
+# Pull and run a singlecell-notebook Apptainer image (x86_64)
+apptainer pull oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity-x86_64
+apptainer run singlecell-notebook_2025-11-10-singularity-x86_64.sif
+
+# Or run directly without pulling first
+apptainer run oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity-x86_64
+```
+
+All available images work with Apptainer:
+- `rnaseq-notebook`
+- `singlecell-notebook`
+- `spatial-notebook`
+- `multiomics-notebook`
+- `sequencing-base-notebook`
+
+Tags follow the pattern: `{date}-singularity-{architecture}` (e.g., `2025-11-10-singularity-x86_64`)
+
 ### Choose Specific Versions
 
 Images are tagged with dates and commit hashes for reproducibility. To view all available tags for a specific image:
