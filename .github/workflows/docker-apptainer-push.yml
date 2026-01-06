@@ -71,27 +71,11 @@ jobs:
           apptainer --version
         shell: bash
 
-      - name: Download aarch64 image tar 📥
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: ${{ inputs.image }}-aarch64-${{ inputs.variant }}
-          path: /tmp/jupyter/images/
-        if: ${{ !contains(inputs.variant, 'cuda') }}
-        continue-on-error: false
-
       - name: Download x86_64 image tar 📥
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}
           path: /tmp/jupyter/images/
-
-      - name: Download aarch64 tags file 📥
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: ${{ inputs.image }}-aarch64-${{ inputs.variant }}-tags
-          path: /tmp/jupyter/tags/
-        if: ${{ !contains(inputs.variant, 'cuda') }}
-        continue-on-error: false
 
       - name: Download x86_64 tags file 📥
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
@@ -99,46 +83,17 @@ jobs:
           name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}-tags
           path: /tmp/jupyter/tags/
 
-      - name: Convert aarch64 Docker image to Apptainer 🔄
-        if: ${{ !contains(inputs.variant, 'cuda') }}
-        run: |
-          # Decompress and load Docker image
-          mkdir -p /tmp/apptainer/
-
-          echo "Decompressing Docker tar..."
-          zstd --uncompress --stdout /tmp/jupyter/images/${{ inputs.image }}-aarch64-${{ inputs.variant }}.tar.zst | docker load
-
-          # Get the image name from docker images
-          DOCKER_IMAGE="${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}"
-
-          echo "Building Apptainer sandbox from Docker image: $DOCKER_IMAGE"
-          sudo apptainer build --sandbox /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}-sandbox docker-daemon://$DOCKER_IMAGE:latest
-
-          echo "Making /opt/conda writable for all users..."
-          sudo chmod -R 777 /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}-sandbox/opt/conda || echo "Warning: /opt/conda may not exist in this image"
-
-          echo "Converting sandbox to SIF image..."
-          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}.sif /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}-sandbox
-
-          echo "Cleaning up sandbox..."
-          sudo rm -rf /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}-sandbox
-
-          echo "Apptainer image created successfully"
-          ls -lh /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}.sif
-        shell: bash
-
       - name: Convert x86_64 Docker image to Apptainer 🔄
         run: |
-          # Decompress and load Docker image
           mkdir -p /tmp/apptainer/
 
-          echo "Decompressing Docker tar..."
+          echo "Decompressing and loading Docker tar to Docker daemon..."
           zstd --uncompress --stdout /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst | docker load
 
           # Get the image name from docker images
           DOCKER_IMAGE="${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}"
 
-          echo "Building Apptainer sandbox from Docker image: $DOCKER_IMAGE"
+          echo "Building Apptainer sandbox from Docker daemon..."
           sudo apptainer build --sandbox /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox docker-daemon://$DOCKER_IMAGE:latest
 
           echo "Making /opt/conda writable for all users..."
@@ -161,33 +116,6 @@ jobs:
         shell: bash
         id: login
 
-      - name: Push aarch64 Apptainer images to Registry 📤
-        if: env.PUSH_TO_REGISTRY == 'true' && !contains(inputs.variant, 'cuda')
-        run: |
-          # Read tags from the tags file and push with -singularity suffix
-          TAGS_FILE="/tmp/jupyter/tags/aarch64-${{ inputs.variant }}-${{ inputs.image }}.txt"
-
-          if [ ! -f "$TAGS_FILE" ]; then
-            echo "Tags file not found: $TAGS_FILE"
-            exit 1
-          fi
-
-          while IFS= read -r tag; do
-            # Skip empty lines
-            [ -z "$tag" ] && continue
-
-            # Add -singularity suffix to the tag
-            SINGULARITY_TAG="${tag}-singularity-aarch64"
-
-            echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
-            # Simple retry mechanism - attempt twice with same command
-            apptainer push /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}.sif \
-              oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
-            apptainer push /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}.sif \
-              oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG
-          done < "$TAGS_FILE"
-        shell: bash
-
       - name: Push x86_64 Apptainer images to Registry 📤
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
@@ -203,8 +131,8 @@ jobs:
             # Skip empty lines
             [ -z "$tag" ] && continue
 
-            # Add -singularity suffix to the tag
-            SINGULARITY_TAG="${tag}-singularity-x86_64"
+            # Add -singularity suffix to the tag (x86_64 only)
+            SINGULARITY_TAG="${tag}-singularity"
 
             echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
             # Simple retry mechanism - attempt twice with same command
