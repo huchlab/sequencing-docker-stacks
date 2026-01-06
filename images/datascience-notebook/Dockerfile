@@ -79,5 +79,3 @@ RUN git lfs install && \
 RUN Rscript -e \
     "Sys.setenv(NOT_CRAN = 'true'); \
     install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
-
-USER ${NB_UID}
