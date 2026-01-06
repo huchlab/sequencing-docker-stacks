@@ -224,7 +224,7 @@ These containers are built on the [jupyter/docker-stacks](https://github.com/jup
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=huchlab/sequencing-docker-stacks&type=date&legend=top-left)](https://www.star-history.com/#huchlab/sequencing-docker-stacks&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=huchlab/sequencing-docker-stacks&type=Date)](https://star-history.com/#huchlab/sequencing-docker-stacks&Date)
 
 ## Development
 
