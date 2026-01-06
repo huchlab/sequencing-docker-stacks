@@ -57,6 +57,7 @@ RUN mamba install --yes \
     'scvi-tools>=1.2.2' \
     # R
     'bioconductor-batchelor' \
+    'bioconductor-clusterprofiler' \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-nebulosa' \
