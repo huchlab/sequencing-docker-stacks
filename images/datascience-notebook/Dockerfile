@@ -33,28 +33,44 @@ RUN git lfs install && \
     echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
     mamba install --yes \
         # Python \
+        'jupyterlab_execute_time' \
+        'natsort' \
+        'openpyxl' \
         'pingouin' \
         'plotnine' \
         'polars' \
         'pyarrow' \
         'scikit-misc' \
+        'session-info' \
         'session-info2' \
         'trackhub' \
+        'uv' \
         'xlsxwriter' \
         # R \
         'bioconductor-complexheatmap' \
         'r-data.table' \
         'r-dtplyr' \
+        'r-fastcluster' \
         'r-feather' \
         'r-ggally' \
         'r-ggpubr' \
         'r-ggrepel' \
         'r-ggsci' \
         'r-ggthemes' \
+        'r-gtools' \
+        'r-ggvenn' \
         'r-hmisc' \
+        'r-janitor' \
+        'r-languageserver' \
+        'r-openxlsx' \
         'r-paletteer' \
+        'r-paralleldist' \
+        'r-pheatmap' \
+        'r-plotly' \
         'r-r.utils' \
         'r-svglite' \
+        'r-viridis' \
+        'r-writexl' \
         && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \

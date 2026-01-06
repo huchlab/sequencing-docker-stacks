@@ -28,12 +28,7 @@ RUN mamba install --yes \
     # Python \
     'biopython' \
     # 'gseapy' \
-    'jupyterlab_execute_time' \
-    'natsort' \
     'pybiomart' \
-    'openpyxl' \
-    'session-info' \
-    'uv' \
     # R \
     'bioconductor-deseq2' \
     'bioconductor-fgsea' \
@@ -41,18 +36,6 @@ RUN mamba install --yes \
     # keeping 'r-base' makes this much faster
     'r-base' \
     'r-biocmanager' \
-    'r-fastcluster' \
-    # because it contains `mixedsort`
-    'r-gtools' \
-    'r-ggvenn' \
-    'r-janitor' \
-    'r-languageserver' \
-    'r-openxlsx' \
-    'r-paralleldist' \
-    'r-pheatmap' \
-    'r-plotly' \
-    'r-viridis' \
-    'r-writexl' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \

@@ -87,7 +87,7 @@ jobs:
   aarch64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: ""
+      parent-image: datascience-notebook
       image: sequencing-base-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
@@ -97,7 +97,7 @@ jobs:
   x86_64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: ""
+      parent-image: datascience-notebook
       image: sequencing-base-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
