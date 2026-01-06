@@ -150,22 +150,24 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/m
 
 ### Using Apptainer/Singularity Images
 
-For HPC environments that use Apptainer (formerly Singularity) instead of Docker, we provide pre-built Apptainer images on quay.io. These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages.
+For HPC environments that use Apptainer (formerly Singularity) instead of Docker, we provide pre-built Apptainer images on quay.io.
+These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages.
 
 **Note:** Apptainer images are currently available for x86_64 architecture only.
 
 Example usage:
 
 ```bash
-# Pull and run a singlecell-notebook Apptainer image
+# Run directly without pulling first
+apptainer run oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
+
+# Or pull first, then run
 apptainer pull oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
 apptainer run singlecell-notebook_2025-11-10-singularity.sif
-
-# Or run directly without pulling first
-apptainer run oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
 ```
 
 All available images work with Apptainer:
+
 - `rnaseq-notebook`
 - `singlecell-notebook`
 - `spatial-notebook`

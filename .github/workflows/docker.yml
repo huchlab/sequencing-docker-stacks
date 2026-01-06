@@ -255,22 +255,7 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
-    needs:
-      [
-        contributed-recipes,
-
-        aarch64-sequencing-base,
-        aarch64-rnaseq,
-        aarch64-singlecell,
-        aarch64-multiomics,
-        aarch64-spatial,
-
-        x86_64-sequencing-base,
-        x86_64-rnaseq,
-        x86_64-singlecell,
-        x86_64-multiomics,
-        x86_64-spatial,
-      ]
+    needs: [tag-push]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   apptainer-push-fast:
@@ -285,19 +270,19 @@ jobs:
       matrix:
         image: [sequencing-base-notebook]
         variant: [default]
-    needs: [aarch64-sequencing-base, x86_64-sequencing-base]
+    needs: [tag-push-fast]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   wiki-update:
     uses: ./.github/workflows/docker-wiki-update.yml
-    needs: [tag-push, apptainer-push]
+    needs: tag-push
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
     permissions:
       contents: write
 
   wiki-update-fast:
     uses: ./.github/workflows/docker-wiki-update.yml
-    needs: [tag-push-fast, apptainer-push-fast]
+    needs: tag-push-fast
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
     permissions:
       contents: write
