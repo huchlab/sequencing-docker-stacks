@@ -160,10 +160,6 @@ Example usage:
 ```bash
 # Run directly without pulling first
 apptainer run oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
-
-# Or pull first, then run
-apptainer pull oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
-apptainer run singlecell-notebook_2025-11-10-singularity.sif
 ```
 
 All available images work with Apptainer:

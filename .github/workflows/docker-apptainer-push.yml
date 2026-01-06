@@ -93,22 +93,36 @@ jobs:
           # Get the image name from docker images
           DOCKER_IMAGE="${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}"
 
-          echo "Building Apptainer sandbox from Docker daemon..."
-          sudo apptainer build --sandbox /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox docker-daemon://$DOCKER_IMAGE:latest
+          # Create a definition file with post section to make /opt/conda writable
+          cat > /tmp/apptainer/${{ inputs.image }}.def << 'EOF'
+          Bootstrap: docker-daemon
+          From: $DOCKER_IMAGE:latest
 
-          echo "Making /opt/conda writable for all users..."
-          # Note: 777 permissions are intentional for HPC environments where:
-          # - Users run containers without root/sudo access
-          # - Multiple users need to install packages to the same conda environment
-          # - Container filesystem is isolated from host system
-          # This is a common pattern for Singularity/Apptainer images in HPC
-          sudo chmod -R 777 /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox/opt/conda || echo "Warning: /opt/conda may not exist in this image"
+          %post
+              # Make /opt/conda writable for all users
+              # This is essential for HPC environments where users lack sudo access
+              if [ -d /opt/conda ]; then
+                  chmod -R 777 /opt/conda
+                  echo "Made /opt/conda writable for all users"
+              else
+                  echo "Warning: /opt/conda does not exist in this image"
+              fi
 
-          echo "Converting sandbox to SIF image..."
-          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox
+          %labels
+              Maintainer huchlab
+              Architecture x86_64
 
-          echo "Cleaning up sandbox..."
-          sudo rm -rf /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox
+          %help
+              Apptainer/Singularity image from sequencing-docker-stacks.
+              /opt/conda is writable - install packages with: apptainer exec image.sif pip install <package>
+              More info: https://github.com/huchlab/sequencing-docker-stacks
+          EOF
+
+          echo "Building Apptainer SIF image from Docker daemon using definition file..."
+          sudo DOCKER_IMAGE="$DOCKER_IMAGE" apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/${{ inputs.image }}.def
+
+          echo "Cleaning up Docker image..."
+          docker rmi "$DOCKER_IMAGE:latest" || true
 
           echo "Apptainer image created successfully"
           ls -lh /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif
@@ -124,7 +138,7 @@ jobs:
       - name: Push x86_64 Apptainer images to Registry 📤
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
-          # Read tags from the tags file and push with -singularity suffix
+          # Read tags from the tags file and push only date and commit id tags with -singularity suffix
           TAGS_FILE="/tmp/jupyter/tags/x86_64-${{ inputs.variant }}-${{ inputs.image }}.txt"
 
           if [ ! -f "$TAGS_FILE" ]; then
@@ -132,19 +146,31 @@ jobs:
             exit 1
           fi
 
+          # Filter for date (YYYY-MM-DD format) and commit SHA tags only
           while IFS= read -r tag; do
             # Skip empty lines
             [ -z "$tag" ] && continue
 
-            # Add -singularity suffix to the tag (x86_64 only)
-            SINGULARITY_TAG="${tag}-singularity"
+            # Extract the tag part after the image name and colon
+            TAG_PART="${tag##*:}"
 
-            echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
-            # Simple retry mechanism - attempt twice with same command
-            apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
-              oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
-            apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
-              oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG
+            # Skip if it has a prefix (variant)
+            if [[ "$TAG_PART" == *"-"* ]]; then
+              TAG_PART="${TAG_PART#*-}"
+            fi
+
+            # Only push if it's a date tag (YYYY-MM-DD) or commit SHA (7 hex chars)
+            if [[ "$TAG_PART" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || [[ "$TAG_PART" =~ ^[0-9a-f]{7}$ ]]; then
+              # Add -singularity suffix to the original full tag
+              SINGULARITY_TAG="${tag##*:}-singularity"
+
+              echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
+              # Simple retry mechanism - attempt twice with same command
+              apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
+                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
+              apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
+                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG
+            fi
           done < "$TAGS_FILE"
         shell: bash
 
