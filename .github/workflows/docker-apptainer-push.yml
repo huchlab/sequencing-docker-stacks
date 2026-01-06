@@ -97,6 +97,11 @@ jobs:
           sudo apptainer build --sandbox /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox docker-daemon://$DOCKER_IMAGE:latest
 
           echo "Making /opt/conda writable for all users..."
+          # Note: 777 permissions are intentional for HPC environments where:
+          # - Users run containers without root/sudo access
+          # - Multiple users need to install packages to the same conda environment
+          # - Container filesystem is isolated from host system
+          # This is a common pattern for Singularity/Apptainer images in HPC
           sudo chmod -R 777 /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}-sandbox/opt/conda || echo "Warning: /opt/conda may not exist in this image"
 
           echo "Converting sandbox to SIF image..."
