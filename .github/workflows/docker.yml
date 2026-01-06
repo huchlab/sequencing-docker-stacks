@@ -200,7 +200,13 @@ jobs:
     # If recipes using other images will be added, they should be added here as well
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
-    needs: [aarch64-datascience, x86_64-datascience, aarch64-sequencing-base, x86_64-sequencing-base]
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+      ]
 
   tag-push:
     uses: ./.github/workflows/docker-tag-push.yml
@@ -254,7 +260,13 @@ jobs:
       matrix:
         image: [datascience-notebook, sequencing-base-notebook]
         variant: [default]
-    needs: [aarch64-datascience, x86_64-datascience, aarch64-sequencing-base, x86_64-sequencing-base]
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+      ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   wiki-update:
