@@ -16,6 +16,7 @@ on:
       # https://docs.github.com/en/actions/sharing-automations/reusing-workflows
       - ".github/workflows/docker-build-test-upload.yml"
       - ".github/workflows/docker-tag-push.yml"
+      - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       # We use local composite actions to combine multiple workflow steps within one action
@@ -40,6 +41,7 @@ on:
       - ".github/workflows/docker.yml"
       - ".github/workflows/docker-build-test-upload.yml"
       - ".github/workflows/docker-tag-push.yml"
+      - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       - ".github/actions/apply-single-tags/action.yml"
@@ -234,16 +236,68 @@ jobs:
     needs: [aarch64-sequencing-base, x86_64-sequencing-base]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
+  apptainer-push:
+    uses: ./.github/workflows/docker-apptainer-push.yml
+    with:
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        image:
+          [
+            sequencing-base-notebook,
+            rnaseq-notebook,
+            singlecell-notebook,
+            multiomics-notebook,
+            spatial-notebook,
+          ]
+        variant: [default]
+    needs:
+      [
+        contributed-recipes,
+
+        aarch64-sequencing-base,
+        aarch64-rnaseq,
+        aarch64-singlecell,
+        aarch64-multiomics,
+        aarch64-spatial,
+
+        x86_64-sequencing-base,
+        x86_64-rnaseq,
+        x86_64-singlecell,
+        x86_64-multiomics,
+        x86_64-spatial,
+      ]
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  apptainer-push-fast:
+    uses: ./.github/workflows/docker-apptainer-push.yml
+    with:
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        image: [sequencing-base-notebook]
+        variant: [default]
+    needs: [aarch64-sequencing-base, x86_64-sequencing-base]
+    if: contains(github.event.pull_request.title, '[FAST_BUILD]')
+
   wiki-update:
     uses: ./.github/workflows/docker-wiki-update.yml
-    needs: tag-push
+    needs: [tag-push, apptainer-push]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
     permissions:
       contents: write
 
   wiki-update-fast:
     uses: ./.github/workflows/docker-wiki-update.yml
-    needs: tag-push-fast
+    needs: [tag-push-fast, apptainer-push-fast]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
     permissions:
       contents: write
