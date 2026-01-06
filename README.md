@@ -28,6 +28,17 @@ You don't need to be a Docker expert — just follow the Getting Started guide b
 Each container is a complete analysis environment with Jupyter notebooks, Python, R, and specialized bioinformatics tools.
 All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon) architectures.
 
+### Data Science — `datascience-notebook`
+
+**Best for:** General data science work with Python and R, data visualization, statistical analysis
+
+**Key Tools:**
+
+- Python scientific stack (NumPy, pandas, scikit-learn, matplotlib)
+- R with tidyverse and essential packages
+- Common data science libraries for both languages
+- Jupyter notebook extensions for enhanced productivity
+
 ### RNA-seq Analysis — `rnaseq-notebook`
 
 **Best for:** Bulk RNA sequencing analysis, differential gene expression, gene set enrichment
@@ -138,6 +149,9 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 Replace `singlecell-notebook` with your preferred container:
 
 ```bash
+# For data science work
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/datascience-notebook:2025-11-10
+
 # For RNA-seq analysis
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:2025-11-10
 
@@ -152,6 +166,7 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/m
 
 Images are tagged with dates and commit hashes for reproducibility. To view all available tags for a specific image:
 
+- [datascience-notebook tags](https://quay.io/repository/huchlab/datascience-notebook?tab=tags)
 - [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
 - [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
 - [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
