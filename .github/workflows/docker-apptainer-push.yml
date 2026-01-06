@@ -180,6 +180,7 @@ jobs:
             SINGULARITY_TAG="${tag}-singularity-aarch64"
 
             echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
+            # Simple retry mechanism - attempt twice with same command
             apptainer push /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}.sif \
               oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
             apptainer push /tmp/apptainer/${{ inputs.image }}-aarch64-${{ inputs.variant }}.sif \
@@ -206,6 +207,7 @@ jobs:
             SINGULARITY_TAG="${tag}-singularity-x86_64"
 
             echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
+            # Simple retry mechanism - attempt twice with same command
             apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
               oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
             apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
