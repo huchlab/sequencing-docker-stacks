@@ -138,7 +138,7 @@ jobs:
       - name: Push x86_64 Apptainer images to Registry 📤
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
-          # Read tags from the tags file and push only date and commit id tags with -singularity suffix
+          # Read tags from the tags file and push only date tags with -singularity suffix
           TAGS_FILE="/tmp/jupyter/tags/x86_64-${{ inputs.variant }}-${{ inputs.image }}.txt"
 
           if [ ! -f "$TAGS_FILE" ]; then
@@ -146,7 +146,7 @@ jobs:
             exit 1
           fi
 
-          # Filter for date (YYYY-MM-DD format) and commit SHA tags only
+          # Filter for date (YYYY-MM-DD format) tags only
           while IFS= read -r tag; do
             # Skip empty lines
             [ -z "$tag" ] && continue
@@ -159,8 +159,8 @@ jobs:
               TAG_PART="${TAG_PART#*-}"
             fi
 
-            # Only push if it's a date tag (YYYY-MM-DD) or commit SHA (7 hex chars)
-            if [[ "$TAG_PART" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || [[ "$TAG_PART" =~ ^[0-9a-f]{7}$ ]]; then
+            # Only push if it's a date tag (YYYY-MM-DD)
+            if [[ "$TAG_PART" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
               # Add -singularity suffix to the original full tag
               SINGULARITY_TAG="${tag##*:}-singularity"
 
