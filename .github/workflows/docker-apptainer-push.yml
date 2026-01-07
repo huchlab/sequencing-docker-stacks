@@ -94,6 +94,7 @@ jobs:
           DOCKER_IMAGE="${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}"
 
           # Create a definition file with post section to make /opt/conda writable
+          # Using variable substitution to write the actual image name directly into the file
           cat > /tmp/apptainer/Singularity << EOF
           Bootstrap: docker-daemon
           From: ${DOCKER_IMAGE}:latest
