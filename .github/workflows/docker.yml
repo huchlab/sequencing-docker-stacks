@@ -204,6 +204,7 @@ jobs:
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
     # Commented out sequencing-base for testing - only building datascience-notebook
+    # prettier-ignore
     needs:
       [
         aarch64-datascience,
@@ -223,6 +224,7 @@ jobs:
     strategy:
       matrix:
         # Commented out all but datascience-notebook for testing
+        # prettier-ignore
         image:
           [
             datascience-notebook,
@@ -233,6 +235,7 @@ jobs:
             # spatial-notebook,
           ]
         variant: [default]
+    # prettier-ignore
     needs:
       [
         contributed-recipes,
@@ -266,6 +269,7 @@ jobs:
         # Commented out sequencing-base for testing
         image: [datascience-notebook] # , sequencing-base-notebook]
         variant: [default]
+    # prettier-ignore
     needs:
       [
         aarch64-datascience,
@@ -286,6 +290,7 @@ jobs:
     strategy:
       matrix:
         # Commented out all but datascience for testing
+        # prettier-ignore
         image:
           [
             datascience-notebook,
