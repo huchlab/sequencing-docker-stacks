@@ -3,7 +3,7 @@ name: Download Docker image, convert to Apptainer/Singularity, and push to Regis
 env:
   REGISTRY: quay.io
   OWNER: ${{ github.repository_owner }}
-  PUSH_TO_REGISTRY: true # Temporarily enabled for testing - REVERT BEFORE MERGING
+  PUSH_TO_REGISTRY: ${{ github.repository_owner == 'huchlab' && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
 
 on:
   workflow_call:
