@@ -288,6 +288,7 @@ jobs:
         # prettier-ignore
         image:
           [
+            datascience-notebook,
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
@@ -299,6 +300,8 @@ jobs:
     # prettier-ignore
     needs:
       [
+        aarch64-datascience,
+        x86_64-datascience,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
         aarch64-rnaseq,
@@ -322,12 +325,14 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [sequencing-base-notebook]
+        image: [datascience-notebook, sequencing-base-notebook]
         variant: [default]
     # Depends on build jobs, not tag-push-fast (build jobs generate tag artifacts)
     # prettier-ignore
     needs:
       [
+        aarch64-datascience,
+        x86_64-datascience,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
       ]
