@@ -57,6 +57,7 @@ RUN mamba install --yes \
     'scvi-tools>=1.2.2' \
     # R
     'bioconductor-batchelor' \
+    'bioconductor-clusterprofiler' \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-nebulosa' \
@@ -72,6 +73,8 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
+    # next step because of zoo becomes corrupted otherwise on the aarch64 runners
+    mamba install r-zoo --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -82,6 +85,7 @@ RUN pip install --no-cache-dir \
     fa2_modified \
     fastcluster \
     "liana[extra]>=1.6.1" \
+    "omnipath>=1.0.12" \
     scikit-misc \
     "vitessce[all]" \
     && \

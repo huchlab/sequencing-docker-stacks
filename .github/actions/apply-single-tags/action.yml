@@ -23,7 +23,7 @@ runs:
         variant: ${{ inputs.variant }}
 
     - name: Download tags file 📥
-      uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags
         path: /tmp/jupyter/tags/
@@ -40,7 +40,7 @@ runs:
       shell: bash
 
     - name: Upload SBOM for the image 🧾
-      uses: anchore/sbom-action@fbfd9c6c189226748411491745178e0c2017392d # v0.20.10
+      uses: anchore/sbom-action@a930d0ac434e3182448fe678398ba5713717112a # v0.21.0
       with:
         image: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
         artifact-name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
