@@ -82,6 +82,8 @@ RUN pip install --no-cache-dir \
     fa2_modified \
     fastcluster \
     "liana[extra]>=1.6.1" \
+    corneto \
+    "pyscipopt==5.2.1" \
     scikit-misc \
     "vitessce[all]" \
     && \
