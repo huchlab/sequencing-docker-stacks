@@ -96,7 +96,7 @@ jobs:
           # Create a definition file with post section to make /opt/conda writable
           cat > /tmp/apptainer/Singularity << EOF
           Bootstrap: docker-daemon
-          From: docker://${DOCKER_IMAGE}:latest
+          From: ${DOCKER_IMAGE}:latest
 
           %post
               # Make /opt/conda writable for all users
@@ -119,7 +119,7 @@ jobs:
           EOF
 
           echo "Building Apptainer SIF image from Docker daemon using definition file..."
-          apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity
+          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity
 
           echo "Cleaning up Docker image..."
           docker rmi "$DOCKER_IMAGE:latest" || true
