@@ -28,6 +28,28 @@ You don't need to be a Docker expert — just follow the Getting Started guide b
 Each container is a complete analysis environment with Jupyter notebooks, Python, R, and specialized bioinformatics tools.
 All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon) architectures.
 
+### Data Science — `datascience-notebook`
+
+**Best for:** General data science work with Python and R, data visualization, statistical analysis
+
+**Key Tools:**
+
+- Python scientific stack (NumPy, pandas, scikit-learn, matplotlib)
+- R with tidyverse and essential packages
+- Common data science libraries for both languages
+- Jupyter notebook extensions for enhanced productivity
+
+### Sequencing Base — `sequencing-base-notebook`
+
+**Best for:** Foundation for bioinformatics workflows, provides common dependencies for sequencing analysis
+
+**Key Tools:**
+
+- All tools from datascience-notebook
+- Bioinformatics Python packages (biopython, pybiomart)
+- R/Bioconductor packages for genomic analysis (DESeq2, fgsea)
+- Base layer for specialized sequencing notebooks (RNA-seq, single-cell, etc.)
+
 ### RNA-seq Analysis — `rnaseq-notebook`
 
 **Best for:** Bulk RNA sequencing analysis, differential gene expression, gene set enrichment
@@ -138,6 +160,12 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 Replace `singlecell-notebook` with your preferred container:
 
 ```bash
+# For data science work
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/datascience-notebook:2025-11-10
+
+# For sequencing analysis base (foundation for bioinformatics)
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/sequencing-base-notebook:2025-11-10
+
 # For RNA-seq analysis
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:2025-11-10
 
@@ -148,10 +176,36 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:2025-11-10
 ```
 
+### Using Apptainer/Singularity Images
+
+For HPC environments that use Apptainer (formerly Singularity) instead of Docker, we provide pre-built Apptainer images on quay.io.
+These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages.
+
+**Note:** Apptainer images are currently available for x86_64 architecture only.
+
+Example usage:
+
+```bash
+# Run directly without pulling first
+apptainer run oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
+```
+
+All available images work with Apptainer:
+
+- `rnaseq-notebook`
+- `singlecell-notebook`
+- `spatial-notebook`
+- `multiomics-notebook`
+- `sequencing-base-notebook`
+
+Tags follow the pattern: `{date}-singularity` (e.g., `2025-11-10-singularity`)
+
 ### Choose Specific Versions
 
 Images are tagged with dates and commit hashes for reproducibility. To view all available tags for a specific image:
 
+- [datascience-notebook tags](https://quay.io/repository/huchlab/datascience-notebook?tab=tags)
+- [sequencing-base-notebook tags](https://quay.io/repository/huchlab/sequencing-base-notebook?tab=tags)
 - [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
 - [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
 - [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
@@ -197,6 +251,10 @@ Each container comes with dozens of pre-installed tools. For complete lists of i
 
 These containers are built on the [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) foundation and incorporates experience from the
 [Singularity Single Cell container](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell).
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=huchlab/sequencing-docker-stacks&type=Date)](https://star-history.com/#huchlab/sequencing-docker-stacks&Date)
 
 ## Development
 
