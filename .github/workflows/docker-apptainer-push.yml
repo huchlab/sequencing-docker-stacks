@@ -88,7 +88,7 @@ jobs:
           mkdir -p /tmp/apptainer/
 
           echo "Decompressing Docker tar archive..."
-          zstd --uncompress --stdout /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst > /tmp/apptainer/image.tar
+          zstd --uncompress --stdout --rm /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst > /tmp/apptainer/image.tar
 
           echo "Copying Singularity definition template..."
           cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def
