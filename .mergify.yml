@@ -26,10 +26,12 @@ queue_rules:
               - -files~=^\.github/workflows/docker\.yml$
               - -files~=^\.github/workflows/docker-build-test-upload\.yml$
               - -files~=^\.github/workflows/docker-tag-push\.yml$
+              - -files~=^\.github/workflows/docker-apptainer-push\.yml$
               - -files~=^\.github/workflows/docker-wiki-update\.yml$
               - -files~=^\.github/actions/apply-single-tags/action\.yml$
               - -files~=^\.github/actions/create-dev-env/action\.yml$
               - -files~=^\.github/actions/load-image/action\.yml$
+              - -files~=^\.github/apptainer/
               - or:
                   - -files~=^images/
                   - and:
@@ -67,6 +69,12 @@ queue_rules:
               - check-success = tag-push (sequencing-base-notebook, default) / tag-push
               - check-success = tag-push (singlecell-notebook, default) / tag-push
               - check-success = tag-push (spatial-notebook, default) / tag-push
+              - check-success = apptainer-push (datascience-notebook, default) / apptainer-push
+              - check-success = apptainer-push (sequencing-base-notebook, default) / apptainer-push
+              - check-success = apptainer-push (rnaseq-notebook, default) / apptainer-push
+              - check-success = apptainer-push (singlecell-notebook, default) / apptainer-push
+              - check-success = apptainer-push (multiomics-notebook, default) / apptainer-push
+              - check-success = apptainer-push (spatial-notebook, default) / apptainer-push
               - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot

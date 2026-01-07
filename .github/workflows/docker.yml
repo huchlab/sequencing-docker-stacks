@@ -202,6 +202,7 @@ jobs:
     # If recipes using other images will be added, they should be added here as well
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
+    # prettier-ignore
     needs:
       [
         aarch64-datascience,
@@ -220,6 +221,7 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
+        # prettier-ignore
         image:
           [
             datascience-notebook,
@@ -230,6 +232,7 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
+    # prettier-ignore
     needs:
       [
         contributed-recipes,
@@ -262,6 +265,7 @@ jobs:
       matrix:
         image: [datascience-notebook, sequencing-base-notebook]
         variant: [default]
+    # prettier-ignore
     needs:
       [
         aarch64-datascience,
@@ -281,8 +285,10 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
+        # prettier-ignore
         image:
           [
+            datascience-notebook,
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
@@ -290,7 +296,23 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
-    needs: [tag-push]
+    # Depends on build jobs, not tag-push (build jobs generate tag artifacts)
+    # prettier-ignore
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+        aarch64-rnaseq,
+        x86_64-rnaseq,
+        aarch64-singlecell,
+        x86_64-singlecell,
+        aarch64-multiomics,
+        x86_64-multiomics,
+        aarch64-spatial,
+        x86_64-spatial,
+      ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   apptainer-push-fast:
@@ -303,9 +325,17 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [sequencing-base-notebook]
+        image: [datascience-notebook, sequencing-base-notebook]
         variant: [default]
-    needs: [tag-push-fast]
+    # Depends on build jobs, not tag-push-fast (build jobs generate tag artifacts)
+    # prettier-ignore
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+      ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   wiki-update:
