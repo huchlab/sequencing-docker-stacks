@@ -87,43 +87,17 @@ jobs:
         run: |
           mkdir -p /tmp/apptainer/
 
-          echo "Decompressing and loading Docker tar to Docker daemon..."
-          zstd --uncompress --stdout --rm /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst | docker load
+          echo "Decompressing Docker tar archive..."
+          zstd --uncompress --stdout /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst > /tmp/apptainer/image.tar
 
-          # Get the image name from docker images
-          DOCKER_IMAGE="${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}"
+          echo "Copying Singularity definition template..."
+          cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def
 
-          # Create a definition file with post section to make /opt/conda writable
-          # Using variable substitution to write the actual image name directly into the file
-          cat > /tmp/apptainer/Singularity << EOF
-          Bootstrap: docker-daemon
-          From: ${DOCKER_IMAGE}:latest
+          echo "Building Apptainer SIF image from Docker archive using definition file..."
+          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity.def
 
-          %post
-              # Make /opt/conda writable for all users
-              # This is essential for HPC environments where users lack sudo access
-              if [ -d /opt/conda ]; then
-                  chmod -R 777 /opt/conda
-                  echo "Made /opt/conda writable for all users"
-              else
-                  echo "Warning: /opt/conda does not exist in this image"
-              fi
-
-          %labels
-              Maintainer huchlab
-              Architecture x86_64
-
-          %help
-              Apptainer/Singularity image from sequencing-docker-stacks.
-              /opt/conda is writable - install packages with: apptainer exec image.sif pip install <package>
-              More info: https://github.com/huchlab/sequencing-docker-stacks
-          EOF
-
-          echo "Building Apptainer SIF image from Docker daemon using definition file..."
-          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity
-
-          echo "Cleaning up Docker image..."
-          docker rmi "$DOCKER_IMAGE:latest" || true
+          echo "Cleaning up temporary files..."
+          rm -f /tmp/apptainer/image.tar /tmp/apptainer/Singularity.def
 
           echo "Apptainer image created successfully"
           ls -lh /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif
