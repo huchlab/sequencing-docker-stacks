@@ -82,7 +82,7 @@ RUN pip install --no-cache-dir \
     fa2_modified \
     fastcluster \
     "liana[extra]>=1.6.1" \
-    # fixed #438: pin pyscipopt to 5.2.1 to resolve corneto dependency conflicts
+    # fixes #438: pin pyscipopt to 5.2.1 to resolve corneto dependency conflicts
     corneto \
     "pyscipopt==5.2.1" \
     scikit-misc \
