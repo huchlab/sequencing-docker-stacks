@@ -86,113 +86,114 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 25
 
-  aarch64-sequencing-base:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: datascience-notebook
-      image: sequencing-base-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 25
-    needs: aarch64-datascience
+  # Commented out for testing purposes - only building datascience-notebook
+  # aarch64-sequencing-base:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: datascience-notebook
+  #     image: sequencing-base-notebook
+  #     platform: aarch64
+  #     runs-on: ubuntu-24.04-arm
+  #     timeout-minutes: 25
+  #   needs: aarch64-datascience
 
-  x86_64-sequencing-base:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: datascience-notebook
-      image: sequencing-base-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 25
-    needs: x86_64-datascience
+  # x86_64-sequencing-base:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: datascience-notebook
+  #     image: sequencing-base-notebook
+  #     platform: x86_64
+  #     runs-on: ubuntu-24.04
+  #     timeout-minutes: 25
+  #   needs: x86_64-datascience
 
-  aarch64-rnaseq:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: sequencing-base-notebook
-      image: rnaseq-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 30
-    needs: aarch64-sequencing-base
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # aarch64-rnaseq:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: sequencing-base-notebook
+  #     image: rnaseq-notebook
+  #     platform: aarch64
+  #     runs-on: ubuntu-24.04-arm
+  #     timeout-minutes: 30
+  #   needs: aarch64-sequencing-base
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-rnaseq:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: sequencing-base-notebook
-      image: rnaseq-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 45
-    needs: x86_64-sequencing-base
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # x86_64-rnaseq:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: sequencing-base-notebook
+  #     image: rnaseq-notebook
+  #     platform: x86_64
+  #     runs-on: ubuntu-24.04
+  #     timeout-minutes: 45
+  #   needs: x86_64-sequencing-base
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  aarch64-singlecell:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: sequencing-base-notebook
-      image: singlecell-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 40
-    needs: aarch64-sequencing-base
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # aarch64-singlecell:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: sequencing-base-notebook
+  #     image: singlecell-notebook
+  #     platform: aarch64
+  #     runs-on: ubuntu-24.04-arm
+  #     timeout-minutes: 40
+  #   needs: aarch64-sequencing-base
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-singlecell:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: sequencing-base-notebook
-      image: singlecell-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 40
-    needs: x86_64-sequencing-base
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # x86_64-singlecell:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: sequencing-base-notebook
+  #     image: singlecell-notebook
+  #     platform: x86_64
+  #     runs-on: ubuntu-24.04
+  #     timeout-minutes: 40
+  #   needs: x86_64-sequencing-base
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  aarch64-multiomics:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: singlecell-notebook
-      image: multiomics-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 40
-    needs: aarch64-singlecell
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # aarch64-multiomics:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: singlecell-notebook
+  #     image: multiomics-notebook
+  #     platform: aarch64
+  #     runs-on: ubuntu-24.04-arm
+  #     timeout-minutes: 40
+  #   needs: aarch64-singlecell
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-multiomics:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: singlecell-notebook
-      image: multiomics-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 40
-    needs: x86_64-singlecell
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # x86_64-multiomics:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: singlecell-notebook
+  #     image: multiomics-notebook
+  #     platform: x86_64
+  #     runs-on: ubuntu-24.04
+  #     timeout-minutes: 40
+  #   needs: x86_64-singlecell
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  aarch64-spatial:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: singlecell-notebook
-      image: spatial-notebook
-      platform: aarch64
-      runs-on: ubuntu-24.04-arm
-      timeout-minutes: 40
-    needs: aarch64-singlecell
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # aarch64-spatial:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: singlecell-notebook
+  #     image: spatial-notebook
+  #     platform: aarch64
+  #     runs-on: ubuntu-24.04-arm
+  #     timeout-minutes: 40
+  #   needs: aarch64-singlecell
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
-  x86_64-spatial:
-    uses: ./.github/workflows/docker-build-test-upload.yml
-    with:
-      parent-image: singlecell-notebook
-      image: spatial-notebook
-      platform: x86_64
-      runs-on: ubuntu-24.04
-      timeout-minutes: 40
-    needs: x86_64-singlecell
-    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+  # x86_64-spatial:
+  #   uses: ./.github/workflows/docker-build-test-upload.yml
+  #   with:
+  #     parent-image: singlecell-notebook
+  #     image: spatial-notebook
+  #     platform: x86_64
+  #     runs-on: ubuntu-24.04
+  #     timeout-minutes: 40
+  #   needs: x86_64-singlecell
+  #   if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   contributed-recipes:
     uses: ./.github/workflows/contributed-recipes.yml
@@ -202,12 +203,13 @@ jobs:
     # If recipes using other images will be added, they should be added here as well
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
+    # Commented out sequencing-base for testing - only building datascience-notebook
     needs:
       [
         aarch64-datascience,
         x86_64-datascience,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
+        # aarch64-sequencing-base,
+        # x86_64-sequencing-base,
       ]
 
   tag-push:
@@ -220,14 +222,15 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
+        # Commented out all but datascience-notebook for testing
         image:
           [
             datascience-notebook,
-            sequencing-base-notebook,
-            rnaseq-notebook,
-            singlecell-notebook,
-            multiomics-notebook,
-            spatial-notebook,
+            # sequencing-base-notebook,
+            # rnaseq-notebook,
+            # singlecell-notebook,
+            # multiomics-notebook,
+            # spatial-notebook,
           ]
         variant: [default]
     needs:
@@ -235,18 +238,18 @@ jobs:
         contributed-recipes,
 
         aarch64-datascience,
-        aarch64-sequencing-base,
-        aarch64-rnaseq,
-        aarch64-singlecell,
-        aarch64-multiomics,
-        aarch64-spatial,
+        # aarch64-sequencing-base,
+        # aarch64-rnaseq,
+        # aarch64-singlecell,
+        # aarch64-multiomics,
+        # aarch64-spatial,
 
         x86_64-datascience,
-        x86_64-sequencing-base,
-        x86_64-rnaseq,
-        x86_64-singlecell,
-        x86_64-multiomics,
-        x86_64-spatial,
+        # x86_64-sequencing-base,
+        # x86_64-rnaseq,
+        # x86_64-singlecell,
+        # x86_64-multiomics,
+        # x86_64-spatial,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -260,14 +263,15 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [datascience-notebook, sequencing-base-notebook]
+        # Commented out sequencing-base for testing
+        image: [datascience-notebook] # , sequencing-base-notebook]
         variant: [default]
     needs:
       [
         aarch64-datascience,
         x86_64-datascience,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
+        # aarch64-sequencing-base,
+        # x86_64-sequencing-base,
       ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
@@ -281,13 +285,15 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
+        # Commented out all but datascience for testing
         image:
           [
-            sequencing-base-notebook,
-            rnaseq-notebook,
-            singlecell-notebook,
-            multiomics-notebook,
-            spatial-notebook,
+            datascience-notebook,
+            # sequencing-base-notebook,
+            # rnaseq-notebook,
+            # singlecell-notebook,
+            # multiomics-notebook,
+            # spatial-notebook,
           ]
         variant: [default]
     needs: [tag-push]
@@ -303,7 +309,8 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [sequencing-base-notebook]
+        # Commented out sequencing-base for testing
+        image: [datascience-notebook] # , sequencing-base-notebook]
         variant: [default]
     needs: [tag-push-fast]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
