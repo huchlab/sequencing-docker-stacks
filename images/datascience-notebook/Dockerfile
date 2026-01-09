@@ -53,6 +53,7 @@ RUN git lfs install && \
         'r-fastcluster' \
         'r-feather' \
         'r-ggally' \
+        'r-ggpmisc' \
         'r-ggpubr' \
         'r-ggrepel' \
         'r-ggsci' \
