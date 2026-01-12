@@ -7,11 +7,12 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 ## Available Containers
 
+- **datascience-notebook**: Data science base with Python and R for the Huch lab
 - **rnaseq-notebook**: Bulk RNA-seq analysis (DESeq2)
 - **singlecell-notebook**: Single-cell RNA-seq analysis (Scanpy, Seurat)
 - **spatial-notebook**: Spatial transcriptomics (Squidpy, SpatialData)
 - **multiomics-notebook**: Multi-omics analysis (MOFA2, muon)
-- **sequencing-base-notebook**: Base image with common dependencies
+- **sequencing-base-notebook**: Sequencing base with bioinformatics tools (inherits from datascience-notebook)
 
 ## Key Technologies
 
@@ -58,7 +59,9 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
   - If mypy reports "Cannot find implementation or library stub" errors
   - Add the missing packages to `mypy.ini` with `ignore_missing_imports = True`
   - Format: `[mypy-package_name.*]` followed by `ignore_missing_imports = True`
-- **When modifying README.md or adding documentation:**
+- **When modifying README.md or any Markdown file:**
+  - **CRITICAL: Run `npx markdownlint-cli2 <file.md>` on every Markdown file you modify before committing**
+  - **Line length limit is 200 characters** - split long lines to comply
   - Run `make docs` to ensure Sphinx can build the documentation
   - Run `make linkcheck-docs` to verify all external links (redirects cause warnings)
   - Fix any cross-reference warnings or build errors
@@ -175,15 +178,50 @@ When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
    - **If tests import packages not in mypy.ini:** Add them to `mypy.ini` with `ignore_missing_imports = True`
 6. Update documentation
 
-### Updating Dependencies
+### Adding Packages to Images
 
 1. **Prefer mamba for package installation** (check availability for both x86_64 and aarch64)
-2. If not available via mamba for both architectures, use pip (Python) or R install methods
-3. Modify Dockerfile with new package requirements
-4. If package name differs from import name, update `PACKAGE_MAPPING` in `tests/by_image/docker-stacks-foundation/test_packages.py`
-5. Rebuild image to test
-6. Run tests to ensure nothing breaks
-7. Update manifest documentation
+2. Modify Dockerfile with new package requirements
+3. For mamba installation, no unit test with just import of package is needed. If package name differs from import name, update `PACKAGE_MAPPING` in `tests/by_image/docker-stacks-foundation/test_packages.py`.
+4. If not available via mamba for both architectures, use pip (Python) or R install methods.
+5. In this case, write a unit test for the import. Also add this package to `mypy.ini`.
+6. Rebuild image to test
+7. Run tests to ensure nothing breaks
+8. Update manifest documentation
+
+### Adding R Packages to Images
+
+When asked to install an R package (e.g., "install r package ... into ...notebook"):
+
+1. **Check mamba availability for both architectures:**
+   - Use `micromamba search -c conda-forge <package-name>` for x86_64
+   - Use `micromamba search -c conda-forge <package-name> --platform linux-aarch64` for aarch64
+   - R packages in conda-forge are typically named with `r-` prefix (e.g., `r-openxlsx2`)
+   - R packages from Bioconductor often start with `bioconductor-` prefix (e.g., `bioconductor-deseq2`)
+
+2. **If available via mamba for both architectures:**
+   - Add to the mamba install section in the Dockerfile
+   - No additional unit test needed (automatic import test via `test_packages.py`)
+   - Update `PACKAGE_MAPPING` only if package name differs from library name
+
+3. **If NOT available via mamba for both architectures:**
+   - Install using `install.packages()` in a separate RUN command
+   - Format: `RUN R -e "install.packages('<package-name>', repos = 'https://cloud.r-project.org/', Ncpus = 4)"`
+   - Create a unit test in `tests/by_image/<image-name>/units/unit_r-<package-name>.py`
+   - Test format:
+
+     ```python
+     from rpy2.robjects import r
+
+     r("library(<library-name>)")
+     ```
+
+   - Note: R package names are often different from library names (e.g., package `cellchat` loads as `library(CellChat)`, or package `milor` loads as `library(miloR)`)
+
+4. **For packages from GitHub:**
+   - Use `remotes::install_github()` (see `singlecell-notebook` Dockerfile for examples)
+   - Add unit test as above
+   - May require GITHUB_PAT secret for authentication
 
 ### Fixing CI/CD Issues
 

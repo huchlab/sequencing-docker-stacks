@@ -16,6 +16,7 @@ on:
       # https://docs.github.com/en/actions/sharing-automations/reusing-workflows
       - ".github/workflows/docker-build-test-upload.yml"
       - ".github/workflows/docker-tag-push.yml"
+      - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       # We use local composite actions to combine multiple workflow steps within one action
@@ -40,6 +41,7 @@ on:
       - ".github/workflows/docker.yml"
       - ".github/workflows/docker-build-test-upload.yml"
       - ".github/workflows/docker-tag-push.yml"
+      - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       - ".github/actions/apply-single-tags/action.yml"
@@ -66,23 +68,43 @@ permissions:
   contents: write
 
 jobs:
-  aarch64-sequencing-base:
+  aarch64-datascience:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
-      image: sequencing-base-notebook
+      image: datascience-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 25
 
-  x86_64-sequencing-base:
+  x86_64-datascience:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
+      image: datascience-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 25
+
+  aarch64-sequencing-base:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: datascience-notebook
+      image: sequencing-base-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 25
+    needs: aarch64-datascience
+
+  x86_64-sequencing-base:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: datascience-notebook
       image: sequencing-base-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 25
+    needs: x86_64-datascience
 
   aarch64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
@@ -180,7 +202,14 @@ jobs:
     # If recipes using other images will be added, they should be added here as well
     #
     # contributed-recipes will give an error if the image is not yet built and uploaded
-    needs: [aarch64-sequencing-base, x86_64-sequencing-base]
+    # prettier-ignore
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+      ]
 
   tag-push:
     uses: ./.github/workflows/docker-tag-push.yml
@@ -192,8 +221,10 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
+        # prettier-ignore
         image:
           [
+            datascience-notebook,
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
@@ -201,16 +232,19 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
+    # prettier-ignore
     needs:
       [
         contributed-recipes,
 
+        aarch64-datascience,
         aarch64-sequencing-base,
         aarch64-rnaseq,
         aarch64-singlecell,
         aarch64-multiomics,
         aarch64-spatial,
 
+        x86_64-datascience,
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
@@ -229,9 +263,79 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [sequencing-base-notebook]
+        image: [datascience-notebook, sequencing-base-notebook]
         variant: [default]
-    needs: [aarch64-sequencing-base, x86_64-sequencing-base]
+    # prettier-ignore
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+      ]
+    if: contains(github.event.pull_request.title, '[FAST_BUILD]')
+
+  apptainer-push:
+    uses: ./.github/workflows/docker-apptainer-push.yml
+    with:
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        # prettier-ignore
+        image:
+          [
+            datascience-notebook,
+            sequencing-base-notebook,
+            rnaseq-notebook,
+            singlecell-notebook,
+            multiomics-notebook,
+            spatial-notebook,
+          ]
+        variant: [default]
+    # Depends on build jobs, not tag-push (build jobs generate tag artifacts)
+    # prettier-ignore
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+        aarch64-rnaseq,
+        x86_64-rnaseq,
+        aarch64-singlecell,
+        x86_64-singlecell,
+        aarch64-multiomics,
+        x86_64-multiomics,
+        aarch64-spatial,
+        x86_64-spatial,
+      ]
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  apptainer-push-fast:
+    uses: ./.github/workflows/docker-apptainer-push.yml
+    with:
+      image: ${{ matrix.image }}
+      variant: ${{ matrix.variant }}
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+      REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+    strategy:
+      matrix:
+        image: [datascience-notebook, sequencing-base-notebook]
+        variant: [default]
+    # Depends on build jobs, not tag-push-fast (build jobs generate tag artifacts)
+    # prettier-ignore
+    needs:
+      [
+        aarch64-datascience,
+        x86_64-datascience,
+        aarch64-sequencing-base,
+        x86_64-sequencing-base,
+      ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   wiki-update:

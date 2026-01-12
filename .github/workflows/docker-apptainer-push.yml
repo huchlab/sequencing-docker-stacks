@@ -1,0 +1,156 @@
+name: Download Docker image, convert to Apptainer/Singularity, and push to Registry
+
+env:
+  REGISTRY: quay.io
+  OWNER: ${{ github.repository_owner }}
+  PUSH_TO_REGISTRY: ${{ github.repository_owner == 'huchlab' && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Image name
+        required: true
+        type: string
+      variant:
+        description: Variant tag prefix
+        required: true
+        type: string
+      timeout-minutes:
+        description: Timeout in minutes
+        default: 60
+        type: number
+    secrets:
+      REGISTRY_USERNAME:
+        required: true
+      REGISTRY_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  apptainer-push:
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+
+    steps:
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Free Disk Space
+        uses: endersonmenezes/free-disk-space@v3
+        with:
+          remove_android: true
+          remove_dotnet: true
+          remove_haskell: true
+          remove_tool_cache: true
+          remove_swap: true
+          remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
+          remove_packages_one_command: true
+          remove_folders: "/usr/share/swift /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
+          rm_cmd: "rmz"
+
+      - name: Create dev environment 📦
+        uses: ./.github/actions/create-dev-env
+
+      - name: Install Apptainer 🔧
+        run: |
+          # Install dependencies
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            software-properties-common \
+            wget
+
+          # Add Apptainer repository and install
+          sudo add-apt-repository -y ppa:apptainer/ppa
+          sudo apt-get update -y
+          sudo apt-get install -y apptainer
+
+          # Verify installation
+          apptainer --version
+        shell: bash
+
+      - name: Download x86_64 image tar 📥
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}
+          path: /tmp/jupyter/images/
+
+      - name: Download x86_64 tags file 📥
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}-tags
+          path: /tmp/jupyter/tags/
+
+      - name: Convert x86_64 Docker image to Apptainer 🔄
+        run: |
+          mkdir -p /tmp/apptainer/
+
+          echo "Decompressing Docker tar archive..."
+          zstd --uncompress --stdout --rm /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst > /tmp/apptainer/image.tar
+
+          echo "Copying Singularity definition template..."
+          cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def
+
+          echo "Building Apptainer SIF image from Docker archive using definition file..."
+          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity.def
+
+          echo "Cleaning up temporary files..."
+          rm -f /tmp/apptainer/image.tar /tmp/apptainer/Singularity.def
+
+          echo "Apptainer image created successfully"
+          ls -lh /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif
+        shell: bash
+
+      - name: Login to Registry 🔐
+        if: env.PUSH_TO_REGISTRY == 'true'
+        run: |
+          echo "${{ secrets.REGISTRY_TOKEN }}" | apptainer remote login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin oras://${{ env.REGISTRY }}
+        shell: bash
+        id: login
+
+      - name: Push x86_64 Apptainer images to Registry 📤
+        if: env.PUSH_TO_REGISTRY == 'true'
+        run: |
+          # Read tags from the tags file and push only date tags with -singularity suffix
+          TAGS_FILE="/tmp/jupyter/tags/x86_64-${{ inputs.variant }}-${{ inputs.image }}.txt"
+
+          if [ ! -f "$TAGS_FILE" ]; then
+            echo "Tags file not found: $TAGS_FILE"
+            exit 1
+          fi
+
+          # Filter for date (YYYY-MM-DD format) tags only
+          while IFS= read -r tag; do
+            # Skip empty lines
+            [ -z "$tag" ] && continue
+
+            # Extract the tag part after the image name and colon
+            TAG_PART="${tag##*:}"
+
+            # Skip if it has a prefix (variant)
+            if [[ "$TAG_PART" == *"-"* ]]; then
+              TAG_PART="${TAG_PART#*-}"
+            fi
+
+            # Only push if it's a date tag (YYYY-MM-DD)
+            if [[ "$TAG_PART" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+              # Add -singularity suffix to the original full tag
+              SINGULARITY_TAG="${tag##*:}-singularity"
+
+              echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
+              # Simple retry mechanism - attempt twice with same command
+              apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
+                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
+              apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
+                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG
+            fi
+          done < "$TAGS_FILE"
+        shell: bash
+
+      - name: Logout from Registry 🔐
+        if: always() && env.PUSH_TO_REGISTRY == 'true' && steps.login.outcome == 'success'
+        run: |
+          apptainer remote logout oras://${{ env.REGISTRY }}
+        shell: bash

@@ -18,26 +18,26 @@ jobs:
 
     steps:
       - name: Checkout Repo ⚡️
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
       - name: Download all history lines 📥
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           pattern: "*-history_line"
           path: /tmp/jupyter/hist_lines/
 
       - name: Download all manifests 📥
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           pattern: "*-manifest"
           path: /tmp/jupyter/manifests/
 
       - name: Checkout Wiki Repo 📃
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: ${{ github.repository }}.wiki
           path: wiki_src/
@@ -53,7 +53,7 @@ jobs:
 
       - name: Push Wiki to GitHub 📤
         if: env.PUSH_TO_REGISTRY == 'true'
-        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 # v7.0.0
+        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         with:
           commit_message: "Automated wiki publish for ${{ github.sha }}"
           repository: wiki_src/

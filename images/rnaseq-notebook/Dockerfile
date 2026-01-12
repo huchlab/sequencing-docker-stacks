@@ -38,6 +38,7 @@ RUN mamba install --yes \
     'bioconductor-org.mm.eg.db' \
     'bioconductor-reactomepa' \
     'bioconductor-scuttle' \
+    'bioconductor-sva' \
     'bioconductor-tximeta' \
     'bioconductor-tximport' \
     'bioconductor-variancepartition' \
@@ -48,6 +49,8 @@ RUN mamba install --yes \
     'r-magick' \
     'r-robustrankaggreg' \
     && \
+    # next step because of zoo becomes corrupted otherwise on the aarch64 runners
+    mamba install r-zoo --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"

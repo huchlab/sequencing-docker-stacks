@@ -56,9 +56,10 @@ RUN mamba install --yes \
     'scvelo' \
     'scvi-tools>=1.2.2' \
     # R
+    'bioconductor-batchelor' \
+    'bioconductor-clusterprofiler' \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
-    'bioconductor-monocle' \
     'bioconductor-nebulosa' \
     'bioconductor-scater' \
     'bioconductor-scran' \
@@ -66,24 +67,30 @@ RUN mamba install --yes \
     'bioconductor-zellkonverter' \
     'r-presto' \
     'r-anndata' \
+    'r-clustree' \
     'r-data.table' \
+    'r-harmony' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
+    # next step because of zoo becomes corrupted otherwise on the aarch64 runners
+    mamba install r-zoo --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# packages not available for arm64 on conda
-RUN uv pip install --system --no-cache-dir \
+# packages not available for one or both architectures on conda
+RUN pip install --no-cache-dir \
+    cytetype \
     fa2_modified \
     fastcluster \
+    "liana>=1.6.1" \
+    "omnipath>=1.0.12" \
     scikit-misc \
     "vitessce[all]" \
     && \
-    uv pip install --system --no-cache-dir "liana>=1.6.1" && \
     # do not install dependencies for cellbender (they include jupyter)
-    uv pip install --system --no-cache-dir --no-deps cellbender
+    pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "options(warn = 2); BiocManager::install('miloR', Ncpus = 4, ask = FALSE, update = FALSE)" && \

@@ -4,22 +4,78 @@ queue_rules:
       - check-success = pre-commit.ci - pr
     merge_conditions:
       - check-success = pre-commit.ci - pr
-      - check-success = x86_64-sequencing-base / build-test-upload
-      - check-success = aarch64-sequencing-base / build-test-upload
-      - check-success = x86_64-rnaseq / build-test-upload
-      - check-success = aarch64-rnaseq / build-test-upload
-      - check-success = x86_64-singlecell / build-test-upload
-      - check-success = aarch64-singlecell / build-test-upload
-      - check-success = x86_64-spatial / build-test-upload
-      - check-success = aarch64-spatial / build-test-upload
-      - check-success = x86_64-multiomics / build-test-upload
-      - check-success = aarch64-multiomics / build-test-upload
-      - check-success=tag-push (multiomics-notebook, default) / tag-push
-      - check-success=tag-push (rnaseq-notebook, default) / tag-push
-      - check-success=tag-push (sequencing-base-notebook, default) / tag-push
-      - check-success=tag-push (singlecell-notebook, default) / tag-push
-      - check-success=tag-push (spatial-notebook, default) / tag-push
-      - check-success = wiki-update / wiki-update
+      # If any docs-triggering files changed, require build-docs check; otherwise skip it
+      - or:
+          # Skip build-docs check if no docs-triggering files changed
+          - and:
+              - -files~=^\.github/workflows/sphinx\.yml$
+              - -files=Makefile
+              - -files~=^docs/
+              - -files=README.md
+              - -files=CHANGELOG.md
+              - -files=tagging/manifests/apt_packages.py
+              - -files=tagging/manifests/manifest_interface.py
+              - -files=tagging/taggers/sha.py
+              - -files=tagging/taggers/tagger_interface.py
+          # build-docs check passed
+          - check-success = build-docs
+      # If any build-triggering files changed, require all build checks; otherwise no build checks needed
+      - or:
+          # Skip build checks if no build-triggering files changed
+          - and:
+              - -files~=^\.github/workflows/docker\.yml$
+              - -files~=^\.github/workflows/docker-build-test-upload\.yml$
+              - -files~=^\.github/workflows/docker-tag-push\.yml$
+              - -files~=^\.github/workflows/docker-apptainer-push\.yml$
+              - -files~=^\.github/workflows/docker-wiki-update\.yml$
+              - -files~=^\.github/actions/apply-single-tags/action\.yml$
+              - -files~=^\.github/actions/create-dev-env/action\.yml$
+              - -files~=^\.github/actions/load-image/action\.yml$
+              - -files~=^\.github/apptainer/
+              - or:
+                  - -files~=^images/
+                  - and:
+                      - files~=^images/.*README\.md$
+                      - -files~=^images/(?!.*README\.md$).*
+              - or:
+                  - -files~=^tagging/
+                  - and:
+                      - files~=^tagging/.*README\.md$
+                      - -files~=^tagging/(?!.*README\.md$).*
+              - or:
+                  - -files~=^tests/
+                  - and:
+                      - files~=^tests/.*README\.md$
+                      - -files~=^tests/(?!.*README\.md$).*
+              - -files~=^wiki/
+              - -files=requirements-dev.txt
+          # Build checks passed
+          - and:
+              - check-success = x86_64-datascience / build-test-upload
+              - check-success = aarch64-datascience / build-test-upload
+              - check-success = x86_64-sequencing-base / build-test-upload
+              - check-success = aarch64-sequencing-base / build-test-upload
+              - check-success = x86_64-rnaseq / build-test-upload
+              - check-success = aarch64-rnaseq / build-test-upload
+              - check-success = x86_64-singlecell / build-test-upload
+              - check-success = aarch64-singlecell / build-test-upload
+              - check-success = x86_64-spatial / build-test-upload
+              - check-success = aarch64-spatial / build-test-upload
+              - check-success = x86_64-multiomics / build-test-upload
+              - check-success = aarch64-multiomics / build-test-upload
+              - check-success = tag-push (datascience-notebook, default) / tag-push
+              - check-success = tag-push (multiomics-notebook, default) / tag-push
+              - check-success = tag-push (rnaseq-notebook, default) / tag-push
+              - check-success = tag-push (sequencing-base-notebook, default) / tag-push
+              - check-success = tag-push (singlecell-notebook, default) / tag-push
+              - check-success = tag-push (spatial-notebook, default) / tag-push
+              - check-success = apptainer-push (datascience-notebook, default) / apptainer-push
+              - check-success = apptainer-push (sequencing-base-notebook, default) / apptainer-push
+              - check-success = apptainer-push (rnaseq-notebook, default) / apptainer-push
+              - check-success = apptainer-push (singlecell-notebook, default) / apptainer-push
+              - check-success = apptainer-push (multiomics-notebook, default) / apptainer-push
+              - check-success = apptainer-push (spatial-notebook, default) / apptainer-push
+              - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot
     batch_size: 3
