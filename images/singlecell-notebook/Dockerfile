@@ -96,6 +96,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "options(warn = 2); BiocManager::install('miloR', Ncpus = 4, ask = FALSE, update = FALSE)" && \
     R -e "install.packages('scCustomize', repos = 'https://cloud.r-project.org/', Ncpus = 4)" && \
     R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
-    R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)"
+    R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)" && \
+    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', Ncpus = 4, upgrade = FALSE, force = TRUE)"
 
 USER ${NB_UID}
