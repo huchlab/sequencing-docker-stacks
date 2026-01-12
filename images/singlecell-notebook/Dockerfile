@@ -61,6 +61,7 @@ RUN mamba install --yes \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-nebulosa' \
+    'bioconductor-org.hs.eg.db' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
