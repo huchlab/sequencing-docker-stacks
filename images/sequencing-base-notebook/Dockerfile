@@ -24,10 +24,7 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 USER ${NB_UID}
 
-RUN git lfs install && \
-    conda config --append channels bioconda && \
-    echo "r-base >=4.5" >> /opt/conda/conda-meta/pinned && \
-    mamba install --yes \
+RUN mamba install --yes \
     # Python \
     'biopython' \
     # 'gseapy' \
