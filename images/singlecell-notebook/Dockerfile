@@ -97,6 +97,6 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "install.packages('scCustomize', repos = 'https://cloud.r-project.org/', Ncpus = 4)" && \
     R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)" && \
-    R -e "devtools::install_github('CostaLab/sc2marker', Ncpus = 4, build_vignettes = TRUE, upgrade = FALSE)"
+    R -e "remotes::install_github('CostaLab/sc2marker', Ncpus = 4, build_vignettes = TRUE, upgrade = FALSE)"
 
 USER ${NB_UID}
