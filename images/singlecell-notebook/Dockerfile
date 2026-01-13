@@ -84,7 +84,10 @@ RUN pip install --no-cache-dir \
     cytetype \
     fa2_modified \
     fastcluster \
-    "liana>=1.6.1" \
+    "liana[extra]>=1.6.1" \
+    # fixes #438: pin pyscipopt to 5.2.1 to resolve corneto dependency conflicts
+    corneto \
+    "pyscipopt==5.2.1" \
     "omnipath>=1.0.12" \
     scikit-misc \
     "vitessce[all]" \
