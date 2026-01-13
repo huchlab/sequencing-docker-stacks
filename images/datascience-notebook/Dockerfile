@@ -31,6 +31,8 @@ RUN mkdir -p /opt/R-cran/library && \
     chmod 775 /opt/R-cran/library
 
 COPY Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+RUN chown "${NB_UID}":"${NB_GID}" /opt/conda/lib/R/etc/Rprofile.site && \
+    chmod 775 /opt/conda/lib/R/etc/Rprofile.site
 
 USER ${NB_UID}
 
