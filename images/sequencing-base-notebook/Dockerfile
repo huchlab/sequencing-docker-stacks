@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/$OWNER/datascience-notebook
+ARG BASE_IMAGE=$REGISTRY/$OWNER/data-notebook
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"

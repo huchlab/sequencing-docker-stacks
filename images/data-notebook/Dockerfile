@@ -84,6 +84,6 @@ RUN git lfs install && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN Rscript -e \
-    "Sys.setenv(NOT_CRAN = 'true'); \
-    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
+# RUN Rscript -e \
+#     "Sys.setenv(NOT_CRAN = 'true'); \
+#     install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
