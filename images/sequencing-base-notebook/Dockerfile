@@ -30,9 +30,6 @@ RUN mamba install --yes \
     # 'gseapy' \
     'pybiomart' \
     # R \
-    'bioconductor-deseq2' \
-    'bioconductor-fgsea' \
-    'bioconductor-trackviewer' \
     # keeping 'r-base' makes this much faster
     'r-base' \
     'r-biocmanager' \
@@ -40,6 +37,14 @@ RUN mamba install --yes \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN Rscript -e "\
+    BiocManager::install(c( \
+        'DESeq2', \
+        'fgsea', \
+        'trackViewer' \
+    ), ask = FALSE, update = FALSE, Ncpus = 4)\
+    "
 
 RUN pip install --no-cache-dir \
     gseapy && \

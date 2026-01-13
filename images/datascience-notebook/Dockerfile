@@ -30,7 +30,7 @@ USER ${NB_UID}
 
 RUN git lfs install && \
     conda config --append channels bioconda && \
-    echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
+    echo "r-base >=4.5" >> /opt/conda/conda-meta/pinned && \
     # r-forecast made trouble, see issue #486
     mamba remove --yes -n base 'r-forecast' && \
     mamba install --yes \
@@ -49,7 +49,9 @@ RUN git lfs install && \
         'uv' \
         'xlsxwriter' \
         # R \
-        'bioconductor-complexheatmap' \
+        # on 04.01.2026 not yet available for R 4.5, installing below instead
+        # 'bioconductor-complexheatmap' \
+        'r-biocmanager' \
         'r-data.table' \
         'r-dtplyr' \
         'r-fastcluster' \
@@ -80,4 +82,6 @@ RUN git lfs install && \
 
 RUN Rscript -e \
     "Sys.setenv(NOT_CRAN = 'true'); \
-    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
+    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org', Ncpus = 4)" && \
+    # install complexheatmap from Bioconductor \
+    Rscript -e "BiocManager::install('ComplexHeatmap', ask = FALSE, update = FALSE, Ncpus = 4)"

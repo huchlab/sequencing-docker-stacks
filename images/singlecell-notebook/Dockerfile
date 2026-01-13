@@ -56,15 +56,6 @@ RUN mamba install --yes \
     'scvelo' \
     'scvi-tools>=1.2.2' \
     # R
-    'bioconductor-batchelor' \
-    'bioconductor-clusterprofiler' \
-    'bioconductor-loomexperiment' \
-    'bioconductor-mast' \
-    'bioconductor-nebulosa' \
-    'bioconductor-scater' \
-    'bioconductor-scran' \
-    'bioconductor-singlecellexperiment' \
-    'bioconductor-zellkonverter' \
     'r-presto' \
     'r-anndata' \
     'r-clustree' \
@@ -76,6 +67,20 @@ RUN mamba install --yes \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN Rscript -e "\
+    BiocManager::install(c( \
+        'batchelor', \
+        'clusterProfiler', \
+        'LoomExperiment', \
+        'MAST', \
+        'Nebulosa', \
+        'scater', \
+        'scran', \
+        'SingleCellExperiment', \
+        'zellkonverter' \
+    ), ask = FALSE, update = FALSE, Ncpus = 4)\
+    "
 
 # packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \

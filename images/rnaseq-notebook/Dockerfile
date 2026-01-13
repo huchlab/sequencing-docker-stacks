@@ -22,27 +22,40 @@ ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
 ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
 ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
+ENV RETICULATE_PYTHON="/opt/conda/bin/python"
+
 USER ${NB_UID}
 
-# keeping 'r-base' makes this much faster
 RUN mamba install --yes \
-    'bioconductor-apeglm' \
-    'bioconductor-biocparallel' \
-    'bioconductor-biomart' \
-    'bioconductor-clusterprofiler' \
-    'bioconductor-glmgampoi' \
-    'bioconductor-gseabase' \
-    'bioconductor-gsva' \
-    'bioconductor-gviz' \
-    'bioconductor-org.hs.eg.db' \
-    'bioconductor-org.mm.eg.db' \
-    'bioconductor-reactomepa' \
-    'bioconductor-scuttle' \
-    'bioconductor-sva' \
-    'bioconductor-tximeta' \
-    'bioconductor-tximport' \
-    'bioconductor-variancepartition' \
-    'bioconductor-vsn' \
+    # Python
+    'anndata' \
+    'anndata2ri' \
+    'arboreto' \
+    'cellrank>=2.0' \
+    'celltypist' \
+    'decoupler-py>=2.0.2' \
+    'harmonypy' \
+    # optional dependency of scvelo
+    'hnswlib' \
+    'leidenalg' \
+    # fixed #40
+    'lightning>=2.5' \
+    'loompy' \
+    'marsilea' \
+    'mudata' \
+    'muon' \
+    'palantir' \
+    'pooch' \
+    # optional dependency of scvelo
+    'pybind11' \
+    'pydeseq2>=0.5.0' \
+    'python-igraph' \
+    'scanorama' \
+    'scanpy>=1.10.4' \
+    'scrublet' \
+    'scvelo' \
+    'scvi-tools>=1.2.2' \
+    # R
     'r-ashr' \
     'r-base' \
     'r-dendextend' \
@@ -52,5 +65,46 @@ RUN mamba install --yes \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+RUN Rscript -e "\
+    BiocManager::install(c( \
+        'apeglm', \
+        'BiocParallel', \
+        'biomaRt', \
+        'clusterProfiler', \
+        'GLMGamPoi', \
+        'GSEABase', \
+        'GSVA', \
+        'Gviz', \
+        'org.Hs.eg.db', \
+        'org.Mm.eg.db', \
+        'ReactomePA', \
+        'scuttle', \
+        'sva', \
+        'tximeta', \
+        'tximport', \
+        'variancePartition', \
+        'vsn' \
+    ), ask = FALSE, update = FALSE, Ncpus = 4)\
+    "
+
+# packages not available for one or both architectures on conda
+RUN pip install --no-cache-dir \
+    cytetype \
+    fa2_modified \
+    fastcluster \
+    "liana>=1.6.1" \
+    "omnipath>=1.0.12" \
+    scikit-misc \
+    "vitessce[all]" \
+    && \
+    # do not install dependencies for cellbender (they include jupyter)
+    pip install --no-cache-dir --no-deps cellbender
+
+RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "options(warn = 2); BiocManager::install('miloR', Ncpus = 4, ask = FALSE, update = FALSE)" && \
+    R -e "install.packages('scCustomize', repos = 'https://cloud.r-project.org/', Ncpus = 4)" && \
+    R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
+    R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)"
 
 USER ${NB_UID}
