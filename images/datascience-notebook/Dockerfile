@@ -26,6 +26,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git-lfs && \
     rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /opt/R-cran/library && \
+    chown "${NB_UID}":"${NB_GID}" /opt/R-cran/library && \
+    chmod 775 /opt/R-cran/library
+
+COPY Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+RUN chown "${NB_UID}":"${NB_GID}" /opt/conda/lib/R/etc/Rprofile.site && \
+    chmod 775 /opt/conda/lib/R/etc/Rprofile.site
+
 USER ${NB_UID}
 
 RUN git lfs install && \
