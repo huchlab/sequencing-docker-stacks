@@ -37,7 +37,7 @@ RUN mamba install --yes \
     'r-base' \
     'r-biocmanager' \
     && \
-    # next step because of zoo and tseries become corrupted otherwise on the aarch64 runners
+    # next step because zoo and tseries become corrupted otherwise on the aarch64 runners
     mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
