@@ -43,10 +43,11 @@ RUN Rscript -e "\
         'DESeq2', \
         'fgsea', \
         'trackViewer' \
-    ), ask = FALSE, update = FALSE, Ncpus = 4)\
+    ), ask = FALSE, update = FALSE, Ncpus = 4); \
+    stopifnot(require(DESeq2), require(fgsea), require(trackViewer))\
     "
 
 RUN pip install --no-cache-dir \
     gseapy && \
     # Install R packages not available for arm64 on conda
-    R -e "install.packages('openxlsx2', repos = 'https://cloud.r-project.org/', Ncpus = 4)"
+    R -e "install.packages('openxlsx2', repos = 'https://cloud.r-project.org/', Ncpus = 4); stopifnot(require(openxlsx2))"

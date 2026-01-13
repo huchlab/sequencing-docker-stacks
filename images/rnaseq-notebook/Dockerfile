@@ -85,7 +85,8 @@ RUN Rscript -e "\
         'tximport', \
         'variancePartition', \
         'vsn' \
-    ), ask = FALSE, update = FALSE, Ncpus = 4)\
+    ), ask = FALSE, update = FALSE, Ncpus = 4); \
+    stopifnot(require(apeglm), require(BiocParallel), require(biomaRt), require(clusterProfiler), require(glmGamPoi), require(GSEABase), require(GSVA), require(Gviz), require(org.Hs.eg.db), require(org.Mm.eg.db), require(ReactomePA), require(scuttle), require(sva), require(tximeta), require(tximport), require(variancePartition), require(vsn))\
     "
 
 # packages not available for one or both architectures on conda

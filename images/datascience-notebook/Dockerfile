@@ -82,6 +82,7 @@ RUN git lfs install && \
 
 RUN Rscript -e \
     "Sys.setenv(NOT_CRAN = 'true'); \
-    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org', Ncpus = 4)" && \
+    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org', Ncpus = 4); \
+    stopifnot(require(polars), require(tidypolars))" && \
     # install complexheatmap from Bioconductor \
-    Rscript -e "BiocManager::install('ComplexHeatmap', ask = FALSE, update = FALSE, Ncpus = 4)"
+    Rscript -e "BiocManager::install('ComplexHeatmap', ask = FALSE, update = FALSE, Ncpus = 4); stopifnot(require(ComplexHeatmap))"
