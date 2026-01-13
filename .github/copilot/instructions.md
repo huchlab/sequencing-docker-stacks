@@ -206,7 +206,7 @@ When asked to install an R package (e.g., "install r package ... into ...noteboo
 
 3. **If NOT available via mamba for both architectures:**
    - Install using `install.packages()` in a separate RUN command
-   - Format: `RUN R -e "install.packages('<package-name>', repos = 'https://cloud.r-project.org/', Ncpus = 4)"`
+   - Format: `RUN R -e "install.packages('<package-name>')"`
    - Create a unit test in `tests/by_image/<image-name>/units/unit_r-<package-name>.py`
    - Test format:
 
