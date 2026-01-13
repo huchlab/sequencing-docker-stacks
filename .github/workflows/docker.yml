@@ -205,8 +205,8 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-datascience,
-        x86_64-datascience,
+        aarch64-data,
+        x86_64-data,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
       ]
@@ -244,7 +244,7 @@ jobs:
         aarch64-multiomics,
         aarch64-spatial,
 
-        x86_64-datascience,
+        x86_64-data,
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
