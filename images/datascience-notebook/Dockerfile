@@ -26,13 +26,17 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git-lfs && \
     rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /opt/R-cran/library && \
+    chown "${NB_UID}":"${NB_GID}" /opt/R-cran/library && \
+    chmod 775 /opt/R-cran/library
+
+COPY Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+
 USER ${NB_UID}
 
 RUN git lfs install && \
     conda config --append channels bioconda && \
     echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
-    # r-forecast made trouble, see issue #486
-    mamba remove --yes -n base 'r-forecast' && \
     mamba install --yes \
         # Python \
         'jupyterlab_execute_time' \
