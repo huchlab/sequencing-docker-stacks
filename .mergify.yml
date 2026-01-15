@@ -51,8 +51,8 @@ queue_rules:
               - -files=requirements-dev.txt
           # Build checks passed
           - and:
-              - check-success = x86_64-datascience / build-test-upload
-              - check-success = aarch64-datascience / build-test-upload
+              - check-success = x86_64-data / build-test-upload
+              - check-success = aarch64-data / build-test-upload
               - check-success = x86_64-sequencing-base / build-test-upload
               - check-success = aarch64-sequencing-base / build-test-upload
               - check-success = x86_64-rnaseq / build-test-upload
@@ -63,13 +63,13 @@ queue_rules:
               - check-success = aarch64-spatial / build-test-upload
               - check-success = x86_64-multiomics / build-test-upload
               - check-success = aarch64-multiomics / build-test-upload
-              - check-success = tag-push (datascience-notebook, default) / tag-push
+              - check-success = tag-push (data-notebook, default) / tag-push
               - check-success = tag-push (multiomics-notebook, default) / tag-push
               - check-success = tag-push (rnaseq-notebook, default) / tag-push
               - check-success = tag-push (sequencing-base-notebook, default) / tag-push
               - check-success = tag-push (singlecell-notebook, default) / tag-push
               - check-success = tag-push (spatial-notebook, default) / tag-push
-              - check-success = apptainer-push (datascience-notebook, default) / apptainer-push
+              - check-success = apptainer-push (data-notebook, default) / apptainer-push
               - check-success = apptainer-push (sequencing-base-notebook, default) / apptainer-push
               - check-success = apptainer-push (rnaseq-notebook, default) / apptainer-push
               - check-success = apptainer-push (singlecell-notebook, default) / apptainer-push

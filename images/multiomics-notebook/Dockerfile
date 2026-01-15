@@ -29,12 +29,12 @@ RUN mamba install --yes \
     'mofapy2' \
     'muon' \
     && \
-    # next step because of zoo becomes corrupted otherwise on the aarch64 runners
-    mamba install r-zoo --yes --force-reinstall && \
+    # workaround to fix #486
+    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN R -e "BiocManager::install('MOFA2', ask = FALSE, Ncpus = 4)"
+RUN R -e "BiocManager::install('MOFA2', ask = FALSE)"
 
 USER ${NB_UID}

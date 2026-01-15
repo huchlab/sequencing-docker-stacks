@@ -1,4 +1,4 @@
-# Jupyter Notebook Datascience Stack
+# Jupyter Notebook Data Stack
 
 Datascience for the Huch lab. Based on the jupyter/datascience-notebook.
 
