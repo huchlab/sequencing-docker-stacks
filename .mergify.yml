@@ -52,8 +52,8 @@ queue_rules:
               - -files=requirements-dev.txt
           # Build checks passed
           - and:
-              - check-success = x86_64-datascience / build-upload
-              - check-success = aarch64-datascience / build-upload
+              - check-success = x86_64-data / build-upload
+              - check-success = aarch64-data / build-upload
               - check-success = x86_64-sequencing-base / build-upload
               - check-success = aarch64-sequencing-base / build-upload
               - check-success = x86_64-rnaseq / build-upload
@@ -64,8 +64,8 @@ queue_rules:
               - check-success = aarch64-spatial / build-upload
               - check-success = x86_64-multiomics / build-upload
               - check-success = aarch64-multiomics / build-upload
-              - check-success = test-x86_64-datascience / test
-              - check-success = test-aarch64-datascience / test
+              - check-success = test-x86_64-data / test
+              - check-success = test-aarch64-data / test
               - check-success = test-x86_64-sequencing-base / test
               - check-success = test-aarch64-sequencing-base / test
               - check-success = test-x86_64-rnaseq / test
@@ -76,13 +76,13 @@ queue_rules:
               - check-success = test-aarch64-spatial / test
               - check-success = test-x86_64-multiomics / test
               - check-success = test-aarch64-multiomics / test
-              - check-success = tag-push (datascience-notebook, default) / tag-push
+              - check-success = tag-push (data-notebook, default) / tag-push
               - check-success = tag-push (multiomics-notebook, default) / tag-push
               - check-success = tag-push (rnaseq-notebook, default) / tag-push
               - check-success = tag-push (sequencing-base-notebook, default) / tag-push
               - check-success = tag-push (singlecell-notebook, default) / tag-push
               - check-success = tag-push (spatial-notebook, default) / tag-push
-              - check-success = apptainer-push (datascience-notebook, default) / apptainer-push
+              - check-success = apptainer-push (data-notebook, default) / apptainer-push
               - check-success = apptainer-push (sequencing-base-notebook, default) / apptainer-push
               - check-success = apptainer-push (rnaseq-notebook, default) / apptainer-push
               - check-success = apptainer-push (singlecell-notebook, default) / apptainer-push

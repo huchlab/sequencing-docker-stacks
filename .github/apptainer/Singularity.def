@@ -6,6 +6,7 @@ From: /tmp/apptainer/image.tar
     # This is essential for HPC environments where users lack sudo access
     if [ -d /opt/conda ]; then
         chmod -R 777 /opt/conda
+        chmod -R 777 /opt/R-cran/library
         echo "Made /opt/conda writable for all users"
     else
         echo "Warning: /opt/conda does not exist in this image"

@@ -11,7 +11,7 @@ export DOCKER_BUILDKIT:=1
 
 # All the images listed in the build dependency order
 ALL_IMAGES:= \
-	datascience-notebook \
+	data-notebook \
 	sequencing-base-notebook \
 	rnaseq-notebook \
 	singlecell-notebook \

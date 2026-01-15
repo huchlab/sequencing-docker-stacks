@@ -3,7 +3,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/$OWNER/datascience-notebook
+ARG BASE_IMAGE=$REGISTRY/$OWNER/data-notebook
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
@@ -37,8 +37,8 @@ RUN mamba install --yes \
     'r-base' \
     'r-biocmanager' \
     && \
-    # next step because of zoo becomes corrupted otherwise on the aarch64 runners
-    mamba install r-zoo --yes --force-reinstall && \
+    # workaround to fix #486
+    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -46,4 +46,4 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     gseapy && \
     # Install R packages not available for arm64 on conda
-    R -e "install.packages('openxlsx2', repos = 'https://cloud.r-project.org/', Ncpus = 4)"
+    R -e "install.packages('openxlsx2')"
