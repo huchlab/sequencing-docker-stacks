@@ -1,0 +1,22 @@
+Bootstrap: docker-archive
+From: /tmp/apptainer/image.tar
+
+%post
+    # Make /opt/conda writable for all users
+    # This is essential for HPC environments where users lack sudo access
+    if [ -d /opt/conda ]; then
+        chmod -R 777 /opt/conda
+        chmod -R 777 /opt/R-cran/library
+        echo "Made /opt/conda writable for all users"
+    else
+        echo "Warning: /opt/conda does not exist in this image"
+    fi
+
+%labels
+    Maintainer huchlab
+    Architecture x86_64
+
+%help
+    Apptainer/Singularity image from sequencing-docker-stacks.
+    /opt/conda is writable - install packages with: apptainer exec image.sif pip install <package>
+    More info: https://github.com/huchlab/sequencing-docker-stacks
