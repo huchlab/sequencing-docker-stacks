@@ -24,7 +24,8 @@ queue_rules:
           # Skip build checks if no build-triggering files changed
           - and:
               - -files~=^\.github/workflows/docker\.yml$
-              - -files~=^\.github/workflows/docker-build-test-upload\.yml$
+              - -files~=^\.github/workflows/docker-build-upload\.yml$
+              - -files~=^\.github/workflows/docker-test\.yml$
               - -files~=^\.github/workflows/docker-tag-push\.yml$
               - -files~=^\.github/workflows/docker-apptainer-push\.yml$
               - -files~=^\.github/workflows/docker-wiki-update\.yml$
@@ -51,18 +52,30 @@ queue_rules:
               - -files=requirements-dev.txt
           # Build checks passed
           - and:
-              - check-success = x86_64-datascience / build-test-upload
-              - check-success = aarch64-datascience / build-test-upload
-              - check-success = x86_64-sequencing-base / build-test-upload
-              - check-success = aarch64-sequencing-base / build-test-upload
-              - check-success = x86_64-rnaseq / build-test-upload
-              - check-success = aarch64-rnaseq / build-test-upload
-              - check-success = x86_64-singlecell / build-test-upload
-              - check-success = aarch64-singlecell / build-test-upload
-              - check-success = x86_64-spatial / build-test-upload
-              - check-success = aarch64-spatial / build-test-upload
-              - check-success = x86_64-multiomics / build-test-upload
-              - check-success = aarch64-multiomics / build-test-upload
+              - check-success = x86_64-datascience / build-upload
+              - check-success = aarch64-datascience / build-upload
+              - check-success = x86_64-sequencing-base / build-upload
+              - check-success = aarch64-sequencing-base / build-upload
+              - check-success = x86_64-rnaseq / build-upload
+              - check-success = aarch64-rnaseq / build-upload
+              - check-success = x86_64-singlecell / build-upload
+              - check-success = aarch64-singlecell / build-upload
+              - check-success = x86_64-spatial / build-upload
+              - check-success = aarch64-spatial / build-upload
+              - check-success = x86_64-multiomics / build-upload
+              - check-success = aarch64-multiomics / build-upload
+              - check-success = test-x86_64-datascience / test
+              - check-success = test-aarch64-datascience / test
+              - check-success = test-x86_64-sequencing-base / test
+              - check-success = test-aarch64-sequencing-base / test
+              - check-success = test-x86_64-rnaseq / test
+              - check-success = test-aarch64-rnaseq / test
+              - check-success = test-x86_64-singlecell / test
+              - check-success = test-aarch64-singlecell / test
+              - check-success = test-x86_64-spatial / test
+              - check-success = test-aarch64-spatial / test
+              - check-success = test-x86_64-multiomics / test
+              - check-success = test-aarch64-multiomics / test
               - check-success = tag-push (datascience-notebook, default) / tag-push
               - check-success = tag-push (multiomics-notebook, default) / tag-push
               - check-success = tag-push (rnaseq-notebook, default) / tag-push
