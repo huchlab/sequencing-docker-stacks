@@ -49,6 +49,8 @@ RUN mamba install --yes \
     'r-magick' \
     'r-robustrankaggreg' \
     && \
+    # workaround to fix #486
+    mamba install r-zoo --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"

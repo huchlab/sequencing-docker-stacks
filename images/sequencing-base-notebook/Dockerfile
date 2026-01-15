@@ -37,11 +37,13 @@ RUN mamba install --yes \
     'r-base' \
     'r-biocmanager' \
     && \
+    # workaround to fix #486
+    mamba install r-zoo --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# RUN pip install --no-cache-dir \
-#     gseapy && \
-#     # Install R packages not available for arm64 on conda
-#     R -e "install.packages('openxlsx2')"
+RUN pip install --no-cache-dir \
+    gseapy && \
+    # Install R packages not available for arm64 on conda
+    R -e "install.packages('openxlsx2')"
