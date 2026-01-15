@@ -31,7 +31,7 @@ RUN mamba install --yes \
     'spatial-image' \
     && \
     # workaround to fix #486
-    mamba install r-zoo --yes --force-reinstall && \
+    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
