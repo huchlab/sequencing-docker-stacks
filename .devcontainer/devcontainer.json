@@ -17,6 +17,7 @@
     "vscode": {
       "extensions": [
         "eamodio.gitlens",
+        "fnando.linter",
         "github.copilot-chat",
         "github.copilot",
         "github.vscode-github-actions",

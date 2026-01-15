@@ -7,12 +7,12 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 
 ## Available Containers
 
-- **datascience-notebook**: Data science base with Python and R for the Huch lab
+- **data-notebook**: Data science base with Python and R for the Huch lab
 - **rnaseq-notebook**: Bulk RNA-seq analysis (DESeq2)
 - **singlecell-notebook**: Single-cell RNA-seq analysis (Scanpy, Seurat)
 - **spatial-notebook**: Spatial transcriptomics (Squidpy, SpatialData)
 - **multiomics-notebook**: Multi-omics analysis (MOFA2, muon)
-- **sequencing-base-notebook**: Sequencing base with bioinformatics tools (inherits from datascience-notebook)
+- **sequencing-base-notebook**: Sequencing base with bioinformatics tools (inherits from data-notebook)
 
 ## Key Technologies
 
@@ -206,7 +206,7 @@ When asked to install an R package (e.g., "install r package ... into ...noteboo
 
 3. **If NOT available via mamba for both architectures:**
    - Install using `install.packages()` in a separate RUN command
-   - Format: `RUN R -e "install.packages('<package-name>', repos = 'https://cloud.r-project.org/', Ncpus = 4)"`
+   - Format: `RUN R -e "install.packages('<package-name>')"`
    - Create a unit test in `tests/by_image/<image-name>/units/unit_r-<package-name>.py`
    - Test format:
 

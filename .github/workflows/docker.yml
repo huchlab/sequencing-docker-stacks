@@ -68,20 +68,20 @@ permissions:
   contents: write
 
 jobs:
-  aarch64-datascience:
+  aarch64-data:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
-      image: datascience-notebook
+      image: data-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 25
 
-  x86_64-datascience:
+  x86_64-data:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
       parent-image: ""
-      image: datascience-notebook
+      image: data-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 25
@@ -89,22 +89,22 @@ jobs:
   aarch64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: datascience-notebook
+      parent-image: data-notebook
       image: sequencing-base-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 25
-    needs: aarch64-datascience
+    needs: aarch64-data
 
   x86_64-sequencing-base:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
-      parent-image: datascience-notebook
+      parent-image: data-notebook
       image: sequencing-base-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
       timeout-minutes: 25
-    needs: x86_64-datascience
+    needs: x86_64-data
 
   aarch64-rnaseq:
     uses: ./.github/workflows/docker-build-test-upload.yml
@@ -205,8 +205,8 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-datascience,
-        x86_64-datascience,
+        aarch64-data,
+        x86_64-data,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
       ]
@@ -224,7 +224,7 @@ jobs:
         # prettier-ignore
         image:
           [
-            datascience-notebook,
+            data-notebook,
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
@@ -237,14 +237,14 @@ jobs:
       [
         contributed-recipes,
 
-        aarch64-datascience,
+        aarch64-data,
         aarch64-sequencing-base,
         aarch64-rnaseq,
         aarch64-singlecell,
         aarch64-multiomics,
         aarch64-spatial,
 
-        x86_64-datascience,
+        x86_64-data,
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
@@ -263,13 +263,13 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [datascience-notebook, sequencing-base-notebook]
+        image: [data-notebook, sequencing-base-notebook]
         variant: [default]
     # prettier-ignore
     needs:
       [
-        aarch64-datascience,
-        x86_64-datascience,
+        aarch64-data,
+        x86_64-data,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
       ]
@@ -288,7 +288,7 @@ jobs:
         # prettier-ignore
         image:
           [
-            datascience-notebook,
+            data-notebook,
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
@@ -300,8 +300,8 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-datascience,
-        x86_64-datascience,
+        aarch64-data,
+        x86_64-data,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
         aarch64-rnaseq,
@@ -325,14 +325,14 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [datascience-notebook, sequencing-base-notebook]
+        image: [data-notebook, sequencing-base-notebook]
         variant: [default]
     # Depends on build jobs, not tag-push-fast (build jobs generate tag artifacts)
     # prettier-ignore
     needs:
       [
-        aarch64-datascience,
-        x86_64-datascience,
+        aarch64-data,
+        x86_64-data,
         aarch64-sequencing-base,
         x86_64-sequencing-base,
       ]

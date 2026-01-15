@@ -34,7 +34,7 @@ RUN mamba install --yes \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
-    'harmonypy' \
+    'harmonypy<0.2.0' \
     # optional dependency of scvelo
     'hnswlib' \
     'leidenalg' \
@@ -73,8 +73,8 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
-    # next step because of zoo becomes corrupted otherwise on the aarch64 runners
-    mamba install r-zoo --yes --force-reinstall && \
+    # workaround to fix #486
+    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -93,10 +93,10 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "options(warn = 2); BiocManager::install('miloR', Ncpus = 4, ask = FALSE, update = FALSE)" && \
-    R -e "install.packages('scCustomize', repos = 'https://cloud.r-project.org/', Ncpus = 4)" && \
-    R -e "remotes::install_github('jinworks/CellChat', Ncpus = 4, upgrade = FALSE)" && \
-    R -e "remotes::install_github('cellgeni/sceasy', Ncpus = 4, upgrade = FALSE)" && \
-    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', Ncpus = 4, upgrade = FALSE, force = TRUE)"
+    R -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
+    R -e "install.packages('scCustomize')" && \
+    R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
+    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)"
 
 USER ${NB_UID}
