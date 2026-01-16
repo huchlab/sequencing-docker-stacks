@@ -61,6 +61,7 @@ RUN mamba install --yes \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-nebulosa' \
+    'bioconductor-org.hs.eg.db' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
@@ -73,8 +74,6 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
-    # workaround to fix #486
-    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
@@ -97,6 +96,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "install.packages('scCustomize')" && \
     R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
-    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)"
+    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
+    R -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)"
 
 USER ${NB_UID}
