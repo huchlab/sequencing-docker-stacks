@@ -1,0 +1,60 @@
+name: Download and test a Docker image
+
+env:
+  REGISTRY: quay.io
+  OWNER: ${{ github.repository_owner }}
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Image name
+        required: true
+        type: string
+      variant:
+        description: Variant tag prefix
+        required: false
+        type: string
+        default: default
+      platform:
+        description: Image platform
+        required: true
+        type: string
+      runs-on:
+        description: GitHub Actions Runner image
+        required: true
+        type: string
+      timeout-minutes:
+        description: Timeout in minutes
+        required: true
+        type: number
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ inputs.runs-on }}
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+
+    steps:
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Create dev environment 📦
+        uses: ./.github/actions/create-dev-env
+
+      - name: Load built image to Docker 📥
+        uses: ./.github/actions/load-image
+        with:
+          image: ${{ inputs.image }}
+          platform: ${{ inputs.platform }}
+          variant: ${{ inputs.variant }}
+
+      - name: Run tests ✅
+        run: |
+          python3 -m tests.run_tests \
+            --registry ${{ env.REGISTRY }} \
+            --owner ${{ env.OWNER }} \
+            --image ${{ inputs.image }}
+        shell: bash
