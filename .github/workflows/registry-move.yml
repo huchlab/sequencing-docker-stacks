@@ -62,7 +62,7 @@ jobs:
             julia-notebook,
             tensorflow-notebook,
             pytorch-notebook,
-            datascience-notebook,
+            data-notebook,
             pyspark-notebook,
             all-spark-notebook,
           ]
