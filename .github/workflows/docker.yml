@@ -16,6 +16,8 @@ on:
       # https://docs.github.com/en/actions/sharing-automations/reusing-workflows
       - ".github/workflows/docker-build-upload.yml"
       - ".github/workflows/docker-test.yml"
+      - ".github/workflows/docker-tag-merge.yml"
+      - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
       - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
@@ -24,6 +26,7 @@ on:
       # https://docs.github.com/en/actions/sharing-automations/creating-actions/about-custom-actions#composite-actions
       - ".github/actions/apply-single-tags/action.yml"
       - ".github/actions/create-dev-env/action.yml"
+      - ".github/actions/free-disk-space/action.yml"
       - ".github/actions/load-image/action.yml"
 
       - "images/**"
@@ -42,12 +45,15 @@ on:
       - ".github/workflows/docker.yml"
       - ".github/workflows/docker-build-upload.yml"
       - ".github/workflows/docker-test.yml"
+      - ".github/workflows/docker-tag-merge.yml"
+      - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
       - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       - ".github/actions/apply-single-tags/action.yml"
       - ".github/actions/create-dev-env/action.yml"
+      - ".github/actions/free-disk-space/action.yml"
       - ".github/actions/load-image/action.yml"
 
       - "images/**"
