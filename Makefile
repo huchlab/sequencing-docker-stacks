@@ -15,6 +15,7 @@ ALL_IMAGES:= \
 	sequencing-base-notebook \
 	rnaseq-notebook \
 	singlecell-notebook \
+	singlecell-r-notebook \
 	multiomics-notebook \
 	spatial-notebook
 
