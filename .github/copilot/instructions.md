@@ -10,6 +10,7 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 - **data-notebook**: Data science base with Python and R for the Huch lab
 - **rnaseq-notebook**: Bulk RNA-seq analysis (DESeq2)
 - **singlecell-notebook**: Single-cell RNA-seq analysis (Scanpy, Seurat)
+- **singlecell-r-notebook**: R-optimized single-cell analysis with latest Bioconductor packages (r-base>=4.5)
 - **spatial-notebook**: Spatial transcriptomics (Squidpy, SpatialData)
 - **multiomics-notebook**: Multi-omics analysis (MOFA2, muon)
 - **sequencing-base-notebook**: Sequencing base with bioinformatics tools (inherits from data-notebook)

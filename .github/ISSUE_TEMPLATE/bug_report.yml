@@ -19,9 +19,11 @@ body:
       description: Select as many images as applicable
       multiple: true
       options:
+        - data-notebook
         - sequencing-base-notebook
         - rnaseq-notebook
         - singlecell-notebook
+        - singlecell-r-notebook
         - multiomics-notebook
         - spatial-notebook
         - other
