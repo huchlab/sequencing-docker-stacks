@@ -78,11 +78,12 @@ singlecell-r-notebook (independent, built on jupyter/datascience-notebook)
 ### Main Workflows
 
 1. **docker.yml**: Main build, test, and push workflow
-2. **docker-build-test-upload.yml**: Build and test specific images
-3. **docker-tag-push.yml**: Tag and push images to registry
-4. **docker-wiki-update.yml**: Update wiki with build manifests
-5. **pre-commit.yml**: Run pre-commit hooks on PRs
-6. **sphinx.yml**: Build and deploy documentation
+2. **docker-build-upload.yml**: Build specific images and upload artifacts
+3. **docker-test.yml**: Test specific images from uploaded artifacts
+4. **docker-tag-push.yml**: Tag and push images to registry
+5. **docker-wiki-update.yml**: Update wiki with build manifests
+6. **pre-commit.yml**: Run pre-commit hooks on PRs
+7. **sphinx.yml**: Build and deploy documentation
 
 ### Registry Management
 
