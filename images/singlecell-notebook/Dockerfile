@@ -99,6 +99,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
     R -e "install.packages('scCustomize')" && \
     R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
-    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)"
+    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    R -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)"
 
 USER ${NB_UID}
