@@ -39,6 +39,7 @@ ENV RETICULATE_PYTHON="/opt/conda/bin/python"
 USER ${NB_UID}
 
 RUN git lfs install && \
+    conda config --append channels bioconda && \
     echo "r-base >=4.5" >> /opt/conda/conda-meta/pinned && \
     mamba install --yes \
         # Python packages (alphabetically sorted) \
@@ -82,7 +83,7 @@ RUN git lfs install && \
         'uv' \
         'xlsxwriter' \
         # R packages (alphabetically sorted, non-Bioconductor) \
-        'r-anndata' \
+        # 'r-anndata' \
         'r-base' \
         'r-biocmanager' \
         'r-clustree' \
@@ -106,7 +107,7 @@ RUN git lfs install && \
         'r-paralleldist' \
         'r-pheatmap' \
         'r-plotly' \
-        'r-presto' \
+        # 'r-presto' \
         'r-r.utils' \
         'r-reticulate' \
         'r-seurat>=5.1.0' \
@@ -157,6 +158,8 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "install.packages('openxlsx2')" && \
     R -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
     R -e "install.packages('scCustomize')" && \
+    R -e "install.packages('anndata')" && \
+    R -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
     R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)"
 
