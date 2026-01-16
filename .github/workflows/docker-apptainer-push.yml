@@ -106,7 +106,7 @@ jobs:
       - name: Login to Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
-          echo "${{ secrets.REGISTRY_TOKEN }}" | apptainer remote login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin oras://${{ env.REGISTRY }}
+          echo "${{ secrets.REGISTRY_TOKEN }}" | apptainer registry login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin oras://${{ env.REGISTRY }}
         shell: bash
         id: login
 
@@ -120,6 +120,9 @@ jobs:
             echo "Tags file not found: $TAGS_FILE"
             exit 1
           fi
+
+          IMAGE_NAME="${{ inputs.image }}"
+          IMAGE_NAME_SINGULARITY="${IMAGE_NAME/-notebook/-singularity}"
 
           # Filter for date (YYYY-MM-DD format) tags only
           while IFS= read -r tag; do
@@ -136,15 +139,15 @@ jobs:
 
             # Only push if it's a date tag (YYYY-MM-DD)
             if [[ "$TAG_PART" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-              # Add -singularity suffix to the original full tag
-              SINGULARITY_TAG="${tag##*:}-singularity"
+              # Use the extracted date tag without prefix or suffix
+              SINGULARITY_TAG="$TAG_PART"
 
               echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
               # Simple retry mechanism - attempt twice with same command
               apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
-                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG || \
+                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${IMAGE_NAME_SINGULARITY}:$SINGULARITY_TAG || \
               apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
-                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:$SINGULARITY_TAG
+                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${IMAGE_NAME_SINGULARITY}:$SINGULARITY_TAG
             fi
           done < "$TAGS_FILE"
         shell: bash
