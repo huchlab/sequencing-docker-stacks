@@ -14,7 +14,10 @@ on:
       - ".github/workflows/docker.yml"
       # We use local reusable workflows to make architecture clean and simple
       # https://docs.github.com/en/actions/sharing-automations/reusing-workflows
-      - ".github/workflows/docker-build-test-upload.yml"
+      - ".github/workflows/docker-build-upload.yml"
+      - ".github/workflows/docker-test.yml"
+      - ".github/workflows/docker-tag-merge.yml"
+      - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
       - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
@@ -23,6 +26,7 @@ on:
       # https://docs.github.com/en/actions/sharing-automations/creating-actions/about-custom-actions#composite-actions
       - ".github/actions/apply-single-tags/action.yml"
       - ".github/actions/create-dev-env/action.yml"
+      - ".github/actions/free-disk-space/action.yml"
       - ".github/actions/load-image/action.yml"
 
       - "images/**"
@@ -39,13 +43,17 @@ on:
       - main
     paths:
       - ".github/workflows/docker.yml"
-      - ".github/workflows/docker-build-test-upload.yml"
+      - ".github/workflows/docker-build-upload.yml"
+      - ".github/workflows/docker-test.yml"
+      - ".github/workflows/docker-tag-merge.yml"
+      - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
       - ".github/workflows/docker-apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       - ".github/actions/apply-single-tags/action.yml"
       - ".github/actions/create-dev-env/action.yml"
+      - ".github/actions/free-disk-space/action.yml"
       - ".github/actions/load-image/action.yml"
 
       - "images/**"
@@ -69,7 +77,7 @@ permissions:
 
 jobs:
   aarch64-data:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: ""
       image: data-notebook
@@ -78,7 +86,7 @@ jobs:
       timeout-minutes: 25
 
   x86_64-data:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: ""
       image: data-notebook
@@ -87,7 +95,7 @@ jobs:
       timeout-minutes: 25
 
   aarch64-sequencing-base:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: data-notebook
       image: sequencing-base-notebook
@@ -97,7 +105,7 @@ jobs:
     needs: aarch64-data
 
   x86_64-sequencing-base:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: data-notebook
       image: sequencing-base-notebook
@@ -107,7 +115,7 @@ jobs:
     needs: x86_64-data
 
   aarch64-rnaseq:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: sequencing-base-notebook
       image: rnaseq-notebook
@@ -118,7 +126,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   x86_64-rnaseq:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: sequencing-base-notebook
       image: rnaseq-notebook
@@ -129,7 +137,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   aarch64-singlecell:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: sequencing-base-notebook
       image: singlecell-notebook
@@ -140,7 +148,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   x86_64-singlecell:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: sequencing-base-notebook
       image: singlecell-notebook
@@ -171,7 +179,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   aarch64-multiomics:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: singlecell-notebook
       image: multiomics-notebook
@@ -182,7 +190,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   x86_64-multiomics:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: singlecell-notebook
       image: multiomics-notebook
@@ -193,7 +201,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   aarch64-spatial:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: singlecell-notebook
       image: spatial-notebook
@@ -204,7 +212,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   x86_64-spatial:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: singlecell-notebook
       image: spatial-notebook
@@ -212,6 +220,123 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 40
     needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # Test jobs
+  test-aarch64-data:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: data-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-data
+
+  test-x86_64-data:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: data-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-data
+
+  test-aarch64-sequencing-base:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: sequencing-base-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-sequencing-base
+
+  test-x86_64-sequencing-base:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: sequencing-base-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-sequencing-base
+
+  test-aarch64-rnaseq:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: rnaseq-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-rnaseq
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-rnaseq:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: rnaseq-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-rnaseq
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-singlecell:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-singlecell:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-multiomics:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-multiomics:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-spatial:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-spatial:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-spatial
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   contributed-recipes:
@@ -225,10 +350,10 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-data,
-        x86_64-data,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
+        test-aarch64-data,
+        test-x86_64-data,
+        test-aarch64-sequencing-base,
+        test-x86_64-sequencing-base,
       ]
 
   tag-push:
@@ -258,21 +383,21 @@ jobs:
       [
         contributed-recipes,
 
-        aarch64-data,
-        aarch64-sequencing-base,
-        aarch64-rnaseq,
-        aarch64-singlecell,
-        aarch64-singlecell-r,
-        aarch64-multiomics,
-        aarch64-spatial,
+        test-aarch64-data,
+        test-aarch64-sequencing-base,
+        test-aarch64-rnaseq,
+        test-aarch64-singlecell,
+        test-aarch64-singlecell-r,
+        test-aarch64-multiomics,
+        test-aarch64-spatial,
 
-        x86_64-data,
-        x86_64-sequencing-base,
-        x86_64-rnaseq,
-        x86_64-singlecell,
-        x86_64-singlecell-r,
-        x86_64-multiomics,
-        x86_64-spatial,
+        test-x86_64-data,
+        test-x86_64-sequencing-base,
+        test-x86_64-rnaseq,
+        test-x86_64-singlecell,
+        test-x86_64-singlecell-r,
+        test-x86_64-multiomics,
+        test-x86_64-spatial,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -291,10 +416,10 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-data,
-        x86_64-data,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
+        test-aarch64-data,
+        test-x86_64-data,
+        test-aarch64-sequencing-base,
+        test-x86_64-sequencing-base,
       ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
