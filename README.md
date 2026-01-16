@@ -25,6 +25,7 @@ You don't need to be a Docker expert — just follow the Getting Started guide b
 
 ## What's Inside? Choose Your Container
 
+<<<<<<< HEAD
 Each container is a complete analysis environment with Jupyter notebooks, Python, R, and specialized bioinformatics tools.
 All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon) architectures.
 
@@ -129,6 +130,13 @@ Here's how to start a Jupyter notebook environment for single-cell analysis:
 
 ```bash
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:2025-11-10
+=======
+This command pulls the `jupyter/scipy-notebook` image tagged `2025-12-31` from Quay.io if it is not already present on the local host.
+It then starts a container running a Jupyter Server with the JupyterLab frontend and exposes the container's internal port `8888` to port `10000` of the host machine:
+
+```bash
+docker run -p 10000:8888 quay.io/jupyter/scipy-notebook:2025-12-31
+>>>>>>> upstream/main
 ```
 
 **What this command does:**
@@ -149,6 +157,7 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
    http://127.0.0.1:8888/lab?token=abc123...
    ```
 
+<<<<<<< HEAD
 2. Copy and paste this URL into your web browser
 
 3. You'll see JupyterLab with all tools pre-installed!
@@ -174,6 +183,13 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 
 # For multi-omics integration
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:2025-11-10
+=======
+This command pulls the `jupyter/datascience-notebook` image tagged `2025-12-31` from Quay.io if it is not already present on the local host.
+It then starts an _ephemeral_ container running a Jupyter Server with the JupyterLab frontend and exposes the server on host port 10000.
+
+```bash
+docker run -it --rm -p 10000:8888 -v "${PWD}":/home/jovyan/work quay.io/jupyter/datascience-notebook:2025-12-31
+>>>>>>> upstream/main
 ```
 
 ### Using Apptainer/Singularity Images
