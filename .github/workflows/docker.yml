@@ -150,6 +150,26 @@ jobs:
     needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  aarch64-singlecell-r:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: singlecell-r-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 50
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-singlecell-r:
+    uses: ./.github/workflows/docker-build-test-upload.yml
+    with:
+      parent-image: ""
+      image: singlecell-r-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 50
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   aarch64-multiomics:
     uses: ./.github/workflows/docker-build-test-upload.yml
     with:
@@ -228,6 +248,7 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            singlecell-r-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
@@ -241,6 +262,7 @@ jobs:
         aarch64-sequencing-base,
         aarch64-rnaseq,
         aarch64-singlecell,
+        aarch64-singlecell-r,
         aarch64-multiomics,
         aarch64-spatial,
 
@@ -248,6 +270,7 @@ jobs:
         x86_64-sequencing-base,
         x86_64-rnaseq,
         x86_64-singlecell,
+        x86_64-singlecell-r,
         x86_64-multiomics,
         x86_64-spatial,
       ]
@@ -292,6 +315,7 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            singlecell-r-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
@@ -308,6 +332,8 @@ jobs:
         x86_64-rnaseq,
         aarch64-singlecell,
         x86_64-singlecell,
+        aarch64-singlecell-r,
+        x86_64-singlecell-r,
         aarch64-multiomics,
         x86_64-multiomics,
         aarch64-spatial,
