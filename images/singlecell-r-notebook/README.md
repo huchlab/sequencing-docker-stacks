@@ -14,6 +14,7 @@ Unlike the standard `singlecell-notebook` which is built on the data stack and u
 ## Included Tools
 
 This image combines all dependencies from:
+
 - `data-notebook`: General data science tools
 - `sequencing-base-notebook`: Core bioinformatics packages
 - `singlecell-notebook`: Single-cell analysis tools (both Python and R)
