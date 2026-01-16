@@ -162,6 +162,16 @@ This repository provides **Sequencing Docker Stacks** - ready-to-run Docker imag
 7. Add tests in `/tests/by_image/<new-image-name>/`
 8. Update documentation
 
+### Important: Test File Naming Convention
+
+**Test file names must be unique across all images:**
+
+- Each image has a separate test directory under `/tests/by_image/<image-name>/`
+- Test files in different image directories **cannot have the same name** - they would conflict during test discovery
+- **Before adding a new unit test file** to any image, check if that test name already exists in other image directories
+- **If a test file name already exists in another image**, rename your test file to be image-specific by appending the image name (e.g., `unit_r-milor.py` → `unit_r-milor_singlecellr.py`)
+- This is critical for preventing file name collisions when tests are discovered and run across the entire test suite
+
 ### Adding an Image Variant (e.g., CUDA)
 
 When adding a variant to an existing image (like `singlecell-notebook:cuda12`):
