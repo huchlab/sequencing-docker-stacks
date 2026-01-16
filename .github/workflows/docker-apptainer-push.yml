@@ -124,7 +124,7 @@ jobs:
           IMAGE_NAME="${{ inputs.image }}"
           IMAGE_NAME_SINGULARITY="${IMAGE_NAME/-notebook/-singularity}"
 
-          # Filter for date (YYYY-MM-DD format) tags only
+          # Push all tags
           while IFS= read -r tag; do
             # Skip empty lines
             [ -z "$tag" ] && continue
@@ -132,23 +132,15 @@ jobs:
             # Extract the tag part after the image name and colon
             TAG_PART="${tag##*:}"
 
-            # Skip if it has a prefix (variant)
-            if [[ "$TAG_PART" == *"-"* ]]; then
-              TAG_PART="${TAG_PART#*-}"
-            fi
+            # Remove x86_64 prefix from the tag
+            SINGULARITY_TAG="${TAG_PART#x86_64-}"
 
-            # Only push if it's a date tag (YYYY-MM-DD)
-            if [[ "$TAG_PART" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-              # Use the extracted date tag without prefix or suffix
-              SINGULARITY_TAG="$TAG_PART"
-
-              echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
-              # Simple retry mechanism - attempt twice with same command
-              apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
-                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${IMAGE_NAME_SINGULARITY}:$SINGULARITY_TAG || \
-              apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
-                oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${IMAGE_NAME_SINGULARITY}:$SINGULARITY_TAG
-            fi
+            echo "Pushing Apptainer image with tag: $SINGULARITY_TAG"
+            # Simple retry mechanism - attempt twice with same command
+            apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
+              oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${IMAGE_NAME_SINGULARITY}:$SINGULARITY_TAG || \
+            apptainer push /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif \
+              oras://${{ env.REGISTRY }}/${{ env.OWNER }}/${IMAGE_NAME_SINGULARITY}:$SINGULARITY_TAG
           done < "$TAGS_FILE"
         shell: bash
 
