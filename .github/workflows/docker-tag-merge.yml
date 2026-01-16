@@ -1,0 +1,79 @@
+name: Merge single platform tags
+
+env:
+  REGISTRY: quay.io
+  PUSH_TO_REGISTRY: ${{ (github.repository_owner == 'jupyter' || github.repository_owner == 'mathbunnyru') && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Image name
+        required: true
+        type: string
+      variant:
+        description: Variant tag prefix
+        required: true
+        type: string
+      timeout-minutes:
+        description: Timeout in minutes
+        default: 5
+        type: number
+    secrets:
+      REGISTRY_USERNAME:
+        required: true
+      REGISTRY_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  tag-merge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+
+    steps:
+      - name: Checkout Repo ⚡️
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Create dev environment 📦
+        uses: ./.github/actions/create-dev-env
+
+      - name: Download aarch64 tags file 🏷
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: ${{ inputs.image }}-aarch64-${{ inputs.variant }}-tags
+          path: /tmp/jupyter/tags/
+
+      - name: Download x86_64 tags file 🏷
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}-tags
+          path: /tmp/jupyter/tags/
+
+      - name: Login to Registry 🔐
+        if: env.PUSH_TO_REGISTRY == 'true'
+        run: |
+          docker login ${{ env.REGISTRY }} \
+            --username ${{ secrets.REGISTRY_USERNAME }} \
+            --password ${{ secrets.REGISTRY_TOKEN }} || \
+          docker login ${{ env.REGISTRY }} \
+            --username ${{ secrets.REGISTRY_USERNAME }} \
+            --password ${{ secrets.REGISTRY_TOKEN }}
+        shell: bash
+        id: login
+
+      - name: Merge tags for the images 🔀
+        run: |
+          python3 -m tagging.apps.merge_tags \
+            --image ${{ inputs.image }} \
+            --variant ${{ inputs.variant }} \
+            --tags-dir /tmp/jupyter/tags/
+        shell: bash
+
+      - name: Logout from Registry 🔐
+        if: always() && env.PUSH_TO_REGISTRY == 'true' && steps.login.outcome == 'success'
+        run: |
+          docker logout ${{ env.REGISTRY }}
+        shell: bash
