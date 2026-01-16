@@ -2,7 +2,8 @@
 
 This image provides an optimized single-cell analysis environment with the most recent R packages directly from Bioconductor.
 
-Unlike the standard `singlecell-notebook` which is built on the data stack and uses the bioconda channel (which typically lags behind Bioconductor releases), this image is built directly on `jupyter/datascience-notebook` to ensure access to the latest R package versions from Bioconductor.
+Unlike the standard `singlecell-notebook` which is built on the data stack and uses the bioconda channel (which typically lags behind Bioconductor releases),
+this image is built directly on `jupyter/datascience-notebook` to ensure access to the latest R package versions from Bioconductor.
 
 ## Key Differences from singlecell-notebook
 
