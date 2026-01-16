@@ -1,3 +1,1 @@
-import cytetype
-
-cytetype.__version__  # noqa: F401
+../../singlecell-notebook/units/unit_cytetype.py

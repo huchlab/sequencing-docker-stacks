@@ -1,3 +1,1 @@
-import fastcluster
-
-fastcluster.__version__  # noqa: F401
+../../singlecell-notebook/units/unit_fastcluster.py

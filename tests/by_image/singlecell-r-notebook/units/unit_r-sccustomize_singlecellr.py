@@ -1,3 +1,1 @@
-from rpy2.robjects import r
-
-r("library(scCustomize)")
+../../singlecell-notebook/units/unit_r-sccustomize.py
