@@ -103,6 +103,14 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
 
+      - name: Run tests ✅
+        run: |
+          python3 -m tests.run_tests \
+            --registry ${{ env.REGISTRY }} \
+            --owner ${{ env.OWNER }} \
+            --image ${{ inputs.image }}
+        shell: bash
+
       - name: Write tags file 🏷
         run: |
           python3 -m tagging.apps.write_tags_file \
@@ -157,11 +165,3 @@ jobs:
           path: /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
           retention-days: 3
           compression-level: 0
-
-      - name: Run tests ✅
-        run: |
-          python3 -m tests.run_tests \
-            --registry ${{ env.REGISTRY }} \
-            --owner ${{ env.OWNER }} \
-            --image ${{ inputs.image }}
-        shell: bash
