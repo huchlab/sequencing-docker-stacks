@@ -73,8 +73,6 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
-    # workaround to fix #486
-    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
