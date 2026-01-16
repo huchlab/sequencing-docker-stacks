@@ -1,3 +1,1 @@
-from rpy2.robjects import r
-
-r("library(sceasy)")
+../../singlecell-notebook/units/unit_r-sceasy.py

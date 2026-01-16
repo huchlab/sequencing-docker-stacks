@@ -1,3 +1,1 @@
-import cellbender
-
-cellbender.__version__  # noqa: F401
+../../singlecell-notebook/units/unit_cellbender.py

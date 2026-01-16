@@ -1,3 +1,1 @@
-import omnipath as op
-
-op.__version__
+../../singlecell-notebook/units/unit_omnipath.py
