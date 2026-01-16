@@ -41,50 +41,51 @@ USER ${NB_UID}
 RUN git lfs install && \
     echo "r-base >=4.5" >> /opt/conda/conda-meta/pinned && \
     mamba install --yes \
-        # Python packages from data-notebook \
-        'jupyterlab_execute_time' \
-        'natsort' \
-        'openpyxl' \
-        'pingouin' \
-        'plotnine' \
-        'polars' \
-        'pyarrow' \
-        'scikit-misc' \
-        'session-info' \
-        'session-info2' \
-        'trackhub' \
-        'uv' \
-        'xlsxwriter' \
-        # Python packages from sequencing-base-notebook \
-        'biopython' \
-        'pybiomart' \
-        # Python packages from singlecell-notebook \
+        # Python packages (alphabetically sorted) \
         'anndata' \
         'anndata2ri' \
         'arboreto' \
+        'biopython' \
         'cellrank>=2.0' \
         'celltypist' \
         'decoupler-py>=2.0.2' \
         'harmonypy<0.2.0' \
         'hnswlib' \
+        'jupyterlab_execute_time' \
         'leidenalg' \
         'lightning>=2.5' \
         'loompy' \
         'marsilea' \
         'mudata' \
         'muon' \
+        'natsort' \
+        'openpyxl' \
         'palantir' \
+        'pingouin' \
+        'plotnine' \
+        'polars' \
         'pooch' \
+        'pyarrow' \
         'pybind11' \
+        'pybiomart' \
         'pydeseq2>=0.5.0' \
         'python-igraph' \
         'scanorama' \
         'scanpy>=1.10.4' \
+        'scikit-misc' \
         'scrublet' \
         'scvelo' \
         'scvi-tools>=1.2.2' \
-        # R packages from data-notebook \
-        'bioconductor-complexheatmap' \
+        'session-info' \
+        'session-info2' \
+        'trackhub' \
+        'uv' \
+        'xlsxwriter' \
+        # R packages (alphabetically sorted, non-Bioconductor) \
+        'r-anndata' \
+        'r-base' \
+        'r-biocmanager' \
+        'r-clustree' \
         'r-data.table' \
         'r-dtplyr' \
         'r-fastcluster' \
@@ -96,6 +97,7 @@ RUN git lfs install && \
         'r-ggthemes' \
         'r-gtools' \
         'r-ggvenn' \
+        'r-harmony' \
         'r-hmisc' \
         'r-janitor' \
         'r-languageserver' \
@@ -104,38 +106,37 @@ RUN git lfs install && \
         'r-paralleldist' \
         'r-pheatmap' \
         'r-plotly' \
+        'r-presto' \
         'r-r.utils' \
+        'r-reticulate' \
+        'r-seurat>=5.1.0' \
         'r-svglite' \
         'r-viridis' \
         'r-writexl' \
-        # R packages from sequencing-base-notebook \
-        'bioconductor-deseq2' \
-        'bioconductor-fgsea' \
-        'bioconductor-trackviewer' \
-        'r-base' \
-        'r-biocmanager' \
-        # R packages from singlecell-notebook \
-        'bioconductor-batchelor' \
-        'bioconductor-clusterprofiler' \
-        'bioconductor-loomexperiment' \
-        'bioconductor-mast' \
-        'bioconductor-nebulosa' \
-        'bioconductor-scater' \
-        'bioconductor-scran' \
-        'bioconductor-singlecellexperiment' \
-        'bioconductor-zellkonverter' \
-        'r-presto' \
-        'r-anndata' \
-        'r-clustree' \
-        'r-harmony' \
-        'r-reticulate' \
-        'r-seurat>=5.1.0' \
         && \
     # workaround to fix #486
     mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
+
+# Install Bioconductor packages using BiocManager for R 4.5 compatibility
+# Packages are listed alphabetically, one per line
+RUN R -e "options(warn = 2); BiocManager::install(c( \
+        'batchelor', \
+        'clusterProfiler', \
+        'ComplexHeatmap', \
+        'DESeq2', \
+        'fgsea', \
+        'LoomExperiment', \
+        'MAST', \
+        'Nebulosa', \
+        'scater', \
+        'scran', \
+        'SingleCellExperiment', \
+        'trackViewer', \
+        'zellkonverter' \
+    ), ask = FALSE, update = FALSE)"
 
 # Packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
