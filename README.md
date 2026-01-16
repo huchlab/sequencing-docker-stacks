@@ -82,10 +82,6 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - R packages installed directly from Bioconductor rather than bioconda channel
 - All dependencies from data, sequencing-base, and singlecell notebooks included
 
-**When to use this over singlecell-notebook:**
-
-Use `singlecell-r-notebook` when you need the latest R package versions from Bioconductor for cutting-edge features or bug fixes. The standard `singlecell-notebook` uses bioconda, which typically lags a few versions behind Bioconductor releases. If you're primarily using Python tools like Scanpy, or don't need the absolute latest R packages, the standard `singlecell-notebook` is more straightforward.
-
 ### Spatial Transcriptomics — `spatial-notebook`
 
 **Best for:** Spatial RNA-seq, tissue architecture, spatial patterns
