@@ -71,6 +71,17 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 - Dimensionality reduction (UMAP, t-SNE, PCA)
 - Cell clustering and annotation tools
 
+### Single-Cell Analysis with Latest R — `singlecell-r-notebook`
+
+**Best for:** R-centric single-cell analysis workflows requiring the most recent R packages from Bioconductor
+
+**Key Differences:**
+
+- Built directly on `jupyter/datascience-notebook` to bypass bioconda's lag behind Bioconductor
+- R packages pinned to r-base>=4.5 for latest R features and package versions
+- R packages installed directly from Bioconductor rather than bioconda channel
+- All dependencies from data, sequencing-base, and singlecell notebooks included
+
 ### Spatial Transcriptomics — `spatial-notebook`
 
 **Best for:** Spatial RNA-seq, tissue architecture, spatial patterns
@@ -169,6 +180,9 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 # For RNA-seq analysis
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:2025-11-10
 
+# For single-cell analysis with latest R packages
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-r-notebook:2025-11-10
+
 # For spatial transcriptomics
 docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/spatial-notebook:2025-11-10
 
@@ -194,6 +208,7 @@ All available images work with Apptainer:
 
 - `rnaseq-notebook`
 - `singlecell-notebook`
+- `singlecell-r-notebook`
 - `spatial-notebook`
 - `multiomics-notebook`
 - `sequencing-base-notebook`
@@ -208,6 +223,7 @@ Images are tagged with dates and commit hashes for reproducibility. To view all 
 - [sequencing-base-notebook tags](https://quay.io/repository/huchlab/sequencing-base-notebook?tab=tags)
 - [rnaseq-notebook tags](https://quay.io/repository/huchlab/rnaseq-notebook?tab=tags)
 - [singlecell-notebook tags](https://quay.io/repository/huchlab/singlecell-notebook?tab=tags)
+- [singlecell-r-notebook tags](https://quay.io/repository/huchlab/singlecell-r-notebook?tab=tags)
 - [spatial-notebook tags](https://quay.io/repository/huchlab/spatial-notebook?tab=tags)
 - [multiomics-notebook tags](https://quay.io/repository/huchlab/multiomics-notebook?tab=tags)
 
