@@ -1,0 +1,14 @@
+# Add R mimetype to specify how the plot returns from R to the browser.
+# https://notebook.community/andrie/jupyter-notebook-samples/Changing%20R%20plot%20options%20in%20Jupyter
+
+options(jupyter.plot_mimetypes = c('text/plain', 'image/png', 'image/jpeg', 'image/svg+xml', 'application/pdf'))
+
+# Set default CRAN repository
+options(repos = c(CRAN = 'https://cloud.r-project.org'))
+
+# Set number of threads to 4 (GitHub runners have 4 cores)
+options(Ncpus = 4)
+
+# Set library paths to include both CRAN and Conda libraries
+# CRAN libraries are installed in /opt/R-cran/library
+.libPaths(c('/opt/R-cran/library', '/opt/conda/lib/R/library'))
