@@ -79,11 +79,13 @@ RUN git lfs install && \
         'r-svglite' \
         'r-viridis' \
         'r-writexl' \
+        # workaround to fix #486
+        'r-zoo!=1.8_15' \
         && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# RUN Rscript -e \
-#     "Sys.setenv(NOT_CRAN = 'true'); \
-#     install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
+RUN Rscript -e \
+    "Sys.setenv(NOT_CRAN = 'true'); \
+    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"

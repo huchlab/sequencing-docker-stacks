@@ -10,6 +10,8 @@ sequencing-base-notebook (base)
 ├── singlecell-notebook
 │   ├── multiomics-notebook
 │   └── spatial-notebook
+
+singlecell-r-notebook (independent, built on jupyter/datascience-notebook)
 ```
 
 ## Development Environment
@@ -76,11 +78,12 @@ sequencing-base-notebook (base)
 ### Main Workflows
 
 1. **docker.yml**: Main build, test, and push workflow
-2. **docker-build-test-upload.yml**: Build and test specific images
-3. **docker-tag-push.yml**: Tag and push images to registry
-4. **docker-wiki-update.yml**: Update wiki with build manifests
-5. **pre-commit.yml**: Run pre-commit hooks on PRs
-6. **sphinx.yml**: Build and deploy documentation
+2. **docker-build-upload.yml**: Build specific images and upload artifacts
+3. **docker-test.yml**: Test specific images from uploaded artifacts
+4. **docker-tag-push.yml**: Tag and push images to registry
+5. **docker-wiki-update.yml**: Update wiki with build manifests
+6. **pre-commit.yml**: Run pre-commit hooks on PRs
+7. **sphinx.yml**: Build and deploy documentation
 
 ### Registry Management
 
@@ -174,6 +177,14 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work <image>
 - Seurat (R)
 - scRNA-seq analysis tools
 - Visualization tools (UMAP, t-SNE)
+
+### singlecell-r-notebook
+
+- Built directly on jupyter/datascience-notebook (not on data-notebook)
+- R-base pinned to >=4.5 for latest R features
+- R packages installed directly from Bioconductor (not bioconda)
+- All dependencies from data, sequencing-base, and singlecell notebooks
+- Optimized for R-centric workflows requiring latest R package versions
 
 ### spatial-notebook
 

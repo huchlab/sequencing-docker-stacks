@@ -132,6 +132,8 @@ def get_package_import_name(package: str) -> str:
         package = package.split(">")[0]
     elif "=" in package:
         package = package.split("=")[0]
+    elif "!" in package:
+        package = package.split("!")[0]
     return PACKAGE_MAPPING.get(package, package)
 
 

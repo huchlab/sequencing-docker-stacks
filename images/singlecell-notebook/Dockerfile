@@ -34,7 +34,7 @@ RUN mamba install --yes \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
-    'harmonypy<0.2.0' \
+    'harmonypy' \
     # optional dependency of scvelo
     'hnswlib' \
     'leidenalg' \
@@ -61,6 +61,7 @@ RUN mamba install --yes \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-nebulosa' \
+    'bioconductor-org.hs.eg.db' \
     'bioconductor-scater' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
@@ -73,8 +74,6 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     && \
-    # workaround to fix #486
-    mamba install r-zoo r-tseries --yes --force-reinstall && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
