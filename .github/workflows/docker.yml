@@ -159,23 +159,23 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   aarch64-singlecell-r:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: ""
       image: singlecell-r-notebook
       platform: aarch64
       runs-on: ubuntu-24.04-arm
-      timeout-minutes: 50
+      timeout-minutes: 90
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   x86_64-singlecell-r:
-    uses: ./.github/workflows/docker-build-test-upload.yml
+    uses: ./.github/workflows/docker-build-upload.yml
     with:
       parent-image: ""
       image: singlecell-r-notebook
       platform: x86_64
       runs-on: ubuntu-24.04
-      timeout-minutes: 50
+      timeout-minutes: 90
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   aarch64-multiomics:
@@ -289,6 +289,16 @@ jobs:
     needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  test-aarch64-singlecell-r:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-r-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-singlecell-r
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   test-x86_64-singlecell:
     uses: ./.github/workflows/docker-test.yml
     with:
@@ -297,6 +307,16 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 15
     needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-singlecell-r:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-r-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-singlecell-r
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   test-aarch64-multiomics:

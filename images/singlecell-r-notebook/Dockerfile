@@ -109,6 +109,7 @@ RUN git lfs install && \
         'r-plotly' \
         # 'r-presto' \
         'r-r.utils' \
+        'r-remotes' \
         'r-reticulate' \
         'r-seurat>=5.1.0' \
         'r-svglite' \
