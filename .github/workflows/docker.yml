@@ -470,20 +470,20 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-data,
-        x86_64-data,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
-        aarch64-rnaseq,
-        x86_64-rnaseq,
-        aarch64-singlecell,
-        x86_64-singlecell,
-        aarch64-singlecell-r,
-        x86_64-singlecell-r,
-        aarch64-multiomics,
-        x86_64-multiomics,
-        aarch64-spatial,
-        x86_64-spatial,
+        test-aarch64-data,
+        test-x86_64-data,
+        test-aarch64-sequencing-base,
+        test-x86_64-sequencing-base,
+        test-aarch64-rnaseq,
+        test-x86_64-rnaseq,
+        test-aarch64-singlecell,
+        test-x86_64-singlecell,
+        test-aarch64-singlecell-r,
+        test-x86_64-singlecell-r,
+        test-aarch64-multiomics,
+        test-x86_64-multiomics,
+        test-aarch64-spatial,
+        test-x86_64-spatial,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -504,10 +504,10 @@ jobs:
     # prettier-ignore
     needs:
       [
-        aarch64-data,
-        x86_64-data,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
+        test-aarch64-data,
+        test-x86_64-data,
+        test-aarch64-sequencing-base,
+        test-x86_64-sequencing-base,
       ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
