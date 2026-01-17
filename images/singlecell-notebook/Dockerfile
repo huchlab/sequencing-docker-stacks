@@ -96,6 +96,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     R -e "install.packages('scCustomize')" && \
     R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
     R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
     R -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)"
 
 USER ${NB_UID}
