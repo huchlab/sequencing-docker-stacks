@@ -34,7 +34,7 @@ RUN mamba install --yes \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
-    'harmonypy' \
+    'harmonypy>=0.2.0' \
     # optional dependency of scvelo
     'hnswlib' \
     'leidenalg' \
