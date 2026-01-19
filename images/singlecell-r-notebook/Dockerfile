@@ -145,12 +145,12 @@ RUN pip install --no-cache-dir \
 
 # Install R packages not available for arm64 on conda
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "install.packages('anndata')" && \
-    R -e "install.packages('openxlsx2')" && \
-    R -e "install.packages('scCustomize')" && \
-    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
-    R -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
-    R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
+    Rscript -e "install.packages('anndata')" && \
+    Rscript -e "install.packages('openxlsx2')" && \
+    Rscript -e "install.packages('scCustomize')" && \
+    Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
 
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
 RUN Rscript -e "options(warn = 2); BiocManager::install(c(\
