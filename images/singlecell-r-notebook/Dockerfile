@@ -121,6 +121,7 @@ RUN git lfs install && \
         'r-gdtools' \
         'r-ggrastr' \
         'r-locfit' \
+        'r-nmf' \
         'xz' \
         && \
     # workaround to fix #486
@@ -149,8 +150,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "install.packages('openxlsx2')" && \
     Rscript -e "install.packages('scCustomize')" && \
     Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
-    Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
-    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
+    Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)"
 
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
 RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
@@ -171,6 +171,8 @@ RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
         'SingleCellExperiment', \
         'trackViewer', \
         'zellkonverter' \
-    ), ask = FALSE, update = FALSE)"
+    ), ask = FALSE, update = FALSE)" && \
+    # Install CellChat afterwards, because it depends on ComplexHeatmap
+    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
 
 USER ${NB_UID}
