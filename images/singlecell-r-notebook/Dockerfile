@@ -153,7 +153,8 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
 
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
-RUN Rscript -e "options(warn = 2); BiocManager::install(c(\
+RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
+        'anndataR', \
         'batchelor', \
         'clusterProfiler', \
         'ComplexHeatmap', \
@@ -163,6 +164,8 @@ RUN Rscript -e "options(warn = 2); BiocManager::install(c(\
         'MAST', \
         'miloR', \
         'Nebulosa', \
+        # rhdf5 is optional dependency of anndataR
+        'rhdf5', \
         'scater', \
         'scran', \
         'SingleCellExperiment', \
