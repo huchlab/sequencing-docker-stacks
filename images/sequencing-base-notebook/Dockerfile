@@ -44,4 +44,4 @@ RUN mamba install --yes \
 RUN pip install --no-cache-dir \
     gseapy && \
     # Install R packages not available for arm64 on conda
-    R -e "install.packages('openxlsx2')"
+    Rscript -e "install.packages('openxlsx2')"

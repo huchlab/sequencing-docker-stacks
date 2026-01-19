@@ -10,6 +10,8 @@ sequencing-base-notebook (base)
 ├── singlecell-notebook
 │   ├── multiomics-notebook
 │   └── spatial-notebook
+
+singlecell-r-notebook (independent, built on jupyter/datascience-notebook)
 ```
 
 ## Development Environment
@@ -175,6 +177,14 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work <image>
 - Seurat (R)
 - scRNA-seq analysis tools
 - Visualization tools (UMAP, t-SNE)
+
+### singlecell-r-notebook
+
+- Built directly on jupyter/datascience-notebook (not on data-notebook)
+- R-base pinned to >=4.5 for latest R features
+- R packages installed directly from Bioconductor (not bioconda)
+- All dependencies from data, sequencing-base, and singlecell notebooks
+- Optimized for R-centric workflows requiring latest R package versions
 
 ### spatial-notebook
 
