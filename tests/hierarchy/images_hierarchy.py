@@ -19,6 +19,7 @@ IMAGE_PARENT = {
     "sequencing-base-notebook": "data-notebook",
     "rnaseq-notebook": "sequencing-base-notebook",
     "singlecell-notebook": "sequencing-base-notebook",
+    "singlecell-r-notebook": "datascience-notebook",
     "multiomics-notebook": "singlecell-notebook",
     "spatial-notebook": "singlecell-notebook",
 }

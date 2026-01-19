@@ -80,23 +80,23 @@ RUN mamba install --yes \
 
 # packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
-    cytetype \
-    fa2_modified \
-    fastcluster \
-    "liana>=1.6.1" \
-    "omnipath>=1.0.12" \
-    scikit-misc \
-    "vitessce[all]" \
+    'cytetype' \
+    'fa2_modified' \
+    'fastcluster' \
+    'liana>=1.6.1' \
+    'omnipath>=1.0.12' \
+    'scikit-misc' \
+    'vitessce[all]' \
     && \
     # do not install dependencies for cellbender (they include jupyter)
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
-    R -e "install.packages('scCustomize')" && \
-    R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
-    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
-    R -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
-    R -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)"
+    Rscript -e "install.packages('scCustomize')" && \
+    Rscript -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
+    Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
+    Rscript -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
 
 USER ${NB_UID}
