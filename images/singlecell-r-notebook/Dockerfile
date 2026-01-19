@@ -24,18 +24,7 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        git-lfs \
-        libcairo2-dev \
-        libfreetype6-dev \
-        libpng-dev \
-        libxml2-dev \
-        liblzma-dev \
-        libcurl4-openssl-dev \
-        libbz2-dev \
-        libharfbuzz-dev \
-        libfribidi-dev \
-        pkg-config \
-        build-essential && \
+        git-lfs && \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/R-cran/library && \
@@ -127,6 +116,12 @@ RUN git lfs install && \
         'r-svglite' \
         'r-viridis' \
         'r-writexl' \
+        # next packages are deps for bioconductor packages below
+        'r-cairo' \
+        'r-gdtools' \
+        'r-ggrastr' \
+        'r-locfit' \
+        'xz' \
         && \
     # workaround to fix #486
     mamba install r-zoo r-tseries --yes --force-reinstall && \
@@ -134,9 +129,31 @@ RUN git lfs install && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
+# Packages not available for one or both architectures on conda
+RUN pip install --no-cache-dir \
+    'gseapy' \
+    'cytetype' \
+    'fa2_modified' \
+    'fastcluster' \
+    'liana>=1.6.1' \
+    'omnipath>=1.0.12' \
+    'scikit-misc' \
+    'vitessce[all]' \
+    && \
+    # do not install dependencies for cellbender (they include jupyter)
+    pip install --no-cache-dir --no-deps cellbender
+
+# Install R packages not available for arm64 on conda
+RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    R -e "install.packages('anndata')" && \
+    R -e "install.packages('openxlsx2')" && \
+    R -e "install.packages('scCustomize')" && \
+    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    R -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
+    R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
+
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
-# Packages are listed alphabetically, one per line
-RUN R -e "options(warn = 2); BiocManager::install(c( \
+RUN Rscript -e "options(warn = 2); BiocManager::install(c(\
         'batchelor', \
         'clusterProfiler', \
         'ComplexHeatmap', \
@@ -144,6 +161,7 @@ RUN R -e "options(warn = 2); BiocManager::install(c( \
         'fgsea', \
         'LoomExperiment', \
         'MAST', \
+        'miloR', \
         'Nebulosa', \
         'scater', \
         'scran', \
@@ -151,29 +169,5 @@ RUN R -e "options(warn = 2); BiocManager::install(c( \
         'trackViewer', \
         'zellkonverter' \
     ), ask = FALSE, update = FALSE)"
-
-# Packages not available for one or both architectures on conda
-RUN pip install --no-cache-dir \
-    gseapy \
-    cytetype \
-    fa2_modified \
-    fastcluster \
-    "liana>=1.6.1" \
-    "omnipath>=1.0.12" \
-    scikit-misc \
-    "vitessce[all]" \
-    && \
-    # do not install dependencies for cellbender (they include jupyter)
-    pip install --no-cache-dir --no-deps cellbender
-
-# Install R packages not available for arm64 on conda
-RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "install.packages('openxlsx2')" && \
-    R -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
-    R -e "install.packages('scCustomize')" && \
-    R -e "install.packages('anndata')" && \
-    R -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
-    R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
-    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)"
 
 USER ${NB_UID}
