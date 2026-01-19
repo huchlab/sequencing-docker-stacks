@@ -51,7 +51,7 @@ RUN git lfs install && \
         'cellrank>=2.0' \
         'celltypist' \
         'decoupler-py>=2.0.2' \
-        'harmonypy<0.2.0' \
+        'harmonypy>=0.2.0' \
         'hnswlib' \
         'jupyterlab_execute_time' \
         'leidenalg' \
