@@ -56,6 +56,7 @@ PACKAGE_MAPPING = {
     "biocmanager": "BiocManager",
     "biocparallel": "BiocParallel",
     "biomart": "biomaRt",
+    "cairo": "Cairo",
     "cellchat": "CellChat",
     "clusterprofiler": "clusterProfiler",
     "complexheatmap": "ComplexHeatmap",
@@ -110,6 +111,7 @@ EXCLUDED_PACKAGES = [
     "r-irkernel",
     "unixodbc",
     "uv",
+    "xz",
 ]
 
 
