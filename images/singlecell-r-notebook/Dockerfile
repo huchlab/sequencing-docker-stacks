@@ -121,7 +121,6 @@ RUN git lfs install && \
         'r-gdtools' \
         'r-ggrastr' \
         'r-locfit' \
-        'r-nmf' \
         'xz' \
         && \
     # workaround to fix #486
@@ -173,6 +172,8 @@ RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
         'zellkonverter' \
     ), ask = FALSE, update = FALSE)" && \
     # Install CellChat afterwards, because it depends on ComplexHeatmap
+    # recent NMF is a dependency of CellChat
+    Rscript -e "install.packages('NMF')" && \
     Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
 
 USER ${NB_UID}
