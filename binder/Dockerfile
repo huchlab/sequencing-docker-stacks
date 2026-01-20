@@ -5,7 +5,7 @@
 # https://quay.io/repository/huchlab/singlecell-notebook?tab=tags
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook:2025-11-10
+ARG BASE_IMAGE=$REGISTRY/$OWNER/singlecell-notebook:2026-01-20
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
@@ -14,7 +14,7 @@ LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ENV TAG="2025-11-10"
+ENV TAG="2026-01-20"
 
 COPY --chown=${NB_UID}:${NB_GID} binder/README.ipynb "${HOME}"/README.ipynb
 

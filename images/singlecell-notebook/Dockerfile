@@ -34,7 +34,7 @@ RUN mamba install --yes \
     'cellrank>=2.0' \
     'celltypist' \
     'decoupler-py>=2.0.2' \
-    'harmonypy<0.2.0' \
+    'harmonypy>=0.2.0' \
     # optional dependency of scvelo
     'hnswlib' \
     'leidenalg' \
@@ -80,25 +80,26 @@ RUN mamba install --yes \
 
 # packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
-    cytetype \
-    fa2_modified \
-    fastcluster \
-    "liana[extra]>=1.6.1" \
+    'corneto' \
+    'cytetype' \
+    'fa2_modified' \
+    'fastcluster' \
+    'liana[extra]>=1.6.1' \
+    'omnipath>=1.0.12' \
     # fixes #438: pin pyscipopt to 5.2.1 to resolve corneto dependency conflicts
-    corneto \
-    "pyscipopt==5.2.1" \
-    "omnipath>=1.0.12" \
-    scikit-misc \
-    "vitessce[all]" \
+    'pyscipopt==5.2.1' \
+    'scikit-misc' \
+    'vitessce[all]' \
     && \
     # do not install dependencies for cellbender (they include jupyter)
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
-    R -e "install.packages('scCustomize')" && \
-    R -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
-    R -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
-    R -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)"
+    Rscript -e "install.packages('scCustomize')" && \
+    Rscript -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
+    Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
+    Rscript -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
 
 USER ${NB_UID}

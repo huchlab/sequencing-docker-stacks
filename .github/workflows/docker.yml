@@ -158,6 +158,26 @@ jobs:
     needs: x86_64-sequencing-base
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  aarch64-singlecell-r:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: ""
+      image: singlecell-r-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 90
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-singlecell-r:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: ""
+      image: singlecell-r-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 90
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   aarch64-multiomics:
     uses: ./.github/workflows/docker-build-upload.yml
     with:
@@ -269,6 +289,16 @@ jobs:
     needs: aarch64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  test-aarch64-singlecell-r:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-r-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-singlecell-r
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   test-x86_64-singlecell:
     uses: ./.github/workflows/docker-test.yml
     with:
@@ -277,6 +307,16 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 15
     needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-singlecell-r:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-r-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-singlecell-r
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   test-aarch64-multiomics:
@@ -353,6 +393,7 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            singlecell-r-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
@@ -366,6 +407,7 @@ jobs:
         test-aarch64-sequencing-base,
         test-aarch64-rnaseq,
         test-aarch64-singlecell,
+        test-aarch64-singlecell-r,
         test-aarch64-multiomics,
         test-aarch64-spatial,
 
@@ -373,6 +415,7 @@ jobs:
         test-x86_64-sequencing-base,
         test-x86_64-rnaseq,
         test-x86_64-singlecell,
+        test-x86_64-singlecell-r,
         test-x86_64-multiomics,
         test-x86_64-spatial,
       ]
@@ -417,26 +460,32 @@ jobs:
             sequencing-base-notebook,
             rnaseq-notebook,
             singlecell-notebook,
+            singlecell-r-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]
-    # Depends on build jobs, not tag-push (build jobs generate tag artifacts)
+    # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
     needs:
       [
-        aarch64-data,
-        x86_64-data,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
-        aarch64-rnaseq,
-        x86_64-rnaseq,
-        aarch64-singlecell,
-        x86_64-singlecell,
-        aarch64-multiomics,
-        x86_64-multiomics,
-        aarch64-spatial,
-        x86_64-spatial,
+        contributed-recipes,
+
+        test-aarch64-data,
+        test-aarch64-sequencing-base,
+        test-aarch64-rnaseq,
+        test-aarch64-singlecell,
+        test-aarch64-singlecell-r,
+        test-aarch64-multiomics,
+        test-aarch64-spatial,
+
+        test-x86_64-data,
+        test-x86_64-sequencing-base,
+        test-x86_64-rnaseq,
+        test-x86_64-singlecell,
+        test-x86_64-singlecell-r,
+        test-x86_64-multiomics,
+        test-x86_64-spatial,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -452,14 +501,14 @@ jobs:
       matrix:
         image: [data-notebook, sequencing-base-notebook]
         variant: [default]
-    # Depends on build jobs, not tag-push-fast (build jobs generate tag artifacts)
+    # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
     needs:
       [
-        aarch64-data,
-        x86_64-data,
-        aarch64-sequencing-base,
-        x86_64-sequencing-base,
+        test-aarch64-data,
+        test-x86_64-data,
+        test-aarch64-sequencing-base,
+        test-x86_64-sequencing-base,
       ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 

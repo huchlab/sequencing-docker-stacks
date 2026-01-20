@@ -60,6 +60,8 @@ queue_rules:
               - check-success = aarch64-rnaseq / build-upload
               - check-success = x86_64-singlecell / build-upload
               - check-success = aarch64-singlecell / build-upload
+              - check-success = x86_64-singlecell-r / build-upload
+              - check-success = aarch64-singlecell-r / build-upload
               - check-success = x86_64-spatial / build-upload
               - check-success = aarch64-spatial / build-upload
               - check-success = x86_64-multiomics / build-upload
@@ -72,6 +74,8 @@ queue_rules:
               - check-success = test-aarch64-rnaseq / test
               - check-success = test-x86_64-singlecell / test
               - check-success = test-aarch64-singlecell / test
+              - check-success = test-x86_64-singlecell-r / test
+              - check-success = test-aarch64-singlecell-r / test
               - check-success = test-x86_64-spatial / test
               - check-success = test-aarch64-spatial / test
               - check-success = test-x86_64-multiomics / test
@@ -86,6 +90,7 @@ queue_rules:
               - check-success = apptainer-push (sequencing-base-notebook, default) / apptainer-push
               - check-success = apptainer-push (rnaseq-notebook, default) / apptainer-push
               - check-success = apptainer-push (singlecell-notebook, default) / apptainer-push
+              - check-success = apptainer-push (singlecell-r-notebook, default) / apptainer-push
               - check-success = apptainer-push (multiomics-notebook, default) / apptainer-push
               - check-success = apptainer-push (spatial-notebook, default) / apptainer-push
               - check-success = wiki-update / wiki-update
