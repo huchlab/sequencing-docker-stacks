@@ -73,7 +73,7 @@ All containers run on both `x86_64` (Intel/AMD) and `aarch64` (ARM/Apple Silicon
 
 ### Single-Cell Analysis with Latest R — `singlecell-r-notebook`
 
-**Best for:** R-centric single-cell analysis workflows requiring the most recent R packages from Bioconductor
+**Best for:** R-centric single-cell analysis workflows using the most recent R packages from Bioconductor
 
 **Key Differences:**
 
@@ -117,29 +117,12 @@ You'll get a temporary workspace to experiment with single-cell analysis tools l
 
 **Note:** Binder sessions are temporary and have limited resources. For real analysis work, follow the installation steps below to run containers on your own computer.
 
-### Prerequisites
-
-1. **Install Docker** on your computer
-   - [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/)
-   - [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
-   - [Docker Engine for Linux](https://docs.docker.com/engine/install/)
-
-2. **Verify Docker is running**
-
-   ```bash
-   docker --version
-   ```
-
-   You should see something like `Docker version 20.10.0` or higher.
-
-That's it! No need to install Python, R, or any bioinformatics tools.
-
 ### Launch Your First Analysis Environment
 
 Here's how to start a Jupyter notebook environment for single-cell analysis:
 
 ```bash
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-notebook:2026-01-20
 ```
 
 **What this command does:**
@@ -149,7 +132,7 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/s
 - `--rm` — Clean up the container when you're done
 - `-p 8888:8888` — Access Jupyter at `http://localhost:8888`
 - `-v "${PWD}":/home/jovyan/work` — Mount your current directory (your data will be in the `work` folder)
-- `quay.io/huchlab/singlecell-notebook:2025-11-10` — The container image to use. Here, `2025-11-10` is the version of the container.
+- `quay.io/huchlab/singlecell-notebook:2026-01-20` — The container image to use. Here, `2026-01-20` is the version of the container.
   See [Choose Specific Versions](#choose-specific-versions) below for information on selecting specific image versions.
 
 **After running this command:**
@@ -172,48 +155,48 @@ Replace `singlecell-notebook` with your preferred container:
 
 ```bash
 # For data science work
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/data-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/data-notebook:2026-01-20
 
 # For sequencing analysis base (foundation for bioinformatics)
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/sequencing-base-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/sequencing-base-notebook:2026-01-20
 
 # For RNA-seq analysis
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/rnaseq-notebook:2026-01-20
 
 # For single-cell analysis with latest R packages
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-r-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/singlecell-r-notebook:2026-01-20
 
 # For spatial transcriptomics
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/spatial-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/spatial-notebook:2026-01-20
 
 # For multi-omics integration
-docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:2025-11-10
+docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/multiomics-notebook:2026-01-20
 ```
 
 ### Using Apptainer/Singularity Images
 
 For HPC environments that use Apptainer (formerly Singularity) instead of Docker, we provide pre-built Apptainer images on quay.io.
-These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages.
+These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages at runtime.
 
-**Note:** Apptainer images are currently available for x86_64 architecture only.
+**Note:** Apptainer images are available for x86_64 architecture only.
 
 Example usage:
 
 ```bash
 # Run directly without pulling first
-apptainer run oras://quay.io/huchlab/singlecell-notebook:2025-11-10-singularity
+apptainer run oras://quay.io/huchlab/singlecell-singularity:2026-01-20-singularity
 ```
 
 All available images work with Apptainer:
 
-- `rnaseq-notebook`
-- `singlecell-notebook`
-- `singlecell-r-notebook`
-- `spatial-notebook`
-- `multiomics-notebook`
-- `sequencing-base-notebook`
+- `rnaseq-singularity`
+- `singlecell-singularity`
+- `singlecell-r-singularity`
+- `spatial-singularity`
+- `multiomics-singularity`
+- `sequencing-base-singularity`
 
-Tags follow the pattern: `{date}-singularity` (e.g., `2025-11-10-singularity`)
+Tags are the same as for Docker images.
 
 ### Choose Specific Versions
 
@@ -230,17 +213,9 @@ Images are tagged with dates and commit hashes for reproducibility. To view all 
 ### Alternatives
 
 - [singularity-single-cell](https://gitlab.hrz.tu-chemnitz.de/dcgc-bfx/singularity/singularity-single-cell): singularity-based container for singlecell analysis.
-  Usually, R packages are more up-to-date then in our singlecell-notebook
 - [scanpy](https://scanpy.readthedocs.io/en/stable/installation.html#docker): [gcfntnu/scanpy](https://hub.docker.com/r/gcfntnu/scanpy) image on Docker Hub
 - [scvi-tools](https://docs.scvi-tools.org/en/stable/installation.html#docker) from the scverse provides Docker images
 - [Seurat](https://satijalab.org/seurat/articles/install.html#docker) provides Docker images
-
-### Working With Your Data
-
-**Important:** Any files you want to keep must be saved in the `work` folder inside Jupyter.
-This folder is connected to your computer's current directory, so files saved here persist after the container stops.
-
-Files saved elsewhere in the container will be lost when the container stops!
 
 ## Next Steps
 
