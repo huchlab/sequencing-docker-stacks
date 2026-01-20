@@ -16,6 +16,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "davidanson.vscode-markdownlint",
         "eamodio.gitlens",
         "fnando.linter",
         "github.copilot-chat",
