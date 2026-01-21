@@ -73,6 +73,8 @@ RUN mamba install --yes \
     'r-harmony' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
+    # needed for pyscipopt on aarch64
+    'scip' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
