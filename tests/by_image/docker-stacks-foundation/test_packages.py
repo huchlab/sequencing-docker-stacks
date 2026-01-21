@@ -101,6 +101,7 @@ EXCLUDED_PACKAGES = [
     "bzip2",
     "ca-certificates",
     "conda-forge::blas=*",
+    "graphviz",
     "grpcio-status",
     "grpcio",
     "hdf5",

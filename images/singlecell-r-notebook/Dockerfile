@@ -122,8 +122,10 @@ RUN git lfs install && \
         'r-wesanderson' \
         'r-writexl' \
         # next packages are deps for bioconductor packages below
+        'graphviz' \
         'r-cairo' \
         'r-gdtools' \
+        'r-ggbump' \
         'r-ggrastr' \
         'r-locfit' \
         'xz' \

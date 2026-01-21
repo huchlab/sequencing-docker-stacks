@@ -76,6 +76,11 @@ RUN mamba install --yes \
     'r-harmony' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
+    # next package are dependencies for nichenetr
+    'r-cairo' \
+    'r-gdtools' \
+    'r-ggiraph' \
+    'r-shadowtext' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
