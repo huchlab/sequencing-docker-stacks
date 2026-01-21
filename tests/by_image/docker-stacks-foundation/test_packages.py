@@ -57,7 +57,7 @@ PACKAGE_MAPPING = {
     "biocparallel": "BiocParallel",
     "biomart": "biomaRt",
     "cairo": "Cairo",
-    "ccplor": "CCPlotR",
+    "ccplotr": "CCPlotR",
     "cellchat": "CellChat",
     "clusterprofiler": "clusterProfiler",
     "complexheatmap": "ComplexHeatmap",
@@ -91,6 +91,7 @@ PACKAGE_MAPPING = {
     "scdblfinder": "scDblFinder",
     "seurat": "Seurat",
     "singlecellexperiment": "SingleCellExperiment",
+    "topgo": "topGO",
     "trackviewer": "trackViewer",
     "variancepartition": "variancePartition",
 }
