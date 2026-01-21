@@ -56,6 +56,7 @@ RUN git lfs install && \
         'xlsxwriter' \
         # R \
         'bioconductor-complexheatmap' \
+        'bioconductor-rgraphviz' \
         'r-data.table' \
         'r-dtplyr' \
         'r-fastcluster' \
@@ -66,6 +67,7 @@ RUN git lfs install && \
         'r-ggsci' \
         'r-ggthemes' \
         'r-gtools' \
+        'r-ggupset' \
         'r-ggvenn' \
         'r-hmisc' \
         'r-janitor' \
@@ -77,7 +79,9 @@ RUN git lfs install && \
         'r-plotly' \
         'r-r.utils' \
         'r-svglite' \
+        'r-textshape' \
         'r-viridis' \
+        'r-wesanderson' \
         'r-writexl' \
         # workaround to fix #486
         'r-zoo!=1.8_15' \

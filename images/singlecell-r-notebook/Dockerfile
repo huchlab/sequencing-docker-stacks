@@ -84,6 +84,7 @@ RUN git lfs install && \
         'uv' \
         'xlsxwriter' \
         # R packages (alphabetically sorted, non-Bioconductor) \
+        # r-anndata not yet available for R 4.5, installed via CRAN below
         # 'r-anndata' \
         'r-base' \
         'r-biocmanager' \
@@ -98,6 +99,7 @@ RUN git lfs install && \
         'r-ggsci' \
         'r-ggthemes' \
         'r-gtools' \
+        'r-ggupset' \
         'r-ggvenn' \
         'r-harmony' \
         'r-hmisc' \
@@ -108,13 +110,16 @@ RUN git lfs install && \
         'r-paralleldist' \
         'r-pheatmap' \
         'r-plotly' \
+        # r-presto not yet available for R 4.5, installed via CRAN below
         # 'r-presto' \
         'r-r.utils' \
         'r-remotes' \
         'r-reticulate' \
         'r-seurat>=5.1.0' \
         'r-svglite' \
+        'r-textshape' \
         'r-viridis' \
+        'r-wesanderson' \
         'r-writexl' \
         # next packages are deps for bioconductor packages below
         'r-cairo' \
@@ -145,11 +150,13 @@ RUN pip install --no-cache-dir \
 
 # Install R packages not available for arm64 on conda
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    Rscript -e "devtools::install_github('saeyslab/nichenetr')" && \
     Rscript -e "install.packages('anndata')" && \
     Rscript -e "install.packages('openxlsx2')" && \
     Rscript -e "install.packages('scCustomize')" && \
     Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
-    Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)"
+    Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('saezlab/liana', upgrade = FALSE)"
 
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
 RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
@@ -157,17 +164,25 @@ RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
         'batchelor', \
         'clusterProfiler', \
         'ComplexHeatmap', \
+        'CCPlotR', \
         'DESeq2', \
+        'DOSE', \
+        'decoupleR', \
         'fgsea', \
         'LoomExperiment', \
         'MAST', \
         'miloR', \
         'Nebulosa', \
+        'org.Hs.eg.db', \
+        'org.Mm.eg.db', \
+        'Rgraphviz', \
         # rhdf5 is optional dependency of anndataR
         'rhdf5', \
         'scater', \
+        'scDblFinder', \
         'scran', \
         'SingleCellExperiment', \
+        'topGO', \
         'trackViewer', \
         'zellkonverter' \
     ), ask = FALSE, update = FALSE)" && \
