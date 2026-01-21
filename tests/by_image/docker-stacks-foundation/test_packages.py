@@ -109,6 +109,7 @@ EXCLUDED_PACKAGES = [
     "pyqt",
     "python",
     "r-irkernel",
+    "scip",
     "unixodbc",
     "uv",
     "xz",
