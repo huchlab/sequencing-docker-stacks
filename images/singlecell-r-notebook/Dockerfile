@@ -122,7 +122,6 @@ RUN git lfs install && \
         'r-wesanderson' \
         'r-writexl' \
         # next packages are deps for bioconductor packages below
-        'graphviz' \
         'r-cairo' \
         'r-gdtools' \
         'r-ggbump' \
@@ -160,8 +159,12 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
     Rscript -e "remotes::install_github('saezlab/liana', upgrade = FALSE)"
 
+
+ENV R_MAKEVARS_SITE=/etc/R/Makevars.site
+
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
-RUN Rscript -e "BiocManager::install(c( \
+RUN echo "CC17=$(which gcc)" >> /etc/R/Makevars.site && \
+    Rscript -e "BiocManager::install(c( \
         'anndataR', \
         'batchelor', \
         'clusterProfiler', \
@@ -177,8 +180,7 @@ RUN Rscript -e "BiocManager::install(c( \
         'Nebulosa', \
         'org.Hs.eg.db', \
         'org.Mm.eg.db', \
-        # Rgrpahviz currently has issues on aarch64
-        # 'Rgraphviz', \
+        'Rgraphviz', \
         # rhdf5 is optional dependency of anndataR
         'rhdf5', \
         'scater', \
