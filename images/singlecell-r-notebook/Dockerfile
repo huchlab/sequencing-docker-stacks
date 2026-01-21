@@ -177,7 +177,8 @@ RUN Rscript -e "BiocManager::install(c( \
         'Nebulosa', \
         'org.Hs.eg.db', \
         'org.Mm.eg.db', \
-        'Rgraphviz', \
+        # Rgrpahviz currently has issues on aarch64
+        # 'Rgraphviz', \
         # rhdf5 is optional dependency of anndataR
         'rhdf5', \
         'scater', \
