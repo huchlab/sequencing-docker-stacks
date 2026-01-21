@@ -34,8 +34,6 @@ RUN mamba install --yes \
     'bioconductor-gseabase' \
     'bioconductor-gsva' \
     'bioconductor-gviz' \
-    'bioconductor-org.hs.eg.db' \
-    'bioconductor-org.mm.eg.db' \
     'bioconductor-reactomepa' \
     'bioconductor-scuttle' \
     'bioconductor-sva' \
