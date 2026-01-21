@@ -35,6 +35,9 @@ COPY Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
 RUN chown "${NB_UID}":"${NB_GID}" /opt/conda/lib/R/etc/Rprofile.site && \
     chmod 775 /opt/conda/lib/R/etc/Rprofile.site
 
+ENV R_MAKEVARS_SITE=/etc/R/Makevars.site
+RUN mkdir /etc/R && echo "CC17=$(which gcc)" >> /etc/R/Makevars.site
+
 ENV RETICULATE_PYTHON="/opt/conda/bin/python"
 
 USER ${NB_UID}
@@ -159,12 +162,8 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
     Rscript -e "remotes::install_github('saezlab/liana', upgrade = FALSE)"
 
-
-ENV R_MAKEVARS_SITE=/etc/R/Makevars.site
-
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
-RUN echo "CC17=$(which gcc)" >> /etc/R/Makevars.site && \
-    Rscript -e "BiocManager::install(c( \
+RUN Rscript -e "BiocManager::install(c( \
         'anndataR', \
         'batchelor', \
         'clusterProfiler', \
