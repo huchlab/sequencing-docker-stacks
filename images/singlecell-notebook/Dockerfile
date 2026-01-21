@@ -97,7 +97,7 @@ RUN pip install --no-cache-dir \
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "devtools::install_github('saeyslab/nichenetr')" && \
     Rscript -e "install.packages('scCustomize')" && \
-    Rscript -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
+    Rscript -e "BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
     Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
     Rscript -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
     Rscript -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)" && \

@@ -159,7 +159,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "remotes::install_github('saezlab/liana', upgrade = FALSE)"
 
 # Install Bioconductor packages using BiocManager for R 4.5 compatibility
-RUN Rscript -e "options(warn = 2); BiocManager::install(c( \
+RUN Rscript -e "BiocManager::install(c( \
         'anndataR', \
         'batchelor', \
         'clusterProfiler', \
