@@ -185,7 +185,9 @@ Example usage:
 ```bash
 apptainer run oras://quay.io/huchlab/singlecell-singularity:2026-01-22
 ```
+
 or with singularity:
+
 ```bash
 singularity run oras://quay.io/huchlab/singlecell-singularity:2026-01-22
 ```
