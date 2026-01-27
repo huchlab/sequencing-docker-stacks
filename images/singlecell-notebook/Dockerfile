@@ -74,7 +74,7 @@ RUN mamba install --yes \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
     # needed for pyscipopt on aarch64
-    'scip' \
+    'cvxpy' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
@@ -82,7 +82,8 @@ RUN mamba install --yes \
 
 # packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
-    'corneto' \
+    # needed for liana
+    'corneto==0.9.1-alpha.6' \
     'cytetype' \
     'fa2_modified' \
     'fastcluster' \
