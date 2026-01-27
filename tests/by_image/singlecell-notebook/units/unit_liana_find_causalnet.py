@@ -1,18 +1,13 @@
-import liana as li
-import networkx as nx
-import pandas as pd
+from liana.method import build_prior_network, find_causalnet
 
-# Create a minimal prior graph
-prior_graph = nx.DiGraph()
-prior_graph.add_edges_from([("A", "B"), ("B", "C")])
+# Test: Basic causal network inference
+pkn = [
+    ("A", 1, "B"),
+    ("B", 1, "C"),
+]
 
-# Create input scores
-input_scores = pd.Series({"A": 1.5, "B": 0.0, "C": 0.0})
+inputs = {"A": 1}
+outputs = {"C": 1}
 
-# Create output scores
-output_scores = pd.Series({"A": 0.0, "B": 0.8, "C": 1.0})
-
-# Create node weights
-node_weights = pd.Series({"A": 0.8, "B": 0.7, "C": 0.6})
-
-li.mt.find_causalnet(prior_graph, input_scores, output_scores, node_weights)
+graph = build_prior_network(pkn, inputs, outputs)
+find_causalnet(graph, inputs, outputs, seed=42, max_runs=50)
