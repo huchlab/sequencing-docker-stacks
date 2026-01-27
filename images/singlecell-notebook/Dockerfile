@@ -81,6 +81,8 @@ RUN mamba install --yes \
     'r-gdtools' \
     'r-ggiraph' \
     'r-shadowtext' \
+    # needed for pyscipopt on aarch64
+    'cvxpy' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
@@ -88,11 +90,15 @@ RUN mamba install --yes \
 
 # packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
+    # needed for liana
+    'corneto==0.9.1-alpha.6' \
     'cytetype' \
     'fa2_modified' \
     'fastcluster' \
-    'liana>=1.6.1' \
+    'liana[extra]>=1.6.1' \
     'omnipath>=1.0.12' \
+    # fixes #438: pin pyscipopt to 5.2.1 to resolve corneto dependency conflicts
+    'pyscipopt==5.2.1' \
     'scikit-misc' \
     'vitessce[all]' \
     && \
