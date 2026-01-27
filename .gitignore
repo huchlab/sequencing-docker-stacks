@@ -187,3 +187,6 @@ cython_debug/
 
 # PyCharm project configuration
 .idea/
+
+# VS Code workspace file
+.code-workspace.code-workspace

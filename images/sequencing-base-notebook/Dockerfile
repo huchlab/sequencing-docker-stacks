@@ -31,7 +31,11 @@ RUN mamba install --yes \
     'pybiomart' \
     # R \
     'bioconductor-deseq2' \
+    'bioconductor-dose' \
     'bioconductor-fgsea' \
+    'bioconductor-org.hs.eg.db' \
+    'bioconductor-org.mm.eg.db' \
+    'bioconductor-topgo' \
     'bioconductor-trackviewer' \
     # keeping 'r-base' makes this much faster
     'r-base' \

@@ -178,13 +178,18 @@ docker run -it --rm -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/huchlab/m
 For HPC environments that use Apptainer (formerly Singularity) instead of Docker, we provide pre-built Apptainer images on quay.io.
 These images have the same tools and configurations as the Docker versions, with `/opt/conda` made writable for all users so you can install additional packages at runtime.
 
-**Note:** Apptainer images are available for x86_64 architecture only.
+**Note:** Apptainer/Singularity images are available for x86_64 architecture only.
 
 Example usage:
 
 ```bash
-# Run directly without pulling first
-apptainer run oras://quay.io/huchlab/singlecell-singularity:2026-01-20-singularity
+apptainer run oras://quay.io/huchlab/singlecell-singularity:2026-01-22
+```
+
+or with singularity:
+
+```bash
+singularity run oras://quay.io/huchlab/singlecell-singularity:2026-01-22
 ```
 
 All available images work with Apptainer:

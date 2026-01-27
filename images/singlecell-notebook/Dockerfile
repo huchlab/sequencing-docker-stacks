@@ -57,12 +57,15 @@ RUN mamba install --yes \
     'scvi-tools>=1.2.2' \
     # R
     'bioconductor-batchelor' \
+    'bioconductor-ccplotr' \
     'bioconductor-clusterprofiler' \
+    'bioconductor-decoupler' \
     'bioconductor-loomexperiment' \
     'bioconductor-mast' \
     'bioconductor-nebulosa' \
     'bioconductor-org.hs.eg.db' \
     'bioconductor-scater' \
+    'bioconductor-scdblfinder' \
     'bioconductor-scran' \
     'bioconductor-singlecellexperiment' \
     'bioconductor-zellkonverter' \
@@ -73,6 +76,11 @@ RUN mamba install --yes \
     'r-harmony' \
     'r-reticulate' \
     'r-seurat>=5.1.0' \
+    # next package are dependencies for nichenetr
+    'r-cairo' \
+    'r-gdtools' \
+    'r-ggiraph' \
+    'r-shadowtext' \
     # needed for pyscipopt on aarch64
     'cvxpy' \
     && \
@@ -98,11 +106,13 @@ RUN pip install --no-cache-dir \
     pip install --no-cache-dir --no-deps cellbender
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
+    Rscript -e "devtools::install_github('saeyslab/nichenetr')" && \
     Rscript -e "install.packages('scCustomize')" && \
-    Rscript -e "options(warn = 2); BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
+    Rscript -e "BiocManager::install('miloR', ask = FALSE, update = FALSE)" && \
     Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
     Rscript -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
     Rscript -e "remotes::install_github('CostaLab/sc2marker', build_vignettes = FALSE, upgrade = FALSE)" && \
-    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)"
+    Rscript -e "remotes::install_github('jinworks/CellChat', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('saezlab/liana', upgrade = FALSE)"
 
 USER ${NB_UID}
