@@ -131,6 +131,9 @@ RUN git lfs install && \
         'r-ggrastr' \
         'r-locfit' \
         'xz' \
+        # needed for pyscipopt on aarch64
+        'cvxpy' \
+        'scip' \
         && \
     # workaround to fix #486
     mamba install r-zoo r-tseries --yes --force-reinstall && \
@@ -140,11 +143,14 @@ RUN git lfs install && \
 
 # Packages not available for one or both architectures on conda
 RUN pip install --no-cache-dir \
+    'corneto==0.9.1-alpha.6' \
     'gseapy' \
     'cytetype' \
     'fa2_modified' \
     'fastcluster' \
-    'liana>=1.6.1' \
+    'liana[extra]>=1.6.1' \
+    # fixes #438: pin pyscipopt to 5.2.1 to resolve corneto dependency conflicts
+    'pyscipopt==5.2.1' \
     'omnipath>=1.0.12' \
     'scikit-misc' \
     'vitessce[all]' \
