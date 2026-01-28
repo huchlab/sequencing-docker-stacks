@@ -5,11 +5,9 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/huchlab/sequencing-docker-stacks/main.svg)](https://results.pre-commit.ci/latest/github/huchlab/sequencing-docker-stacks/main)
 [![Binder Badge](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/huchlab/sequencing-docker-stacks/main?urlpath=lab/tree/README.ipynb "Launch a singlecell-notebook container on mybinder.org")
 
-**Ready-to-use analysis environments for your sequencing data** — no installation headaches, just science.
+**Ready-to-use analysis environments for your sequencing data**.
 
 Sequencing Docker Stacks provide pre-configured, reproducible environments for analyzing genomic sequencing data.
-Whether you're analyzing RNA-seq, single-cell data, spatial transcriptomics, or multi-omics datasets,
-these containers come with all the tools you need already installed and ready to use.
 
 ## Who Should Use This?
 
@@ -20,8 +18,6 @@ This project is for you if you:
 - **Need to run analysis on different computers** (your laptop, HPC cluster, cloud) with the same setup
 - **Collaborate with others** and want everyone using the same software versions
 - **Are new to bioinformatics** and overwhelmed by software installation and dependency management
-
-You don't need to be a Docker expert — just follow the Getting Started guide below!
 
 ## What's Inside? Choose Your Container
 
