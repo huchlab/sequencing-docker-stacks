@@ -83,7 +83,7 @@ RUN mamba install --yes \
     'r-shadowtext' \
     # needed for pyscipopt on aarch64
     'cvxpy' \
-    'sciopt' \
+    'scip' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
