@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout full history
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0 # Important to get all branches/tags
 
