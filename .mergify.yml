@@ -1,5 +1,6 @@
 queue_rules:
   - name: default
+    merge_method: squash
     queue_conditions:
       - check-success = pre-commit.ci - pr
     merge_conditions:
