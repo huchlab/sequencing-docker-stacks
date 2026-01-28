@@ -133,6 +133,7 @@ RUN git lfs install && \
         'xz' \
         # needed for pyscipopt on aarch64
         'cvxpy' \
+        'sciopt' \
         && \
     # workaround to fix #486
     mamba install r-zoo r-tseries --yes --force-reinstall && \
