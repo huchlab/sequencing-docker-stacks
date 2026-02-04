@@ -38,7 +38,7 @@ USER ${NB_UID}
 
 RUN git lfs install && \
     conda config --append channels bioconda && \
-    echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
+    echo "r-base >=4.5" >> /opt/conda/conda-meta/pinned && \
     mamba install --yes \
         # Python \
         'jupyterlab_execute_time' \
