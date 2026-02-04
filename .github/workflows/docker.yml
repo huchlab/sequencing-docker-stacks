@@ -222,6 +222,79 @@ jobs:
     needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  # singlecell-gpu-notebook: default variant
+  aarch64-singlecell-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 40
+    needs: aarch64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-singlecell-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 40
+    needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # singlecell-gpu-notebook: cuda12 variant
+  aarch64-singlecell-gpu-cuda12:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-gpu-notebook
+      variant: cuda12
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+    needs: aarch64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-singlecell-gpu-cuda12:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-gpu-notebook
+      variant: cuda12
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 60
+    needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # singlecell-gpu-notebook: cuda13 variant
+  aarch64-singlecell-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+    needs: aarch64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-singlecell-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: singlecell-notebook
+      image: singlecell-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 60
+    needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   # Test jobs
   test-aarch64-data:
     uses: ./.github/workflows/docker-test.yml
@@ -359,6 +432,70 @@ jobs:
     needs: x86_64-spatial
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  test-aarch64-singlecell-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-singlecell-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-singlecell-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-singlecell-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-singlecell-gpu-cuda12:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-gpu-notebook
+      variant: cuda12
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-singlecell-gpu-cuda12
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-singlecell-gpu-cuda12:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-gpu-notebook
+      variant: cuda12
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-singlecell-gpu-cuda12
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-singlecell-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 15
+    needs: aarch64-singlecell-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-singlecell-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: singlecell-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 15
+    needs: x86_64-singlecell-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   contributed-recipes:
     uses: ./.github/workflows/contributed-recipes.yml
     with:
@@ -386,7 +523,6 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        # prettier-ignore
         image:
           [
             data-notebook,
@@ -394,10 +530,16 @@ jobs:
             rnaseq-notebook,
             singlecell-notebook,
             singlecell-r-notebook,
+            singlecell-gpu-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]
+        include:
+          - image: singlecell-gpu-notebook
+            variant: cuda12
+          - image: singlecell-gpu-notebook
+            variant: cuda13
     # prettier-ignore
     needs:
       [
@@ -408,6 +550,9 @@ jobs:
         test-aarch64-rnaseq,
         test-aarch64-singlecell,
         test-aarch64-singlecell-r,
+        test-aarch64-singlecell-gpu,
+        test-aarch64-singlecell-gpu-cuda12,
+        test-aarch64-singlecell-gpu-cuda13,
         test-aarch64-multiomics,
         test-aarch64-spatial,
 
@@ -416,6 +561,9 @@ jobs:
         test-x86_64-rnaseq,
         test-x86_64-singlecell,
         test-x86_64-singlecell-r,
+        test-x86_64-singlecell-gpu,
+        test-x86_64-singlecell-gpu-cuda12,
+        test-x86_64-singlecell-gpu-cuda13,
         test-x86_64-multiomics,
         test-x86_64-spatial,
       ]
@@ -453,7 +601,6 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        # prettier-ignore
         image:
           [
             data-notebook,
@@ -461,10 +608,16 @@ jobs:
             rnaseq-notebook,
             singlecell-notebook,
             singlecell-r-notebook,
+            singlecell-gpu-notebook,
             multiomics-notebook,
             spatial-notebook,
           ]
         variant: [default]
+        include:
+          - image: singlecell-gpu-notebook
+            variant: cuda12
+          - image: singlecell-gpu-notebook
+            variant: cuda13
     # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
     needs:
@@ -476,6 +629,9 @@ jobs:
         test-aarch64-rnaseq,
         test-aarch64-singlecell,
         test-aarch64-singlecell-r,
+        test-aarch64-singlecell-gpu,
+        test-aarch64-singlecell-gpu-cuda12,
+        test-aarch64-singlecell-gpu-cuda13,
         test-aarch64-multiomics,
         test-aarch64-spatial,
 
@@ -484,6 +640,9 @@ jobs:
         test-x86_64-rnaseq,
         test-x86_64-singlecell,
         test-x86_64-singlecell-r,
+        test-x86_64-singlecell-gpu,
+        test-x86_64-singlecell-gpu-cuda12,
+        test-x86_64-singlecell-gpu-cuda13,
         test-x86_64-multiomics,
         test-x86_64-spatial,
       ]
