@@ -42,7 +42,7 @@ RUN pip install --no-cache-dir \
     && \
     # Install PyTorch with pip (https://pytorch.org/get-started/locally/)
     # hadolint ignore=DL3013
-    RUN pip install --no-cache-dir --extra-index-url=https://pypi.nvidia.com --index-url 'https://download.pytorch.org/whl/cu130' \
+    pip install --no-cache-dir --extra-index-url=https://pypi.nvidia.com --index-url 'https://download.pytorch.org/whl/cu130' \
         'torch' \
         'torchaudio' \
         'torchvision' \
