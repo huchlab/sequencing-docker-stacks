@@ -23,6 +23,16 @@ ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 USER ${NB_UID}
 
 RUN pip install --no-cache-dir \
-    'gdown' \
-    'rapids-singlecell' \
-    'wget'
+        'gdown' \
+        'rapids-singlecell' \
+        'wget' \
+    && \
+    # Install PyTorch with pip (https://pytorch.org/get-started/locally/)
+    # hadolint ignore=DL3013
+    pip install --no-cache-dir --index-url 'https://download.pytorch.org/whl/cpu' \
+        'torch' \
+        'torchaudio' \
+        'torchvision' \
+    && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"

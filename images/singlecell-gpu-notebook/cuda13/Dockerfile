@@ -25,20 +25,33 @@ USER ${NB_UID}
 RUN mamba install --yes \
     -c rapidsai \
     -c nvidia \
-    'cudnn' \
-    'cusparselt' \
-    'cuda-version>=13' \
-    'cutensor' \
-    'rapids=25.12' \
+        'cudnn' \
+        'cusparselt' \
+        'cuda-version=13.0' \
+        'cutensor' \
+        'rapids=25.12' \
     && \
     mamba clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 RUN pip install --no-cache-dir \
-    'gdown' \
-    'rapids-singlecell' \
-    'wget'
+        'gdown' \
+        'rapids-singlecell' \
+        'wget' \
+    && \
+    # Install PyTorch with pip (https://pytorch.org/get-started/locally/)
+    # hadolint ignore=DL3013
+    RUN pip install --no-cache-dir --extra-index-url=https://pypi.nvidia.com --index-url 'https://download.pytorch.org/whl/cu130' \
+        'torch' \
+        'torchaudio' \
+        'torchvision' \
+    && \
+    pip install --no-cache-dir \
+        'scvi-tools[cuda]' \
+    && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
 
 # CUDA environment variables
 ENV NVIDIA_VISIBLE_DEVICES="all" \
