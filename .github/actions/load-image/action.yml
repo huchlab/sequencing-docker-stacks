@@ -29,7 +29,17 @@ runs:
 
     - name: Pull image from GHCR 📥
       run: |
-        docker pull --platform linux/${{ inputs.platform == 'x86_64' && 'amd64' || 'arm64' }} ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+        PLATFORM="${{ inputs.platform }}"
+        # Convert platform names: x86_64 -> amd64, aarch64 -> arm64
+        if [ "$PLATFORM" = "x86_64" ]; then
+          DOCKER_PLATFORM="linux/amd64"
+        elif [ "$PLATFORM" = "aarch64" ]; then
+          DOCKER_PLATFORM="linux/arm64"
+        else
+          DOCKER_PLATFORM="linux/$PLATFORM"
+        fi
+        
+        docker pull --platform "$DOCKER_PLATFORM" ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
       shell: bash
 
     - name: Tag image for local use 🏷
