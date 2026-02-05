@@ -1,6 +1,7 @@
 name: Cleanup old GHCR images
 
-# This workflow deletes intermediate build images from GHCR that are older than 7 days
+# This workflow deletes old intermediate build images from GHCR
+# Keeps minimum 10 versions per image, deletes older ones
 # These are temporary images tagged as build-{sha}-{run_id}-{platform}-{variant}
 
 on:
@@ -40,7 +41,7 @@ jobs:
           min-versions-to-keep: 10
           delete-only-untagged-versions: 'false'
           token: ${{ secrets.GITHUB_TOKEN }}
-          ignore-versions: '^(?!build-).*$'  # Only delete versions starting with 'build-'
+          ignore-versions: '^(?!build-).*$'  # Ignore (keep) versions NOT starting with 'build-'
 
       - name: Cleanup summary 📊
         run: |
