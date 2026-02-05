@@ -55,15 +55,14 @@ jobs:
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
-      - name: Download aarch64 image tar and apply tags 🏷
+      - name: Pull aarch64 image and apply tags 🏷
         uses: ./.github/actions/apply-single-tags
         with:
           image: ${{ inputs.image }}
           variant: ${{ inputs.variant }}
           platform: aarch64
-        if: ${{ !contains(inputs.variant, 'cuda') }}
 
-      - name: Download x86_64 image tar and apply tags 🏷
+      - name: Pull x86_64 image and apply tags 🏷
         uses: ./.github/actions/apply-single-tags
         with:
           image: ${{ inputs.image }}
