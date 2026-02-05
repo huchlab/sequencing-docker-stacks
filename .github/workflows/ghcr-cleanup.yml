@@ -36,10 +36,10 @@ jobs:
         uses: actions/delete-package-versions@v5
         continue-on-error: true
         with:
-          package-name: 'sequencing-docker-stacks/${{ matrix.image }}'
-          package-type: 'container'
+          package-name: "sequencing-docker-stacks/${{ matrix.image }}"
+          package-type: "container"
           min-versions-to-keep: 10
-          delete-only-untagged-versions: 'false'
+          delete-only-untagged-versions: "false"
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup summary 📊
