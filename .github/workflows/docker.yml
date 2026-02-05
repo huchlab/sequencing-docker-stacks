@@ -104,6 +104,7 @@ jobs:
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 25
     needs: aarch64-data
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   x86_64-sequencing-base:
     uses: ./.github/workflows/docker-build-upload.yml
@@ -114,6 +115,7 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 25
     needs: x86_64-data
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   aarch64-rnaseq:
     uses: ./.github/workflows/docker-build-upload.yml
@@ -250,6 +252,7 @@ jobs:
       runs-on: ubuntu-24.04-arm
       timeout-minutes: 15
     needs: aarch64-sequencing-base
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   test-x86_64-sequencing-base:
     uses: ./.github/workflows/docker-test.yml
@@ -259,6 +262,7 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 15
     needs: x86_64-sequencing-base
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   test-aarch64-rnaseq:
     uses: ./.github/workflows/docker-test.yml
@@ -432,15 +436,13 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [data-notebook, sequencing-base-notebook]
+        image: [data-notebook]
         variant: [default]
     # prettier-ignore
     needs:
       [
         test-aarch64-data,
         test-x86_64-data,
-        test-aarch64-sequencing-base,
-        test-x86_64-sequencing-base,
       ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
@@ -500,7 +502,7 @@ jobs:
       REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
     strategy:
       matrix:
-        image: [data-notebook, sequencing-base-notebook]
+        image: [data-notebook]
         variant: [default]
     # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
@@ -508,8 +510,6 @@ jobs:
       [
         test-aarch64-data,
         test-x86_64-data,
-        test-aarch64-sequencing-base,
-        test-x86_64-sequencing-base,
       ]
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
