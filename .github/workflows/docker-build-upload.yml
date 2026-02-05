@@ -1,8 +1,17 @@
-name: Download a parent image, build a new one; upload the image, tags, build history line and manifest to GitHub artifacts
+name: Download a parent image, build a new one; push the image to GHCR, upload tags, build history line and manifest to GitHub artifacts
+
+# NOTE: This workflow uses GitHub Container Registry (GHCR) to store intermediate Docker images
+# instead of GitHub Artifacts (tar files) to reduce disk space usage.
+# - Intermediate images are tagged with commit SHA and run ID: build-{sha}-{run_id}-{platform}-{variant}
+# - Run ID ensures uniqueness for concurrent workflow runs on the same commit
+# - Images are cleaned up automatically by ghcr-cleanup.yml (keeps min 10 versions per image)
+# - Final images are still pushed to quay.io with proper semantic tags
 
 env:
   REGISTRY: quay.io
   OWNER: ${{ github.repository_owner }}
+  GHCR_REGISTRY: ghcr.io
+  GHCR_OWNER: ${{ github.repository_owner }}
 
 on:
   workflow_call:
@@ -40,6 +49,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   build-upload:
@@ -142,18 +152,27 @@ jobs:
           path: /tmp/jupyter/hist_lines/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}-*.txt
           retention-days: 3
 
-      - name: Save image as a tar for later use 💾
+      - name: Tag image for GHCR 🏷
         run: |
-          mkdir -p /tmp/jupyter/images/
-          docker save \
+          docker tag \
             ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
-            | zstd > /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
+            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
         shell: bash
 
-      - name: Upload image as artifact 💾
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - name: Login to GHCR 🔐
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
         with:
-          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
-          path: /tmp/jupyter/images/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.tar.zst
-          retention-days: 3
-          compression-level: 0
+          registry: ${{ env.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push intermediate image to GHCR 📤
+        run: |
+          docker push ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+        shell: bash
+
+      - name: Logout from GHCR 🔐
+        if: always()
+        run: |
+          docker logout ${{ env.GHCR_REGISTRY }}
+        shell: bash
