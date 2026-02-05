@@ -86,7 +86,7 @@ jobs:
 
       - name: Pull x86_64 image from GHCR 📥
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-x86_64-${{ inputs.variant }}
+          docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}
         shell: bash
 
       - name: Logout from GHCR 🔐
@@ -106,7 +106,7 @@ jobs:
           mkdir -p /tmp/apptainer/
 
           echo "Saving Docker image to tar..."
-          docker save ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-x86_64-${{ inputs.variant }} > /tmp/apptainer/image.tar
+          docker save ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }} > /tmp/apptainer/image.tar
 
           echo "Copying Singularity definition template..."
           cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def

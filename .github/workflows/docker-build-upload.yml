@@ -2,8 +2,9 @@ name: Download a parent image, build a new one; push the image to GHCR, upload t
 
 # NOTE: This workflow uses GitHub Container Registry (GHCR) to store intermediate Docker images
 # instead of GitHub Artifacts (tar files) to reduce disk space usage.
-# - Intermediate images are tagged with commit SHA: build-{sha}-{platform}-{variant}
-# - Images are automatically cleaned up by GHCR retention policies
+# - Intermediate images are tagged with commit SHA and run ID: build-{sha}-{run_id}-{platform}-{variant}
+# - Run ID ensures uniqueness for concurrent workflow runs on the same commit
+# - Images are cleaned up automatically after 7 days (see ghcr-cleanup.yml workflow)
 # - Final images are still pushed to quay.io with proper semantic tags
 
 env:
@@ -156,7 +157,7 @@ jobs:
         run: |
           docker tag \
             ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
-            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ inputs.platform }}-${{ inputs.variant }}
+            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
         shell: bash
 
       - name: Login to GHCR 🔐
@@ -168,7 +169,7 @@ jobs:
 
       - name: Push intermediate image to GHCR 📤
         run: |
-          docker push ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ inputs.platform }}-${{ inputs.variant }}
+          docker push ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
         shell: bash
 
       - name: Logout from GHCR 🔐

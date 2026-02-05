@@ -29,13 +29,13 @@ runs:
 
     - name: Pull image from GHCR 📥
       run: |
-        docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ inputs.platform }}-${{ inputs.variant }}
+        docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
       shell: bash
 
     - name: Tag image for local use 🏷
       run: |
         docker tag \
-          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ inputs.platform }}-${{ inputs.variant }} \
+          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
           quay.io/${{ github.repository_owner }}/${{ inputs.image }}
       shell: bash
 
