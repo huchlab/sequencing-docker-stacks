@@ -41,11 +41,9 @@ jobs:
           min-versions-to-keep: 10
           delete-only-untagged-versions: 'false'
           token: ${{ secrets.GITHUB_TOKEN }}
-          ignore-versions: '^(?!build-).*$'  # Ignore (keep) versions NOT starting with 'build-'
 
       - name: Cleanup summary 📊
         run: |
           echo "✅ Processed cleanup for ${{ matrix.image }}"
           echo "Kept minimum 10 versions, older ones deleted"
         shell: bash
-
