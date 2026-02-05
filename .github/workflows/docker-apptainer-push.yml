@@ -28,6 +28,7 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   apptainer-push:
@@ -71,11 +72,26 @@ jobs:
           apptainer --version
         shell: bash
 
-      - name: Download x86_64 image tar 📥
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}
-          path: /tmp/jupyter/images/
+      - name: Get commit SHA
+        id: get_sha
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Login to GHCR 🔐
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --username ${{ github.actor }} --password-stdin
+        shell: bash
+
+      - name: Pull x86_64 image from GHCR 📥
+        run: |
+          docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-x86_64-${{ inputs.variant }}
+        shell: bash
+
+      - name: Logout from GHCR 🔐
+        if: always()
+        run: |
+          docker logout ghcr.io
+        shell: bash
 
       - name: Download x86_64 tags file 📥
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
@@ -87,8 +103,8 @@ jobs:
         run: |
           mkdir -p /tmp/apptainer/
 
-          echo "Decompressing Docker tar archive..."
-          zstd --uncompress --stdout --rm /tmp/jupyter/images/${{ inputs.image }}-x86_64-${{ inputs.variant }}.tar.zst > /tmp/apptainer/image.tar
+          echo "Saving Docker image to tar..."
+          docker save ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-x86_64-${{ inputs.variant }} > /tmp/apptainer/image.tar
 
           echo "Copying Singularity definition template..."
           cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def
