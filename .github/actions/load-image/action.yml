@@ -38,7 +38,7 @@ runs:
         else
           DOCKER_PLATFORM="linux/$PLATFORM"
         fi
-        
+
         docker pull --platform "$DOCKER_PLATFORM" ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
       shell: bash
 
