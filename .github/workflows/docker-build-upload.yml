@@ -1,5 +1,11 @@
 name: Download a parent image, build a new one; push the image to GHCR, upload tags, build history line and manifest to GitHub artifacts
 
+# NOTE: This workflow uses GitHub Container Registry (GHCR) to store intermediate Docker images
+# instead of GitHub Artifacts (tar files) to reduce disk space usage.
+# - Intermediate images are tagged with commit SHA: build-{sha}-{platform}-{variant}
+# - Images are automatically cleaned up by GHCR retention policies
+# - Final images are still pushed to quay.io with proper semantic tags
+
 env:
   REGISTRY: quay.io
   OWNER: ${{ github.repository_owner }}
