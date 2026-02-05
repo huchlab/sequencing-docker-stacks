@@ -21,9 +21,11 @@ runs:
       shell: bash
 
     - name: Login to GHCR 🔐
-      run: |
-        echo "${{ github.token }}" | docker login ghcr.io --username ${{ github.actor }} --password-stdin
-      shell: bash
+      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
 
     - name: Pull image from GHCR 📥
       run: |

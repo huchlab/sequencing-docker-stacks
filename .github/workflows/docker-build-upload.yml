@@ -160,9 +160,11 @@ jobs:
         shell: bash
 
       - name: Login to GHCR 🔐
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.GHCR_REGISTRY }} --username ${{ github.actor }} --password-stdin
-        shell: bash
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ env.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push intermediate image to GHCR 📤
         run: |
