@@ -60,7 +60,8 @@ jobs:
           remove_swap: true
           remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
           remove_packages_one_command: true
-          remove_folders: "/usr/share/swift /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle /usr/share/miniconda /usr/share/java /usr/share/javascript /opt/google /opt/microsoft /opt/pipx /opt/pipx_bin /usr/lib/jvm /home/runner/.rustup /usr/local/lib/android/sdk /opt/hostedtoolcache/CodeQL /opt/az /usr/lib/google-cloud-sdk /opt/pipx/venvs/ansible-core /etc/skel/.rustup /etc/skel/.dotnet /opt/microsoft /usr/share/dotnet /usr/share/swift /usr/share/az* /usr/share/go* /usr/share/java /usr/share/kotlinc /usr/lib/jvm /usr/lib/llvm* /usr/lib/firefox"
+          # Directories that freed 0 MB on both platforms: /opt/microsoft /usr/lib/jvm /usr/share/dotnet /usr/share/java
+          remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc"
           rm_cmd: "rmz"
 
       - name: Create dev environment 📦
