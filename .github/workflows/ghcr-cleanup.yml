@@ -1,0 +1,49 @@
+name: Cleanup old GHCR images
+
+# This workflow deletes old intermediate build images from GHCR
+# Keeps minimum 10 versions per image, deletes older ones
+# These are temporary images tagged as build-{sha}-{run_id}-{platform}-{variant}
+
+on:
+  schedule:
+    # Run daily at 02:00 UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    if: github.repository_owner == 'huchlab'
+
+    strategy:
+      matrix:
+        image:
+          - data-notebook
+          - sequencing-base-notebook
+          - rnaseq-notebook
+          - singlecell-notebook
+          - singlecell-r-notebook
+          - multiomics-notebook
+          - spatial-notebook
+
+    steps:
+      - name: Delete old intermediate image versions for ${{ matrix.image }} 🗑️
+        uses: actions/delete-package-versions@v5
+        continue-on-error: true
+        with:
+          package-name: "sequencing-docker-stacks/${{ matrix.image }}"
+          package-type: "container"
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: "false"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup summary 📊
+        run: |
+          echo "✅ Processed cleanup for ${{ matrix.image }}"
+          echo "Kept minimum 10 versions, older ones deleted"
+        shell: bash
