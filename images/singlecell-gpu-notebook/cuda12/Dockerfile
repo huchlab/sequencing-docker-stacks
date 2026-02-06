@@ -40,11 +40,10 @@ RUN pip install --no-cache-dir \
         'rapids-singlecell' \
         'wget' \
     && \
-    # Install PyTorch with pip (https://pytorch.org/get-started/locally/)
-    # hadolint ignore=DL3013
-    pip install --no-cache-dir --extra-index-url=https://pypi.nvidia.com --index-url 'https://download.pytorch.org/whl/cu129' \
-        'torch' \
-        'torchaudio' \
+    # Install PyTorch with pip (https://pytorch.org/get-started/locally/) \
+    # hadolint ignore=DL3013 \
+    pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cu129 \
+        'torch!=2.10' \
         'torchvision' \
     && \
     pip install --no-cache-dir \
@@ -60,4 +59,4 @@ ENV NVIDIA_VISIBLE_DEVICES="all" \
 # Puts the nvidia-smi binary (system management interface) on path
 # with associated library files to execute it
 ENV PATH="${PATH}:/usr/local/nvidia/bin" \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/nvidia/lib64"
+    LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}:/usr/local/nvidia/lib64"
