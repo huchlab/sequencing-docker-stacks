@@ -41,6 +41,8 @@ jobs:
         uses: ./.github/actions/create-dev-env
 
       - name: Download aarch64 tags file 🏷
+        # Skip aarch64 for CUDA variants (cuda12, cuda13) as they are not built for this architecture
+        if: ${{ inputs.variant == 'default' }}
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ${{ inputs.image }}-aarch64-${{ inputs.variant }}-tags

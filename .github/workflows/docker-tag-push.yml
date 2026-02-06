@@ -56,6 +56,8 @@ jobs:
         uses: ./.github/actions/create-dev-env
 
       - name: Pull aarch64 image and apply tags 🏷
+        # Skip aarch64 for CUDA variants (cuda12, cuda13) as they are not built for this architecture
+        if: ${{ inputs.variant == 'default' }}
         uses: ./.github/actions/apply-single-tags
         with:
           image: ${{ inputs.image }}
