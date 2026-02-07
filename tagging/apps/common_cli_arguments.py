@@ -18,6 +18,7 @@ def common_arguments_parser(
     hist_lines_dir: bool = False,
     manifests_dir: bool = False,
     repository: bool = False,
+    source_image: bool = False,
 ) -> Config:
     """Add common CLI arguments to parser"""
 
@@ -81,6 +82,12 @@ def common_arguments_parser(
             "--repository",
             required=True,
             help="Repository name on GitHub",
+        )
+    if source_image:
+        parser.add_argument(
+            "--source-image",
+            required=False,
+            help="Source image to run for inspection (if different from registry/owner/image)",
         )
     args = parser.parse_args()
     if platform:

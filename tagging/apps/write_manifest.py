@@ -106,7 +106,7 @@ def write_all(config: Config) -> None:
     commit_hash_tag = GitHelper.commit_hash_tag()
     filename = f"{file_prefix}-{config.image}-{commit_hash_tag}"
 
-    with DockerRunner(config.full_image()) as container:
+    with DockerRunner(config.run_image()) as container:
         write_build_history_line(config, container, filename)
         write_manifest(
             config, container, filename=filename, commit_hash_tag=commit_hash_tag
@@ -127,5 +127,6 @@ if __name__ == "__main__":
         hist_lines_dir=True,
         manifests_dir=True,
         repository=True,
+        source_image=True,
     )
     write_all(config)
