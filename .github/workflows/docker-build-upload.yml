@@ -118,7 +118,6 @@ jobs:
       - name: Build image 🛠
         run: |
           docker buildx build \
-            --squash \
             --rm --force-rm \
             --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
