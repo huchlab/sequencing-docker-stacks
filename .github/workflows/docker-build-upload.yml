@@ -115,26 +115,10 @@ jobs:
           platform: ${{ inputs.platform }}
           variant: ${{ inputs.parent-variant }}
 
-      - name: Clean Docker storage and BuildKit cache 🧹
-        run: |
-          # Stop and clean Docker/containerd
-          docker system df
-          docker buildx prune -af
-          docker system prune -af --volumes
-
-          # Clean containerd snapshotter
-          sudo systemctl stop containerd || true
-          sudo rm -rf /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/* || true
-          sudo systemctl start containerd || true
-
-          # Show available space
-          df -h
-          docker system df
-        shell: bash
-
       - name: Build image 🛠
         run: |
           docker buildx build \
+            --squash \
             --rm --force-rm \
             --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
