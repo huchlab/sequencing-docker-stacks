@@ -86,22 +86,6 @@ jobs:
         run: df -h
         shell: bash
 
-      # install and run ncdu to find large files/directories that may be missed by the above action and remove them with rmz
-      - name: Install ncdu
-        run: |
-          sudo apt-get update && sudo apt-get install -y ncdu
-      # run ncdu and write json out
-      - name: Run ncdu to find large files/directories
-        run: |
-          sudo ncdu -x -o- / | gzip > ncdu_output.json.gz
-      # download the ncdu output for inspection and remove large files/directories with rmz
-      - name: Download ncdu output
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-ncdu_output
-          path: ncdu_output.json.gz
-          retention-days: 3
-
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
