@@ -36,60 +36,60 @@ RUN chown "${NB_UID}":"${NB_GID}" /opt/conda/lib/R/etc/Rprofile.site && \
 
 USER ${NB_UID}
 
-RUN git lfs install && \
-    conda config --append channels bioconda && \
-    echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
-    mamba install --yes \
-        # Python \
-        'jupyterlab_execute_time' \
-        'natsort' \
-        'openpyxl' \
-        'pingouin' \
-        'plotnine' \
-        'polars' \
-        'pyarrow' \
-        'scikit-misc' \
-        'session-info' \
-        'session-info2' \
-        'trackhub' \
-        'uv' \
-        'xlsxwriter' \
-        # R \
-        'bioconductor-complexheatmap' \
-        'bioconductor-rgraphviz' \
-        'r-data.table' \
-        'r-dtplyr' \
-        'r-fastcluster' \
-        'r-feather' \
-        'r-ggally' \
-        'r-ggpubr' \
-        'r-ggrepel' \
-        'r-ggsci' \
-        'r-ggthemes' \
-        'r-gtools' \
-        'r-ggupset' \
-        'r-ggvenn' \
-        'r-hmisc' \
-        'r-janitor' \
-        'r-languageserver' \
-        'r-openxlsx' \
-        'r-paletteer' \
-        'r-paralleldist' \
-        'r-pheatmap' \
-        'r-plotly' \
-        'r-r.utils' \
-        'r-svglite' \
-        'r-textshape' \
-        'r-viridis' \
-        'r-wesanderson' \
-        'r-writexl' \
-        # workaround to fix #486
-        'r-zoo!=1.8_15' \
-        && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+# RUN git lfs install && \
+#     conda config --append channels bioconda && \
+#     echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
+#     mamba install --yes \
+#         # Python \
+#         'jupyterlab_execute_time' \
+#         'natsort' \
+#         'openpyxl' \
+#         'pingouin' \
+#         'plotnine' \
+#         'polars' \
+#         'pyarrow' \
+#         'scikit-misc' \
+#         'session-info' \
+#         'session-info2' \
+#         'trackhub' \
+#         'uv' \
+#         'xlsxwriter' \
+#         # R \
+#         'bioconductor-complexheatmap' \
+#         'bioconductor-rgraphviz' \
+#         'r-data.table' \
+#         'r-dtplyr' \
+#         'r-fastcluster' \
+#         'r-feather' \
+#         'r-ggally' \
+#         'r-ggpubr' \
+#         'r-ggrepel' \
+#         'r-ggsci' \
+#         'r-ggthemes' \
+#         'r-gtools' \
+#         'r-ggupset' \
+#         'r-ggvenn' \
+#         'r-hmisc' \
+#         'r-janitor' \
+#         'r-languageserver' \
+#         'r-openxlsx' \
+#         'r-paletteer' \
+#         'r-paralleldist' \
+#         'r-pheatmap' \
+#         'r-plotly' \
+#         'r-r.utils' \
+#         'r-svglite' \
+#         'r-textshape' \
+#         'r-viridis' \
+#         'r-wesanderson' \
+#         'r-writexl' \
+#         # workaround to fix #486
+#         'r-zoo!=1.8_15' \
+#         && \
+#     mamba clean --all -f -y && \
+#     fix-permissions "${CONDA_DIR}" && \
+#     fix-permissions "/home/${NB_USER}"
 
-RUN Rscript -e \
-    "Sys.setenv(NOT_CRAN = 'true'); \
-    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
+# RUN Rscript -e \
+#     "Sys.setenv(NOT_CRAN = 'true'); \
+#     install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
