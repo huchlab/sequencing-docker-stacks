@@ -65,6 +65,7 @@ jobs:
         shell: bash
 
       - name: Create dev environment 📦
+        if: ${{ !contains(inputs.image, 'data') && !contains(inputs.variant, 'cuda') }}
         uses: ./.github/actions/create-dev-env
 
       - name: Install Apptainer 🔧
