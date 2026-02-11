@@ -32,7 +32,7 @@ permissions:
 
 jobs:
   apptainer-push:
-    runs-on: ${{ (contains(inputs.image, 'data') || contains(inputs.variant, 'cuda')) && 'self-hosted' || 'ubuntu-24.04' }}
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ inputs.timeout-minutes }}
 
     steps:
@@ -45,7 +45,6 @@ jobs:
         shell: bash
 
       - name: Free Disk Space
-        if: ${{ !contains(inputs.image, 'data') && !contains(inputs.variant, 'cuda') }}
         uses: endersonmenezes/free-disk-space@v3
         with:
           remove_android: true
@@ -68,7 +67,6 @@ jobs:
         uses: ./.github/actions/create-dev-env
 
       - name: Install Apptainer 🔧
-        if: ${{ !contains(inputs.image, 'data') && !contains(inputs.variant, 'cuda') }}
         run: |
           # Install dependencies
           sudo apt-get update -y
