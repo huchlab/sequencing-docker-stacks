@@ -2,8 +2,10 @@ name: Download a parent image, build a new one; push the image to GHCR, upload t
 
 # NOTE: This workflow uses GitHub Container Registry (GHCR) to store intermediate Docker images
 # instead of GitHub Artifacts (tar files) to reduce disk space usage.
+# - Images are built and pushed directly to GHCR during the build step to save local disk space
 # - Intermediate images are tagged with commit SHA and run ID: build-{sha}-{run_id}-{platform}-{variant}
 # - Run ID ensures uniqueness for concurrent workflow runs on the same commit
+# - After push, images are pulled back and re-tagged locally for Python tagging scripts
 # - Images are cleaned up automatically by ghcr-cleanup.yml (keeps min 10 versions per image)
 # - Final images are still pushed to quay.io with proper semantic tags
 
@@ -84,22 +86,6 @@ jobs:
         run: df -h
         shell: bash
 
-      # install and run ncdu to find large files/directories that may be missed by the above action and remove them with rmz
-      - name: Install ncdu
-        run: |
-          sudo apt-get update && sudo apt-get install -y ncdu
-      # run ncdu and write json out
-      - name: Run ncdu to find large files/directories
-        run: |
-          sudo ncdu -x -o- / | gzip > ncdu_output.json.gz
-      # download the ncdu output for inspection and remove large files/directories with rmz
-      - name: Download ncdu output
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-ncdu_output
-          path: ncdu_output.json.gz
-          retention-days: 3
-
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
@@ -115,11 +101,19 @@ jobs:
           platform: ${{ inputs.platform }}
           variant: ${{ inputs.parent-variant }}
 
-      - name: Build image 🛠
+      - name: Login to GHCR 🔐
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ env.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image to GHCR 🛠📤
         run: |
           docker buildx build \
             --rm --force-rm \
-            --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
+            --tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+            --push \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} \
             --build-arg OWNER=${{ env.OWNER }} \
@@ -133,6 +127,12 @@ jobs:
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+
+      - name: Pull image from GHCR for tagging 📥
+        run: |
+          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
         shell: bash
 
       - name: Write tags file 🏷
@@ -177,25 +177,6 @@ jobs:
           name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-history_line
           path: /tmp/jupyter/hist_lines/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}-*.txt
           retention-days: 3
-
-      - name: Tag image for GHCR 🏷
-        run: |
-          docker tag \
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
-            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-        shell: bash
-
-      - name: Login to GHCR 🔐
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ${{ env.GHCR_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push intermediate image to GHCR 📤
-        run: |
-          docker push ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-        shell: bash
 
       - name: Logout from GHCR 🔐
         if: always()
