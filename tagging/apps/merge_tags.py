@@ -90,16 +90,20 @@ def apply_tags_to_manifest(
     target_tags: set[str],
     push_to_registry: bool,
 ) -> None:
-    """Apply tags to a multi-arch manifest using GHCR source images."""
+    """Apply tags to a multi-arch manifest using GHCR source images.
+
+    Args:
+        config: Configuration object
+        platform_source_tags: List of source image references in GHCR (e.g., ghcr.io/owner/repo/image:tag)
+        target_tags: Set of target image references (e.g., quay.io/owner/image:tag)
+        push_to_registry: Whether to actually push to registry or just dry-run
+    """
     if not platform_source_tags:
         LOGGER.warning("No platform source tags found, skipping all tag applications")
         return
 
-    for tag in target_tags:
-        LOGGER.info(f"Creating multi-arch manifest for tag: {tag}")
-
-        # Construct full target tag
-        target_tag = f"{config.registry}/{config.owner}/{config.image}:{tag}"
+    for target_tag in target_tags:
+        LOGGER.info(f"Creating multi-arch manifest for: {target_tag}")
 
         args = [
             "buildx",
