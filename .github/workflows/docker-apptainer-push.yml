@@ -88,24 +88,6 @@ jobs:
         run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Login to GHCR 🔐
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull x86_64 image from GHCR 📥
-        run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}
-        shell: bash
-
-      - name: Logout from GHCR 🔐
-        if: always()
-        run: |
-          docker logout ghcr.io
-        shell: bash
-
       - name: Download x86_64 tags file 📥
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
@@ -116,21 +98,23 @@ jobs:
         run: |
           mkdir -p /tmp/apptainer/
 
-          echo "Saving Docker image to tar..."
-          docker save ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }} > /tmp/apptainer/image.tar
+          echo "Preparing Apptainer definition file..."
+          GHCR_IMAGE="ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}"
+          cp .github/apptainer/apptainer.def /tmp/apptainer/apptainer.def
+          sed -i "s|PLACEHOLDER_IMAGE_REFERENCE|$GHCR_IMAGE|g" /tmp/apptainer/apptainer.def
 
-          echo "Copying Singularity definition template..."
-          cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def
-
-          echo "Building Apptainer SIF image from Docker archive using definition file..."
-          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity.def
+          echo "Building Apptainer SIF image from GHCR image using definition file..."
+          sudo -E apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/apptainer.def
 
           echo "Cleaning up temporary files..."
-          rm -f /tmp/apptainer/image.tar /tmp/apptainer/Singularity.def
+          rm -f /tmp/apptainer/apptainer.def
 
           echo "Apptainer image created successfully"
           ls -lh /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif
         shell: bash
+        env:
+          APPTAINER_DOCKER_USERNAME: ${{ github.actor }}
+          APPTAINER_DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'

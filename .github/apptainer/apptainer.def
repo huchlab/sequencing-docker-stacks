@@ -1,5 +1,5 @@
-Bootstrap: docker-archive
-From: /tmp/apptainer/image.tar
+Bootstrap: docker
+From: PLACEHOLDER_IMAGE_REFERENCE
 
 %post
     # Make /opt/conda writable for all users
