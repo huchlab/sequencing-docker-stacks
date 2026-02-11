@@ -40,8 +40,9 @@ def copy_and_tag_image(
 
     # Copy image with each tag
     for tag in tags:
-        # Extract just the tag part (after the colon)
-        tag_name = tag.split(":")[-1]
+        # Extract just the tag part (after the last colon)
+        # Tags are in format: registry/owner/image:tag
+        tag_name = tag.rsplit(":", 1)[-1]
         target_tag = f"{config.registry}/{config.owner}/{config.image}:{tag_name}"
         LOGGER.info(f"Copying to tag: {target_tag}")
 
