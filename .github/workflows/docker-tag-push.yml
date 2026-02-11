@@ -56,6 +56,7 @@ jobs:
         uses: ./.github/actions/create-dev-env
 
       - name: Login to Registry 🔐
+        if: env.PUSH_TO_REGISTRY == 'true'
         run: |
           docker login ${{ env.REGISTRY }} \
             --username ${{ secrets.REGISTRY_USERNAME }} \
