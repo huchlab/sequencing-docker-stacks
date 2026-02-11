@@ -85,19 +85,22 @@ def find_platform_source_tags(config: Config) -> list[str]:
 
 
 def apply_tags_to_manifest(
-    config: Config, platform_source_tags: list[str], target_tags: set[str], push_to_registry: bool
+    config: Config,
+    platform_source_tags: list[str],
+    target_tags: set[str],
+    push_to_registry: bool,
 ) -> None:
     """Apply tags to a multi-arch manifest using GHCR source images."""
     if not platform_source_tags:
         LOGGER.warning("No platform source tags found, skipping all tag applications")
         return
-    
+
     for tag in target_tags:
         LOGGER.info(f"Creating multi-arch manifest for tag: {tag}")
-        
+
         # Construct full target tag
         target_tag = f"{config.registry}/{config.owner}/{config.image}:{tag}"
-        
+
         args = [
             "buildx",
             "imagetools",
@@ -111,9 +114,11 @@ def apply_tags_to_manifest(
 
         LOGGER.info(f"Running command: docker {' '.join(args)}")
         docker[args] & plumbum.FG
-        
+
         if push_to_registry:
-            LOGGER.info(f"Successfully created and pushed multi-arch manifest: {target_tag}")
+            LOGGER.info(
+                f"Successfully created and pushed multi-arch manifest: {target_tag}"
+            )
         else:
             LOGGER.info(f"Dry-run: Would create and push manifest: {target_tag}")
 
@@ -127,13 +132,15 @@ if __name__ == "__main__":
     push_to_registry = os.environ.get("PUSH_TO_REGISTRY", "false").lower() == "true"
 
     LOGGER.info(f"Merging tags for image: {config.image}")
-    LOGGER.info(f"Source registry: {GHCR_REGISTRY}/{GHCR_OWNER}/sequencing-docker-stacks")
+    LOGGER.info(
+        f"Source registry: {GHCR_REGISTRY}/{GHCR_OWNER}/sequencing-docker-stacks"
+    )
     LOGGER.info(f"Target registry: {config.registry}/{config.owner}")
     LOGGER.info(f"Commit SHA: {COMMIT_SHA}, Run ID: {RUN_ID}")
 
     # Find platform-specific source images in GHCR
     platform_source_tags = find_platform_source_tags(config)
-    
+
     if not platform_source_tags:
         LOGGER.error("No platform source images found in GHCR. Cannot proceed.")
         if push_to_registry:
@@ -144,8 +151,10 @@ if __name__ == "__main__":
         # Read target tags from files
         target_tags = read_local_tags_from_files(config)
         LOGGER.info(f"Found {len(target_tags)} unique tags to apply")
-        
+
         # Apply all tags to the multi-arch manifest
-        apply_tags_to_manifest(config, platform_source_tags, target_tags, push_to_registry)
+        apply_tags_to_manifest(
+            config, platform_source_tags, target_tags, push_to_registry
+        )
 
     LOGGER.info(f"Successfully processed tags for image: {config.image}")
