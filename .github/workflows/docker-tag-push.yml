@@ -1,8 +1,10 @@
-name: Download a Docker image and its tags from GitHub artifacts, apply them, and push the image to the Registry
+name: Download tags from GitHub artifacts, apply them directly to GHCR images, and push manifests to the Registry
 
 env:
   REGISTRY: quay.io
   OWNER: ${{ github.repository_owner }}
+  GHCR_REGISTRY: ghcr.io
+  GHCR_OWNER: ${{ github.repository_owner }}
   PUSH_TO_REGISTRY: ${{ github.repository_owner == 'huchlab' && (github.ref == 'refs/heads/main' || github.event_name == 'schedule') }}
 
 on:
@@ -39,37 +41,34 @@ jobs:
       - name: Checkout Repo ⚡️
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Free Disk Space
-        uses: endersonmenezes/free-disk-space@v3
-        with:
-          remove_android: true
-          remove_dotnet: true
-          remove_haskell: true
-          remove_tool_cache: true
-          remove_swap: true
-          remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
-          remove_packages_one_command: true
-          remove_folders: "/usr/share/swift /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
-          rm_cmd: "rmz"
-
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
-      - name: Pull aarch64 image and apply tags 🏷
-        uses: ./.github/actions/apply-single-tags
+      - name: Download aarch64 tags file 📥
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          image: ${{ inputs.image }}
-          variant: ${{ inputs.variant }}
-          platform: aarch64
+          name: ${{ inputs.image }}-aarch64-${{ inputs.variant }}-tags
+          path: /tmp/jupyter/tags/
 
-      - name: Pull x86_64 image and apply tags 🏷
-        uses: ./.github/actions/apply-single-tags
+      - name: Download x86_64 tags file 📥
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          image: ${{ inputs.image }}
-          variant: ${{ inputs.variant }}
-          platform: x86_64
+          name: ${{ inputs.image }}-x86_64-${{ inputs.variant }}-tags
+          path: /tmp/jupyter/tags/
 
-      - name: Login to Registry 🔐
+      - name: Get commit SHA
+        id: get_sha
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Login to GHCR 🔐
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ env.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Login to Target Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
           docker login ${{ env.REGISTRY }} \
@@ -81,22 +80,25 @@ jobs:
         shell: bash
         id: login
 
-      - name: Push single platform images to Registry 📤
-        if: env.PUSH_TO_REGISTRY == 'true'
-        run: |
-          docker push --all-tags ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} || \
-          docker push --all-tags ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
-        shell: bash
-
-      - name: Merge tags for the images 🔀
+      - name: Create and push multi-arch manifests 🔀
         run: |
           python3 -m tagging.apps.merge_tags \
+            --registry ${{ env.REGISTRY }} \
+            --owner ${{ env.OWNER }} \
             --image ${{ inputs.image }} \
             --variant ${{ inputs.variant }} \
             --tags-dir /tmp/jupyter/tags/
+        env:
+          COMMIT_SHA: ${{ steps.get_sha.outputs.sha }}
         shell: bash
 
-      - name: Logout from Registry 🔐
+      - name: Logout from GHCR 🔐
+        if: always()
+        run: |
+          docker logout ${{ env.GHCR_REGISTRY }}
+        shell: bash
+
+      - name: Logout from Target Registry 🔐
         if: always() && env.PUSH_TO_REGISTRY == 'true' && steps.login.outcome == 'success'
         run: |
           docker logout ${{ env.REGISTRY }}
