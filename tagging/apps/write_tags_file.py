@@ -18,7 +18,7 @@ def get_tags(config: Config) -> list[str]:
     taggers = get_taggers(config.image)
     tags_prefix = get_tag_prefix(config.variant)
     tags = [f"{config.full_image()}:{tags_prefix}-latest"]
-    with DockerRunner(config.run_image()) as container:
+    with DockerRunner(config.full_image()) as container:
         for tagger in taggers:
             tagger_name = tagger.__name__
             tag_value = tagger(container)
@@ -48,6 +48,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     config = common_arguments_parser(
-        registry=True, owner=True, image=True, variant=True, tags_dir=True, source_image=True
+        registry=True, owner=True, image=True, variant=True, tags_dir=True
     )
     write_tags_file(config)

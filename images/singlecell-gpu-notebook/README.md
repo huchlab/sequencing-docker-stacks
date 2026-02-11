@@ -12,22 +12,7 @@ This image extends `singlecell-notebook` with GPU-acceleration from [rapids-sing
 
 ### Default Variant
 
-The default variant installs `rapids-singlecell` without CUDA dependencies. This merely serves as a base for the CUDA variants.
-
-### CUDA 12 Variant (`cuda12`)
-
-The `cuda12` variant includes full NVIDIA CUDA 12 support with:
-
-- **RAPIDS 25.12**: Full GPU-accelerated data science suite
-- **cuML**: GPU-accelerated machine learning algorithms
-- **CUDA 12.9**: Latest CUDA 12.x toolkit
-- **cuDNN, cuTensor, cuSPARSELt**: Optimized GPU libraries
-
-**Note**: The CUDA variant requires an NVIDIA GPU and appropriate drivers on the host system. Use `--gpus all` flag when running the container:
-
-```bash
-docker run --gpus all -p 8888:8888 quay.io/huchlab/singlecell-gpu-notebook:cuda12-latest
-```
+The default variant installs `rapids-singlecell` without CUDA dependencies. This merely serves as a base for the CUDA variant.
 
 ### CUDA 13 Variant (`cuda13`)
 

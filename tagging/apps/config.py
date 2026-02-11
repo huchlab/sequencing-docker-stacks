@@ -18,12 +18,5 @@ class Config:
 
     repository: str = ""
 
-    # Optional: source image to run for inspection (if different from full_image)
-    source_image: str = ""
-
     def full_image(self) -> str:
         return f"{self.registry}/{self.owner}/{self.image}"
-
-    def run_image(self) -> str:
-        """Returns the image to use for running containers (for inspection)."""
-        return self.source_image if self.source_image else self.full_image()

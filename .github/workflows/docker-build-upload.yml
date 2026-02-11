@@ -5,7 +5,7 @@ name: Download a parent image, build a new one; push the image to GHCR, upload t
 # - Images are built and pushed directly to GHCR during the build step to save local disk space
 # - Intermediate images are tagged with commit SHA and run ID: build-{sha}-{run_id}-{platform}-{variant}
 # - Run ID ensures uniqueness for concurrent workflow runs on the same commit
-# - Tagging scripts reference the GHCR image directly; Docker auto-pulls when needed
+# - After push, images are pulled back and re-tagged locally for Python tagging scripts
 # - Images are cleaned up automatically by ghcr-cleanup.yml (keeps min 10 versions per image)
 # - Final images are still pushed to quay.io with proper semantic tags
 
@@ -146,6 +146,12 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
 
+      - name: Pull image from GHCR for tagging 📥
+        run: |
+          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+        shell: bash
+
       - name: Write tags file 🏷
         run: |
           python3 -m tagging.apps.write_tags_file \
@@ -153,8 +159,7 @@ jobs:
             --owner ${{ env.OWNER }} \
             --image ${{ inputs.image }} \
             --variant ${{ inputs.variant }} \
-            --tags-dir /tmp/jupyter/tags/ \
-            --source-image ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+            --tags-dir /tmp/jupyter/tags/
         shell: bash
 
       - name: Upload tags file 💾
@@ -173,8 +178,7 @@ jobs:
             --variant ${{ inputs.variant }} \
             --hist-lines-dir /tmp/jupyter/hist_lines/ \
             --manifests-dir /tmp/jupyter/manifests/ \
-            --repository ${{ github.repository }} \
-            --source-image ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+            --repository ${{ github.repository }}
         shell: bash
 
       - name: Upload manifest file 💾
