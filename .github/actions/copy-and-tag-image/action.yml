@@ -47,12 +47,12 @@ runs:
           --tags-dir /tmp/jupyter/tags/
       shell: bash
 
-    - name: Upload SBOM for the image 🧾
-      uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
-      with:
-        image: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
-        artifact-name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
-        upload-artifact-retention: 40
+    # - name: Upload SBOM for the image 🧾
+    #   uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+    #   with:
+    #     image: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+    #     artifact-name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
+    #     upload-artifact-retention: 40
 
     - name: Logout from GHCR 🔐
       if: always()
