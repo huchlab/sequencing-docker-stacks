@@ -50,7 +50,7 @@ runs:
     - name: Upload SBOM for the image 🧾
       uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
       with:
-        image: ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+        image: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
         artifact-name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
         upload-artifact-retention: 40
 
