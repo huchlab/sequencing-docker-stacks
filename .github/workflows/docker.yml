@@ -567,9 +567,10 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
-        include:
-          - image: singlecell-gpu-notebook
-            variant: cuda13
+        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
+        # include:
+        #   - image: singlecell-gpu-notebook
+        #     variant: cuda13
     # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
     needs:
