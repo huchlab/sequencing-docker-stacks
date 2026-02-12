@@ -67,15 +67,15 @@ jobs:
         shell: bash
         id: login
 
-      - name: Login to GHCR 🔐
-        run: |
-          echo ${{ github.token }} | docker login ghcr.io \
-            --username ${{ github.actor }} \
-            --password-stdin ||
-          echo ${{ github.token }} | docker login ghcr.io \
-            --username ${{ github.actor }} \
-            --password-stdin
-        shell: bash
+      # - name: Login to GHCR 🔐
+      #   run: |
+      #     echo ${{ github.token }} | docker login ghcr.io \
+      #       --username ${{ github.actor }} \
+      #       --password-stdin ||
+      #     echo ${{ github.token }} | docker login ghcr.io \
+      #       --username ${{ github.actor }} \
+      #       --password-stdin
+      #   shell: bash
 
       - name: Copy x86_64 image and apply tags directly 🏷
         uses: ./.github/actions/copy-and-tag-image
