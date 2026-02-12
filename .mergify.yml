@@ -104,7 +104,8 @@ queue_rules:
               - check-success = apptainer-push (singlecell-notebook, default) / apptainer-push
               - check-success = apptainer-push (singlecell-r-notebook, default) / apptainer-push
               - check-success = apptainer-push (singlecell-gpu-notebook, default) / apptainer-push
-              - check-success = apptainer-push (singlecell-gpu-notebook, cuda13) / apptainer-push
+              # not building apptainer for cuda13 because of disk space issues
+              # - check-success = apptainer-push (singlecell-gpu-notebook, cuda13) / apptainer-push
               - check-success = apptainer-push (multiomics-notebook, default) / apptainer-push
               - check-success = apptainer-push (spatial-notebook, default) / apptainer-push
               - check-success = wiki-update / wiki-update
