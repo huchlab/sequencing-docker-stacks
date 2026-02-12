@@ -58,23 +58,23 @@ jobs:
       - name: Login to Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
-          docker login ${{ env.REGISTRY }} \
+          echo ${{ secrets.REGISTRY_TOKEN }} | docker login ${{ env.REGISTRY }} \
             --username ${{ secrets.REGISTRY_USERNAME }} \
-            --password ${{ secrets.REGISTRY_TOKEN }} || \
-          docker login ${{ env.REGISTRY }} \
+            --password-stdin ||
+          echo ${{ secrets.REGISTRY_TOKEN }} | docker login ${{ env.REGISTRY }} \
             --username ${{ secrets.REGISTRY_USERNAME }} \
-            --password ${{ secrets.REGISTRY_TOKEN }}
+            --password-stdin
         shell: bash
         id: login
 
       - name: Login to GHCR 🔐
         run: |
-          docker login ghcr.io \
-            --username ${{ github.action }} \
-            --password ${{ github.token }} || \
-          docker login ghcr.io \
-            --username ${{ github.action }} \
-            --password ${{ github.token }}
+          echo ${{ github.token }} | docker login ghcr.io \
+            --username ${{ github.actor }} \
+            --password-stdin ||
+          echo ${{ github.token }} | docker login ghcr.io \
+            --username ${{ github.actor }} \
+            --password-stdin
         shell: bash
 
       - name: Copy x86_64 image and apply tags directly 🏷
