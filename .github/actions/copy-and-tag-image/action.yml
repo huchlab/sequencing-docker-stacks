@@ -47,12 +47,25 @@ runs:
           --tags-dir /tmp/jupyter/tags/
       shell: bash
 
-    - name: Upload SBOM for the image 🧾
-      uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+    - name: Install Syft 📦
+      uses: anchore/sbom-action/download-syft@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+      id: syft
+
+    - name: Generate SBOM for the image 🧾
+      run: |
+        syft \
+          --from oci-registry \
+          --platform linux/${{ inputs.platform == 'aarch64' && 'arm64' || 'amd64' }} \
+          -o spdx-json=/tmp/sbom-${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.spdx.json \
+          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+      shell: bash
+
+    - name: Upload SBOM artifact 📤
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
-        image: ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-        artifact-name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
-        upload-artifact-retention: 40
+        name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
+        path: /tmp/sbom-${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.spdx.json
+        retention-days: 40
 
     - name: Logout from GHCR 🔐
       if: always()
