@@ -67,19 +67,19 @@ jobs:
         shell: bash
         id: login
 
-      - name: Copy aarch64 image and apply tags directly 🏷
-        uses: ./.github/actions/copy-and-tag-image
-        with:
-          image: ${{ inputs.image }}
-          variant: ${{ inputs.variant }}
-          platform: aarch64
-
       - name: Copy x86_64 image and apply tags directly 🏷
         uses: ./.github/actions/copy-and-tag-image
         with:
           image: ${{ inputs.image }}
           variant: ${{ inputs.variant }}
           platform: x86_64
+
+      - name: Copy aarch64 image and apply tags directly 🏷
+        uses: ./.github/actions/copy-and-tag-image
+        with:
+          image: ${{ inputs.image }}
+          variant: ${{ inputs.variant }}
+          platform: aarch64
 
       - name: Merge tags for the images 🔀
         run: |
