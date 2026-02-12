@@ -39,7 +39,9 @@ jobs:
           package: "sequencing-docker-stacks/${{ matrix.image }}"
           token: ${{ secrets.GITHUB_TOKEN }}
           older-than: 3 days
+          # Delete all tagged images older than 3 days (these are temporary build tags)
           keep-n-tagged: 0
+          # Delete all untagged images older than 3 days
           delete-untagged: true
 
       - name: Cleanup summary 📊
