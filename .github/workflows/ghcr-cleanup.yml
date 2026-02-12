@@ -1,7 +1,7 @@
 name: Cleanup old GHCR images
 
 # This workflow deletes old intermediate build images from GHCR
-# Keeps minimum 10 versions per image, deletes older ones
+# Keeps images from the last 3 days, deletes older ones
 # These are temporary images tagged as build-{sha}-{run_id}-{platform}-{variant}
 
 on:
@@ -33,17 +33,19 @@ jobs:
 
     steps:
       - name: Delete old intermediate image versions for ${{ matrix.image }} 🗑️
-        uses: actions/delete-package-versions@v5
+        uses: dataaxiom/ghcr-cleanup-action@v1
         continue-on-error: true
         with:
-          package-name: "sequencing-docker-stacks/${{ matrix.image }}"
-          package-type: "container"
-          min-versions-to-keep: 10
-          delete-only-untagged-versions: "false"
+          package: "sequencing-docker-stacks/${{ matrix.image }}"
           token: ${{ secrets.GITHUB_TOKEN }}
+          older-than: 3 days
+          # Delete all tagged images older than 3 days (these are temporary build tags)
+          keep-n-tagged: 0
+          # Delete all untagged images older than 3 days
+          delete-untagged: true
 
       - name: Cleanup summary 📊
         run: |
           echo "✅ Processed cleanup for ${{ matrix.image }}"
-          echo "Kept minimum 10 versions, older ones deleted"
+          echo "Kept images from the last 3 days, deleted older images"
         shell: bash

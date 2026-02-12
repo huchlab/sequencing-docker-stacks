@@ -4,7 +4,7 @@ name: Download a parent image, build a new one; push the image to GHCR, upload t
 # instead of GitHub Artifacts (tar files) to reduce disk space usage.
 # - Intermediate images are tagged with commit SHA and run ID: build-{sha}-{run_id}-{platform}-{variant}
 # - Run ID ensures uniqueness for concurrent workflow runs on the same commit
-# - Images are cleaned up automatically by ghcr-cleanup.yml (keeps min 10 versions per image)
+# - Images are cleaned up automatically by ghcr-cleanup.yml (keeps images from last 3 days)
 # - Final images are still pushed to quay.io with proper semantic tags
 
 env:
