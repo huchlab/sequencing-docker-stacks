@@ -2,8 +2,10 @@ name: Download a parent image, build a new one; push the image to GHCR, upload t
 
 # NOTE: This workflow uses GitHub Container Registry (GHCR) to store intermediate Docker images
 # instead of GitHub Artifacts (tar files) to reduce disk space usage.
+# - Images are built and pushed directly to GHCR during the build step to save local disk space
 # - Intermediate images are tagged with commit SHA and run ID: build-{sha}-{run_id}-{platform}-{variant}
 # - Run ID ensures uniqueness for concurrent workflow runs on the same commit
+# - After push, images are pulled back and re-tagged locally for Python tagging scripts
 # - Images are cleaned up automatically by ghcr-cleanup.yml (keeps images from last 3 days)
 # - Final images are still pushed to quay.io with proper semantic tags
 
@@ -60,18 +62,29 @@ jobs:
       - name: Checkout Repo ⚡️
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      # show disk usage before cleanup
+      - name: Show Disk Usage Before Cleanup
+        run: df -h
+        shell: bash
+
       - name: Free Disk Space
         uses: endersonmenezes/free-disk-space@v3
         with:
-          remove_android: false
+          remove_android: true
           remove_dotnet: true
           remove_haskell: true
           remove_tool_cache: true
           remove_swap: true
-          remove_packages: false
+          remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
           remove_packages_one_command: true
-          remove_folders: "/usr/share/swift /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
+          # Directories that freed 0 MB on both platforms:
+          remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc  /usr/local/lib/android /usr/share/dotnet  /opt/ghc /usr/local/.ghcup /swapfile /usr/local/bin/minikube /usr/local/bin/node /usr/local/bin/pulumi* /usr/local/bin/helm /usr/local/bin/azcopy /usr/local/bin/packer /usr/local/bin/cmake* /usr/lib/jvm /usr/lib/snapd /usr/lib/go* /usr/local/share /usr/local/n /usr/local/doc /usr/bin/kubectl* /usr/bin/podman* /usr/bin/mysql* /usr/share/java /usr/libexec/gcc /var/lib/apt/lists/* /var/lib/mysql /var/lib/mecab /var/lib/cache/* /home/packer/.rustup /home/packer/.dotnet /home/linuxbrew/.linuxbrew /opt/google-cloud-sdk /opt/powershell"
           rm_cmd: "rmz"
+
+      # show disk usage after cleanup
+      - name: Show Disk Usage After Cleanup
+        run: df -h
+        shell: bash
 
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
@@ -88,16 +101,19 @@ jobs:
           platform: ${{ inputs.platform }}
           variant: ${{ inputs.parent-variant }}
 
-      - name: Pull base ubuntu image 📥
-        if: inputs.parent-image == ''
-        run: docker pull ubuntu:24.04
-        shell: bash
+      - name: Login to GHCR 🔐
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ env.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image 🛠
+      - name: Build and push image to GHCR 🛠📤
         run: |
           docker buildx build \
             --rm --force-rm \
-            --tag ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
+            --tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+            --push \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} \
             --build-arg OWNER=${{ env.OWNER }} \
@@ -113,6 +129,12 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
 
+      - name: Pull image from GHCR for tagging 📥
+        run: |
+          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+        shell: bash
+
       - name: Write tags file 🏷
         run: |
           python3 -m tagging.apps.write_tags_file \
@@ -122,6 +144,7 @@ jobs:
             --variant ${{ inputs.variant }} \
             --tags-dir /tmp/jupyter/tags/
         shell: bash
+
       - name: Upload tags file 💾
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
@@ -140,37 +163,20 @@ jobs:
             --manifests-dir /tmp/jupyter/manifests/ \
             --repository ${{ github.repository }}
         shell: bash
+
       - name: Upload manifest file 💾
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-manifest
           path: /tmp/jupyter/manifests/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}-*.md
           retention-days: 3
+
       - name: Upload build history line 💾
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-history_line
           path: /tmp/jupyter/hist_lines/${{ inputs.platform }}-${{ inputs.variant }}-${{ inputs.image }}-*.txt
           retention-days: 3
-
-      - name: Tag image for GHCR 🏷
-        run: |
-          docker tag \
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
-            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-        shell: bash
-
-      - name: Login to GHCR 🔐
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-        with:
-          registry: ${{ env.GHCR_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push intermediate image to GHCR 📤
-        run: |
-          docker push ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-        shell: bash
 
       - name: Logout from GHCR 🔐
         if: always()

@@ -39,6 +39,11 @@ jobs:
       - name: Checkout Repo ⚡️
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      # show disk usage before cleanup
+      - name: Show Disk Usage Before Cleanup
+        run: df -h
+        shell: bash
+
       - name: Free Disk Space
         uses: endersonmenezes/free-disk-space@v3
         with:
@@ -49,8 +54,14 @@ jobs:
           remove_swap: true
           remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
           remove_packages_one_command: true
-          remove_folders: "/usr/share/swift /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
+          # Directories that freed 0 MB on both platforms:
+          remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc  /usr/local/lib/android /usr/share/dotnet  /opt/ghc /usr/local/.ghcup /swapfile /usr/local/bin/minikube /usr/local/bin/node /usr/local/bin/pulumi* /usr/local/bin/helm /usr/local/bin/azcopy /usr/local/bin/packer /usr/local/bin/cmake* /usr/lib/jvm /usr/lib/snapd /usr/lib/go* /usr/local/share /usr/local/n /usr/local/doc /usr/bin/kubectl* /usr/bin/podman* /usr/bin/mysql* /usr/share/java /usr/libexec/gcc /var/lib/apt/lists/* /var/lib/mysql /var/lib/mecab /var/lib/cache/* /home/packer/.rustup /home/packer/.dotnet /home/linuxbrew/.linuxbrew /opt/google-cloud-sdk /opt/powershell"
           rm_cmd: "rmz"
+
+      # show disk usage after cleanup
+      - name: Show Disk Usage After Cleanup
+        run: df -h
+        shell: bash
 
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
@@ -77,24 +88,6 @@ jobs:
         run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Login to GHCR 🔐
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull x86_64 image from GHCR 📥
-        run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}
-        shell: bash
-
-      - name: Logout from GHCR 🔐
-        if: always()
-        run: |
-          docker logout ghcr.io
-        shell: bash
-
       - name: Download x86_64 tags file 📥
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
@@ -105,21 +98,23 @@ jobs:
         run: |
           mkdir -p /tmp/apptainer/
 
-          echo "Saving Docker image to tar..."
-          docker save ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }} > /tmp/apptainer/image.tar
+          echo "Preparing Apptainer definition file..."
+          GHCR_IMAGE="ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}"
+          cp .github/apptainer/apptainer.def /tmp/apptainer/apptainer.def
+          sed -i "s|PLACEHOLDER_IMAGE_REFERENCE|$GHCR_IMAGE|g" /tmp/apptainer/apptainer.def
 
-          echo "Copying Singularity definition template..."
-          cp .github/apptainer/Singularity.def /tmp/apptainer/Singularity.def
-
-          echo "Building Apptainer SIF image from Docker archive using definition file..."
-          sudo apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/Singularity.def
+          echo "Building Apptainer SIF image from GHCR image using definition file..."
+          sudo -E apptainer build /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif /tmp/apptainer/apptainer.def
 
           echo "Cleaning up temporary files..."
-          rm -f /tmp/apptainer/image.tar /tmp/apptainer/Singularity.def
+          rm -f /tmp/apptainer/apptainer.def
 
           echo "Apptainer image created successfully"
           ls -lh /tmp/apptainer/${{ inputs.image }}-x86_64-${{ inputs.variant }}.sif
         shell: bash
+        env:
+          APPTAINER_DOCKER_USERNAME: ${{ github.actor }}
+          APPTAINER_DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'
