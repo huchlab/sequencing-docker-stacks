@@ -583,7 +583,8 @@ jobs:
         test-aarch64-singlecell,
         test-aarch64-singlecell-r,
         test-aarch64-singlecell-gpu,
-        test-aarch64-singlecell-gpu-cuda13,
+        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
+        # test-aarch64-singlecell-gpu-cuda13,
         test-aarch64-multiomics,
         test-aarch64-spatial,
 
@@ -593,7 +594,8 @@ jobs:
         test-x86_64-singlecell,
         test-x86_64-singlecell-r,
         test-x86_64-singlecell-gpu,
-        test-x86_64-singlecell-gpu-cuda13,
+        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
+        # test-x86_64-singlecell-gpu-cuda13,
         test-x86_64-multiomics,
         test-x86_64-spatial,
       ]
