@@ -1,0 +1,61 @@
+name: Copy and tag image directly from GHCR to Registry
+description: Copy the image directly from GHCR to Registry without pulling to local disk
+
+inputs:
+  image:
+    description: Image name
+    required: true
+  platform:
+    description: Image platform
+    required: true
+  variant:
+    description: Variant tag prefix
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Get commit SHA
+      id: get_sha
+      run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Login to GHCR 🔐
+      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - name: Download tags file 📥
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      with:
+        name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags
+        path: /tmp/jupyter/tags/
+
+    - name: Copy and tag image directly from GHCR to Registry 🏷
+      run: |
+        SOURCE_REGISTRY=ghcr.io \
+        SOURCE_OWNER=${{ github.repository_owner }} \
+        SOURCE_IMAGE_TAG=build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+        python3 -m tagging.apps.copy_and_tag_image \
+          --registry ${{ env.REGISTRY }} \
+          --owner ${{ env.OWNER }} \
+          --image ${{ inputs.image }} \
+          --variant ${{ inputs.variant }} \
+          --platform ${{ inputs.platform }} \
+          --tags-dir /tmp/jupyter/tags/
+      shell: bash
+
+    - name: Upload SBOM for the image 🧾
+      uses: anchore/sbom-action@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+      with:
+        image: ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+        artifact-name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
+        upload-artifact-retention: 40
+
+    - name: Logout from GHCR 🔐
+      if: always()
+      run: |
+        docker logout ghcr.io
+      shell: bash

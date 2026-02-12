@@ -10,6 +10,7 @@ on:
     # Weekly, at 03:00 on Monday UTC
     - cron: "0 3 * * 1"
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths:
       - ".github/workflows/docker.yml"
       # We use local reusable workflows to make architecture clean and simple
@@ -566,9 +567,10 @@ jobs:
             spatial-notebook,
           ]
         variant: [default]
-        include:
-          - image: singlecell-gpu-notebook
-            variant: cuda13
+        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
+        # include:
+        #   - image: singlecell-gpu-notebook
+        #     variant: cuda13
     # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
     needs:

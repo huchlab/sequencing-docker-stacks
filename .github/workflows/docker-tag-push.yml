@@ -55,20 +55,6 @@ jobs:
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
-      - name: Pull aarch64 image and apply tags 🏷
-        uses: ./.github/actions/apply-single-tags
-        with:
-          image: ${{ inputs.image }}
-          variant: ${{ inputs.variant }}
-          platform: aarch64
-
-      - name: Pull x86_64 image and apply tags 🏷
-        uses: ./.github/actions/apply-single-tags
-        with:
-          image: ${{ inputs.image }}
-          variant: ${{ inputs.variant }}
-          platform: x86_64
-
       - name: Login to Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'
         run: |
@@ -81,12 +67,19 @@ jobs:
         shell: bash
         id: login
 
-      - name: Push single platform images to Registry 📤
-        if: env.PUSH_TO_REGISTRY == 'true'
-        run: |
-          docker push --all-tags ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} || \
-          docker push --all-tags ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
-        shell: bash
+      - name: Copy aarch64 image and apply tags directly 🏷
+        uses: ./.github/actions/copy-and-tag-image
+        with:
+          image: ${{ inputs.image }}
+          variant: ${{ inputs.variant }}
+          platform: aarch64
+
+      - name: Copy x86_64 image and apply tags directly 🏷
+        uses: ./.github/actions/copy-and-tag-image
+        with:
+          image: ${{ inputs.image }}
+          variant: ${{ inputs.variant }}
+          platform: x86_64
 
       - name: Merge tags for the images 🔀
         run: |
