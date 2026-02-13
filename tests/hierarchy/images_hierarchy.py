@@ -22,5 +22,7 @@ IMAGE_PARENT = {
     "singlecell-r-notebook": "datascience-notebook",
     "singlecell-gpu-notebook": "singlecell-notebook",
     "multiomics-notebook": "singlecell-notebook",
+    "multiomics-gpu-notebook": "multiomics-notebook",
     "spatial-notebook": "singlecell-notebook",
+    "spatial-gpu-notebook": "spatial-notebook",
 }

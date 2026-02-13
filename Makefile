@@ -18,7 +18,9 @@ ALL_IMAGES:= \
 	singlecell-gpu-notebook \
 	singlecell-r-notebook \
 	multiomics-notebook \
-	spatial-notebook
+	multiomics-gpu-notebook \
+	spatial-notebook \
+	spatial-gpu-notebook
 
 
 
