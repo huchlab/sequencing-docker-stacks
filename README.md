@@ -7,7 +7,7 @@
 
 **Ready-to-use analysis environments for your sequencing data**.
 
-Sequencing Docker Stacks provide pre-configured, reproducible environments for analyzing genomic sequencing data.
+Sequencing Docker Stacks provide pre-configured, reproducible environments for analyzing sequencing data.
 
 ## Who Should Use This?
 

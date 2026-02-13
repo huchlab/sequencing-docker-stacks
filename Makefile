@@ -15,6 +15,7 @@ ALL_IMAGES:= \
 	sequencing-base-notebook \
 	rnaseq-notebook \
 	singlecell-notebook \
+	singlecell-gpu-notebook \
 	singlecell-r-notebook \
 	multiomics-notebook \
 	spatial-notebook
@@ -35,10 +36,11 @@ help:
 build/%: DOCKER_BUILD_ARGS?=
 build/%: ROOT_IMAGE?=ubuntu:24.04
 build/%: PYTHON_VERSION?=3.13
+build/%: VARIANT?=default
 build/%: ## build the latest image for a stack using the system's architecture
 	docker build $(DOCKER_BUILD_ARGS) --rm --force-rm \
-	  --tag "$(REGISTRY)/$(OWNER)/$(notdir $@)" \
-	  "./images/$(notdir $@)" \
+	  --tag "$(REGISTRY)/$(OWNER)/$(notdir $@)$(if $(filter-out default,$(VARIANT)),:$(VARIANT))" \
+      "./images/$(notdir $@)$(if $(filter-out default,$(VARIANT)),/$(VARIANT))" \
 	  --build-arg REGISTRY="$(REGISTRY)" \
 	  --build-arg OWNER="$(OWNER)" \
 	  --build-arg ROOT_IMAGE="$(ROOT_IMAGE)" \
@@ -127,11 +129,11 @@ push-all: $(foreach I, $(ALL_IMAGES), push/$(I)) ## push all tagged images
 
 
 
+run-shell/%: VARIANT?=default
 run-shell/%: ## run a bash in interactive mode in a stack
-	docker run -it --rm "$(REGISTRY)/$(OWNER)/$(notdir $@)" $(SHELL)
+	docker run -it --rm "$(REGISTRY)/$(OWNER)/$(notdir $@)$(if $(filter-out default,$(VARIANT)),:$(VARIANT))" $(SHELL)
 run-sudo-shell/%: ## run bash in interactive mode as root in a stack
-	docker run -it --rm --user root "$(REGISTRY)/$(OWNER)/$(notdir $@)" $(SHELL)
-
+	docker run -it --rm --user root "$(REGISTRY)/$(OWNER)/$(notdir $@)$(if $(filter-out default,$(VARIANT)),:$(VARIANT))" $(SHELL)
 
 
 test/%: ## run tests against a stack
