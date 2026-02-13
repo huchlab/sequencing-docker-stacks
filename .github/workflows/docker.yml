@@ -226,6 +226,104 @@ jobs:
     needs: x86_64-singlecell
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  # multiomics-gpu-notebook: default variant
+  aarch64-multiomics-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 40
+    needs: aarch64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-multiomics-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 40
+    needs: x86_64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # multiomics-gpu-notebook: cuda13 variant
+  x86_64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 60
+    needs: x86_64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # multiomics-gpu-notebook: cuda13 variant (aarch64)
+  aarch64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+    needs: aarch64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # spatial-gpu-notebook: default variant
+  aarch64-spatial-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 40
+    needs: aarch64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-spatial-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 40
+    needs: x86_64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # spatial-gpu-notebook: cuda13 variant
+  x86_64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 60
+    needs: x86_64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # spatial-gpu-notebook: cuda13 variant (aarch64)
+  aarch64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+    needs: aarch64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   # singlecell-gpu-notebook: default variant
   aarch64-singlecell-gpu:
     uses: ./.github/workflows/docker-build-upload.yml
@@ -412,6 +510,90 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 15
     needs: x86_64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-multiomics-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-multiomics-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-multiomics-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-multiomics-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-multiomics-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-multiomics-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-spatial-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-spatial-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-spatial-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-spatial-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-spatial-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-spatial-gpu-cuda13
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   test-aarch64-singlecell-gpu:
