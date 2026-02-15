@@ -28,7 +28,7 @@ queue_rules:
               - -files~=^\.github/workflows/docker-build-upload\.yml$
               - -files~=^\.github/workflows/docker-test\.yml$
               - -files~=^\.github/workflows/docker-tag-push\.yml$
-              - -files~=^\.github/workflows/docker-apptainer-push\.yml$
+              - -files~=^\.github/workflows/apptainer-push\.yml$
               - -files~=^\.github/workflows/docker-wiki-update\.yml$
               - -files~=^\.github/actions/apply-single-tags/action\.yml$
               - -files~=^\.github/actions/create-dev-env/action\.yml$

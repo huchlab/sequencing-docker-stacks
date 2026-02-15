@@ -20,7 +20,7 @@ on:
       - ".github/workflows/docker-tag-merge.yml"
       - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
-      - ".github/workflows/docker-apptainer-push.yml"
+      - ".github/workflows/apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       # We use local composite actions to combine multiple workflow steps within one action
@@ -48,7 +48,7 @@ on:
       - ".github/workflows/docker-tag-merge.yml"
       - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
-      - ".github/workflows/docker-apptainer-push.yml"
+      - ".github/workflows/apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       - ".github/actions/apply-single-tags/action.yml"
@@ -740,7 +740,7 @@ jobs:
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   apptainer-push:
-    uses: ./.github/workflows/docker-apptainer-push.yml
+    uses: ./.github/workflows/apptainer-push.yml
     with:
       image: ${{ matrix.image }}
       variant: ${{ matrix.variant }}
@@ -814,7 +814,7 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   apptainer-push-fast:
-    uses: ./.github/workflows/docker-apptainer-push.yml
+    uses: ./.github/workflows/apptainer-push.yml
     with:
       image: ${{ matrix.image }}
       variant: ${{ matrix.variant }}
