@@ -69,8 +69,8 @@ jobs:
           echo "$REGISTRY_TOKEN" | apptainer registry login -u "$REGISTRY_USERNAME" --password-stdin oras://${{ env.REGISTRY }}
         shell: bash
         env:
-          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
-          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_TOKEN: ${{ secrets.QUAY_ROBOT_TOKEN }}
+          REGISTRY_USERNAME: ${{ secrets.QUAY_USERNAME }}
         id: login
 
       - name: Verify login
