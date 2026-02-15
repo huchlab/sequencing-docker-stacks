@@ -1,5 +1,9 @@
 name: Test the contributed recipes
 
+# NOTE: This workflow uses docker buildx build without --load to avoid storing
+# images locally, reducing disk space usage. Images are built and validated but
+# not kept on the runner's disk.
+
 env:
   REGISTRY: quay.io
   OWNER: ${{ github.repository_owner }}
@@ -69,12 +73,12 @@ jobs:
           variant: default
 
       # Not pulling the image, because it might be loaded from previous step or will be downloaded automatically
+      # Using docker buildx build without --load to avoid storing image locally, saving disk space
       - name: Build recipe with parent image 🛠
         if: ${{ matrix.parent-image != '' }}
         run: |
-          docker build \
+          docker buildx build \
             --rm --force-rm \
-            --tag my-custom-image \
             -f ./${{ matrix.dockerfile }} \
             --build-arg BASE_IMAGE=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ matrix.parent-image }} \
             ./
@@ -86,12 +90,12 @@ jobs:
         shell: bash
 
       # Not pulling the image, because it might be loaded from previous step or will be downloaded automatically
+      # Using docker buildx build without --load to avoid storing image locally, saving disk space
       - name: Build recipe without parent image 🛠
         if: ${{ matrix.parent-image == '' }}
         run: |
-          docker build \
+          docker buildx build \
             --rm --force-rm \
-            --tag my-custom-image \
             -f ./${{ matrix.dockerfile }} \
             ./
         env:
