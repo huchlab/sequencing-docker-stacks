@@ -9,10 +9,10 @@ on:
     pull_request:
     inputs:
       test_description:
-        description: 'Description of what you are testing'
+        description: "Description of what you are testing"
         required: false
         type: string
-        default: 'Testing apptainer installation and registry login'
+        default: "Testing apptainer installation and registry login"
 
 permissions:
   contents: read
