@@ -26,11 +26,6 @@ updates:
       interval: weekly
     commit-message:
       prefix: "[FAST_BUILD] "
-  # This action is only used for some images, so full build is required
-  - package-ecosystem: github-actions
-    directory: .github/actions/free-disk-space/
-    schedule:
-      interval: weekly
   - package-ecosystem: github-actions
     directory: .github/actions/load-image/
     schedule:
