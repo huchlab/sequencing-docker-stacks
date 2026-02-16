@@ -144,10 +144,13 @@ jobs:
             org.opencontainers.image.version=${{ steps.get_build_date.outputs.build_date_short }}
             org.opencontainers.image.build.date=${{ steps.get_build_date.outputs.build_date }}
           cache-from: |
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ github.sha }}
             type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ steps.branch.outputs.slug }}
             type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ github.event.repository.default_branch }}
             type=registry,ref=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:latest
-          cache-to: type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ steps.branch.outputs.slug }},mode=max
+          cache-to: |
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ github.sha }},mode=max
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ steps.branch.outputs.slug }},mode=max
           # Push to GHCR and load to local Docker daemon simultaneously
           outputs: |
             type=registry,push=true
