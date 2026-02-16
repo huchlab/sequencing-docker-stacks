@@ -10,7 +10,6 @@ on:
     # Weekly, at 03:00 on Monday UTC
     - cron: "0 3 * * 1"
   pull_request:
-    types: [opened, synchronize, reopened, edited]
     paths:
       - ".github/workflows/docker.yml"
       # We use local reusable workflows to make architecture clean and simple
