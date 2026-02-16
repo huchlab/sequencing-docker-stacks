@@ -119,10 +119,6 @@ jobs:
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
             OWNER=${{ env.OWNER }}
-            CONTAINER_BUILD_DATE=${{ steps.get_build_date.outputs.build_date }}
-            CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
-            CONTAINER_GIT_REPOSITORY=${{ github.repository }}
-            CONTAINER_GIT_COMMIT=${{ github.sha}}
           secrets: |
             GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
           cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}

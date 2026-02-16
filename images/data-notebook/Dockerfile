@@ -12,10 +12,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
 
-ARG CONTAINER_BUILD_DATE
-ARG CONTAINER_IMAGE_NAME
-ARG CONTAINER_GIT_REPOSITORY
-ARG CONTAINER_GIT_COMMIT
+# ARG CONTAINER_BUILD_DATE
+# ARG CONTAINER_IMAGE_NAME
+# ARG CONTAINER_GIT_REPOSITORY
+# ARG CONTAINER_GIT_COMMIT
 
 # LABEL org.opencontainers.image.created="${CONTAINER_BUILD_DATE}" \
 #       org.opencontainers.image.title="${CONTAINER_IMAGE_NAME}" \
@@ -26,70 +26,72 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git-lfs && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /opt/R-cran/library && \
-    chown "${NB_UID}":"${NB_GID}" /opt/R-cran/library && \
-    chmod 775 /opt/R-cran/library
+# RUN mkdir -p /opt/R-cran/library && \
+#     chown "${NB_UID}":"${NB_GID}" /opt/R-cran/library && \
+#     chmod 775 /opt/R-cran/library
 
-COPY Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
-RUN chown "${NB_UID}":"${NB_GID}" /opt/conda/lib/R/etc/Rprofile.site && \
-    chmod 775 /opt/conda/lib/R/etc/Rprofile.site
+# COPY Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+# RUN chown "${NB_UID}":"${NB_GID}" /opt/conda/lib/R/etc/Rprofile.site && \
+#     chmod 775 /opt/conda/lib/R/etc/Rprofile.site
+
+# USER ${NB_UID}
+
+# RUN git lfs install && \
+#     conda config --append channels bioconda && \
+#     echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
+#     mamba install --yes \
+#         # Python \
+#         'jupyterlab_execute_time' \
+#         'natsort' \
+#         'openpyxl' \
+#         'pingouin' \
+#         'plotnine' \
+#         'polars' \
+#         'pyarrow' \
+#         'scikit-misc' \
+#         'session-info' \
+#         'session-info2' \
+#         'trackhub' \
+#         'uv' \
+#         'xlsxwriter' \
+#         # R \
+#         'bioconductor-complexheatmap' \
+#         'bioconductor-rgraphviz' \
+#         'r-data.table' \
+#         'r-dtplyr' \
+#         'r-fastcluster' \
+#         'r-feather' \
+#         'r-ggally' \
+#         'r-ggpubr' \
+#         'r-ggrepel' \
+#         'r-ggsci' \
+#         'r-ggthemes' \
+#         'r-gtools' \
+#         'r-ggupset' \
+#         'r-ggvenn' \
+#         'r-hmisc' \
+#         'r-janitor' \
+#         'r-languageserver' \
+#         'r-openxlsx' \
+#         'r-paletteer' \
+#         'r-paralleldist' \
+#         'r-pheatmap' \
+#         'r-plotly' \
+#         'r-r.utils' \
+#         'r-svglite' \
+#         'r-textshape' \
+#         'r-viridis' \
+#         'r-wesanderson' \
+#         'r-writexl' \
+#         # workaround to fix #486
+#         'r-zoo!=1.8_15' \
+#         && \
+#     mamba clean --all -f -y && \
+#     fix-permissions "${CONDA_DIR}" && \
+#     fix-permissions "/home/${NB_USER}"
+
+# RUN Rscript -e \
+#     "Sys.setenv(NOT_CRAN = 'true'); \
+#     install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
 
 USER ${NB_UID}
-
-RUN git lfs install && \
-    conda config --append channels bioconda && \
-    echo "r-base >=4.4" >> /opt/conda/conda-meta/pinned && \
-    mamba install --yes \
-        # Python \
-        'jupyterlab_execute_time' \
-        'natsort' \
-        'openpyxl' \
-        'pingouin' \
-        'plotnine' \
-        'polars' \
-        'pyarrow' \
-        'scikit-misc' \
-        'session-info' \
-        'session-info2' \
-        'trackhub' \
-        'uv' \
-        'xlsxwriter' \
-        # R \
-        'bioconductor-complexheatmap' \
-        'bioconductor-rgraphviz' \
-        'r-data.table' \
-        'r-dtplyr' \
-        'r-fastcluster' \
-        'r-feather' \
-        'r-ggally' \
-        'r-ggpubr' \
-        'r-ggrepel' \
-        'r-ggsci' \
-        'r-ggthemes' \
-        'r-gtools' \
-        'r-ggupset' \
-        'r-ggvenn' \
-        'r-hmisc' \
-        'r-janitor' \
-        'r-languageserver' \
-        'r-openxlsx' \
-        'r-paletteer' \
-        'r-paralleldist' \
-        'r-pheatmap' \
-        'r-plotly' \
-        'r-r.utils' \
-        'r-svglite' \
-        'r-textshape' \
-        'r-viridis' \
-        'r-wesanderson' \
-        'r-writexl' \
-        # workaround to fix #486
-        'r-zoo!=1.8_15' \
-        && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
-
-RUN Rscript -e \
-    "Sys.setenv(NOT_CRAN = 'true'); \
-    install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
