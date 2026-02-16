@@ -12,6 +12,6 @@ jobs:
       - name: Mirror to GitLab
         uses: yesolutions/mirror-action@v0.6.0
         with:
-          REMOTE: https://oauth2:${{ secrets.GITLAB_TOKEN }}@git.mpi-cbg.de/rost/sequencing-docker-stacks.git
-          GIT_USERNAME: github-actions
-          GIT_EMAIL: actions@github.com
+          REMOTE: https://git.mpi-cbg.de/rost/sequencing-docker-stacks.git
+          GIT_USERNAME: oauth2
+          GIT_PASSWORD: ${{ secrets.GITLAB_TOKEN }}
