@@ -43,7 +43,7 @@ def copy_and_tag_image(
     target_tag0 = f"{config.registry}/{config.owner}/{config.image}:{tag_name0}"
     LOGGER.info(f"Copying to first tag: {target_tag0}")
     copy_args = [
-        "cp",
+        "copy",
         source_image,
         target_tag0,
     ]
