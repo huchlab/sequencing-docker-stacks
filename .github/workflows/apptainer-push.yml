@@ -62,9 +62,6 @@ jobs:
         run: df -h
         shell: bash
 
-      - name: Create dev environment 📦
-        uses: ./.github/actions/create-dev-env
-
       - uses: eWaterCycle/setup-apptainer@v2
         with:
           apptainer-version: 1.4.5
