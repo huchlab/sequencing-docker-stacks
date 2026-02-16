@@ -90,15 +90,19 @@ jobs:
 
       - name: Get build date
         id: get_build_date
-        run: echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+        run: |
+          echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "build_date_short=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        shell: bash
 
-      - name: Load parent built image to Docker 📥
-        if: inputs.parent-image != ''
-        uses: ./.github/actions/load-image
-        with:
-          image: ${{ inputs.parent-image }}
-          platform: ${{ inputs.platform }}
-          variant: ${{ inputs.parent-variant }}
+      - name: Get Branch Name
+        id: branch
+        run: |
+          # Pick head_ref for PRs, otherwise ref_name
+          RAW_BRANCH=${{ github.head_ref || github.ref_name }}
+          # Replace slashes with dashes for Docker compatibility
+          CLEAN_BRANCH=$(echo "$RAW_BRANCH" | sed 's/\//-/g')
+          echo "slug=${CLEAN_BRANCH}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx 🏗
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
@@ -111,21 +115,35 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push image to GHCR 🛠📤
-        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
         with:
           context: images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/
           tags: ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
             OWNER=${{ env.OWNER }}
-            CONTAINER_BUILD_DATE=${{ steps.get_build_date.outputs.build_date }}
-            CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
-            CONTAINER_GIT_REPOSITORY=${{ github.repository }}
-            CONTAINER_GIT_COMMIT=${{ github.sha}}
           secrets: |
             GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
-          cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
-          cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          labels: |
+            org.opencontainers.image.url=${{ github.repository }}
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title="${{ inputs.image }}-${{ inputs.variant }} (${inputs.platform})"
+            org.opencontainers.image.licenses="BSD-3-Clause"
+            org.opencontainers.image.documentation="https://sequencing-docker-stacks.readthedocs.io/"
+            org.opencontainers.image.base.name=${{ inputs.parent-image }}
+            org.opencontainers.image.version=${{ steps.get_build_date.outputs.build_date_short }}
+            org.opencontainers.image.build.date=${{ steps.get_build_date.outputs.build_date }}
+          cache-from: |
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ github.sha }}
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ steps.branch.outputs.slug }}
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-latest
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ github.event.repository.default_branch }}
+            type=registry,ref=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}:latest
+          cache-to: |
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ github.sha }},mode=max
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-${{ steps.branch.outputs.slug }},mode=max
+            type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}-latest,mode=max
           # Push to GHCR and load to local Docker daemon simultaneously
           outputs: |
             type=registry,push=true
