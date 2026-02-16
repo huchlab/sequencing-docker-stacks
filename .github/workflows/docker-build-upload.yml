@@ -134,8 +134,8 @@ jobs:
             org.opencontainers.image.base.name=${{ inputs.parent-image }}
             org.opencontainers.image.version=${{ steps.get_build_date.outputs.build_date_short }}
             org.opencontainers.image.build.date=${{ steps.get_build_date.outputs.build_date }}
-          cache-from: type=registry,ref=ghcr.io/huchlab/sequencing-docker-stacks/data-notebook:build-cache
-          cache-to: type=registry,ref=ghcr.io/huchlab/sequencing-docker-stacks/data-notebook:build-cache,mode=max
+          cache-from: type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }}
+          cache-to: type=registry,ref=${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-cache-${{ inputs.platform }}-${{ inputs.variant }},mode=max
           # Push to GHCR and load to local Docker daemon simultaneously
           outputs: |
             type=registry,push=true
