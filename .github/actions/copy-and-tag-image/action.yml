@@ -15,43 +15,34 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Download tags file 📥
-      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-      with:
-        name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags
-        path: /tmp/jupyter/tags/
-
     - name: Login to GHCR 🔐
       uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ github.token }}
-      id: login-ghcr
+
+    - name: Download tags file 📥
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      with:
+        name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags
+        path: /tmp/jupyter/tags/
 
     - name: Install Crane
       uses: imjasonh/setup-crane@v0.5
 
-    - name: Remote Tagging with Crane
+    - name: Copy and tag image directly from GHCR to Registry 🏷
       run: |
-        SOURCE_IMAGE="ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}"
-        DEST_REPO="${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}"
-        TAG_FILE="/tmp/jupyter/tags/${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags"
-
-        # Perform ONE actual copy to the destination registry
-        # This moves the layers once.
-        FIRST_TAG=$(head -n 1 "$TAG_FILE")
-        echo "Initial move of layers to $DEST_REPO:$FIRST_TAG"
-        crane copy "$SOURCE_IMAGE" "$DEST_REPO:$FIRST_TAG"
-
-        # Use 'crane tag' for all subsequent tags
-        # This is an instant API call with no data transfer.
-        while IFS= read -r tag; do
-          if [ "$tag" != "$FIRST_TAG" ]; then
-            echo "Fast-tagging $tag..."
-            crane tag "$DEST_REPO:$FIRST_TAG" "$tag"
-          fi
-        done < "$TAG_FILE"
+        SOURCE_REGISTRY=ghcr.io \
+        SOURCE_OWNER=${{ github.repository_owner }} \
+        SOURCE_IMAGE_TAG=build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+        python3 -m tagging.apps.copy_and_tag_image \
+          --registry ${{ env.REGISTRY }} \
+          --owner ${{ env.OWNER }} \
+          --image ${{ inputs.image }} \
+          --variant ${{ inputs.variant }} \
+          --platform ${{ inputs.platform }} \
+          --tags-dir /tmp/jupyter/tags/
       shell: bash
 
     - name: Install Syft 📦
@@ -73,3 +64,9 @@ runs:
         name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
         path: /tmp/sbom-${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.spdx.json
         retention-days: 40
+
+    - name: Logout from GHCR 🔐
+      if: always()
+      run: |
+        docker logout ghcr.io
+      shell: bash
