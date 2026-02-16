@@ -783,16 +783,13 @@ jobs:
         test-aarch64-singlecell,
         test-aarch64-singlecell-r,
         test-aarch64-singlecell-gpu,
-        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-aarch64-singlecell-gpu-cuda13,
+        test-aarch64-singlecell-gpu-cuda13,
         test-aarch64-multiomics,
         test-aarch64-multiomics-gpu,
-        # do not include multiomics-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-aarch64-multiomics-gpu-cuda13,
+        test-aarch64-multiomics-gpu-cuda13,
         test-aarch64-spatial,
         test-aarch64-spatial-gpu,
-        # do not include spatial-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-aarch64-spatial-gpu-cuda13,
+        test-aarch64-spatial-gpu-cuda13,
 
         test-x86_64-data,
         test-x86_64-sequencing-base,
@@ -800,16 +797,13 @@ jobs:
         test-x86_64-singlecell,
         test-x86_64-singlecell-r,
         test-x86_64-singlecell-gpu,
-        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-x86_64-singlecell-gpu-cuda13,
+        test-x86_64-singlecell-gpu-cuda13,
         test-x86_64-multiomics,
         test-x86_64-multiomics-gpu,
-        # do not include multiomics-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-x86_64-multiomics-gpu-cuda13,
+        test-x86_64-multiomics-gpu-cuda13,
         test-x86_64-spatial,
         test-x86_64-spatial-gpu,
-        # do not include spatial-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-x86_64-spatial-gpu-cuda13,
+        test-x86_64-spatial-gpu-cuda13,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
