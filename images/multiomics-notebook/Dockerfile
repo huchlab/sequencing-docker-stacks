@@ -12,15 +12,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
 
-ARG CONTAINER_BUILD_DATE
-ARG CONTAINER_IMAGE_NAME
-ARG CONTAINER_GIT_REPOSITORY
-ARG CONTAINER_GIT_COMMIT
-
-LABEL org.opencontainers.image.created="${CONTAINER_BUILD_DATE}" \
-      org.opencontainers.image.title="${CONTAINER_IMAGE_NAME}" \
-      org.opencontainers.image.source="${CONTAINER_GIT_REPOSITORY}" \
-      org.opencontainers.image.revision="${CONTAINER_GIT_COMMIT}"
 
 USER ${NB_UID}
 
