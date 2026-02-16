@@ -15,13 +15,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get commit SHA
-      id: get_sha
-      run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      shell: bash
-
     - name: Login to GHCR 🔐
-      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
@@ -37,7 +32,7 @@ runs:
       run: |
         SOURCE_REGISTRY=ghcr.io \
         SOURCE_OWNER=${{ github.repository_owner }} \
-        SOURCE_IMAGE_TAG=build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+        SOURCE_IMAGE_TAG=build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
         python3 -m tagging.apps.copy_and_tag_image \
           --registry ${{ env.REGISTRY }} \
           --owner ${{ env.OWNER }} \
@@ -48,7 +43,7 @@ runs:
       shell: bash
 
     - name: Install Syft 📦
-      uses: anchore/sbom-action/download-syft@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+      uses: anchore/sbom-action/download-syft@28d71544de8eaf1b958d335707167c5f783590ad # v0.22.2
       id: syft
 
     - name: Generate SBOM for the image 🧾
@@ -57,11 +52,11 @@ runs:
           --from oci-registry \
           --platform linux/${{ inputs.platform == 'aarch64' && 'arm64' || 'amd64' }} \
           -o spdx-json=/tmp/sbom-${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.spdx.json \
-          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
       shell: bash
 
     - name: Upload SBOM artifact 📤
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-sbom.spdx.json
         path: /tmp/sbom-${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.spdx.json

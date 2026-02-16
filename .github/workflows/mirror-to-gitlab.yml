@@ -9,16 +9,9 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout full history
-        uses: actions/checkout@v6.0.2
+      - name: Mirror to GitLab
+        uses: yesolutions/mirror-action@v0.7.0
         with:
-          fetch-depth: 0 # Important to get all branches/tags
-
-      - name: Push all local branches and tags to GitLab
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@git.mpi-cbg.de/rost/sequencing-docker-stacks.git
-          git push --force --all gitlab
-          git push --force --tags gitlab
+          REMOTE: https://git.mpi-cbg.de/rost/sequencing-docker-stacks.git
+          GIT_USERNAME: oauth2
+          GIT_PASSWORD: ${{ secrets.GITLAB_TOKEN }}

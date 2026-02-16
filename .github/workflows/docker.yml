@@ -10,7 +10,6 @@ on:
     # Weekly, at 03:00 on Monday UTC
     - cron: "0 3 * * 1"
   pull_request:
-    types: [opened, synchronize, reopened, edited]
     paths:
       - ".github/workflows/docker.yml"
       # We use local reusable workflows to make architecture clean and simple
@@ -20,14 +19,13 @@ on:
       - ".github/workflows/docker-tag-merge.yml"
       - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
-      - ".github/workflows/docker-apptainer-push.yml"
+      - ".github/workflows/apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       # We use local composite actions to combine multiple workflow steps within one action
       # https://docs.github.com/en/actions/sharing-automations/creating-actions/about-custom-actions#composite-actions
       - ".github/actions/apply-single-tags/action.yml"
       - ".github/actions/create-dev-env/action.yml"
-      - ".github/actions/free-disk-space/action.yml"
       - ".github/actions/load-image/action.yml"
 
       - "images/**"
@@ -49,12 +47,11 @@ on:
       - ".github/workflows/docker-tag-merge.yml"
       - ".github/workflows/docker-tag-push-merge.yml"
       - ".github/workflows/docker-tag-push.yml"
-      - ".github/workflows/docker-apptainer-push.yml"
+      - ".github/workflows/apptainer-push.yml"
       - ".github/workflows/docker-wiki-update.yml"
 
       - ".github/actions/apply-single-tags/action.yml"
       - ".github/actions/create-dev-env/action.yml"
-      - ".github/actions/free-disk-space/action.yml"
       - ".github/actions/load-image/action.yml"
 
       - "images/**"
@@ -224,6 +221,104 @@ jobs:
       runs-on: ubuntu-24.04
       timeout-minutes: 40
     needs: x86_64-singlecell
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # multiomics-gpu-notebook: default variant
+  aarch64-multiomics-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 40
+    needs: aarch64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-multiomics-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 40
+    needs: x86_64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # multiomics-gpu-notebook: cuda13 variant
+  x86_64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 60
+    needs: x86_64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # multiomics-gpu-notebook: cuda13 variant (aarch64)
+  aarch64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: multiomics-notebook
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+    needs: aarch64-multiomics
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # spatial-gpu-notebook: default variant
+  aarch64-spatial-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 40
+    needs: aarch64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  x86_64-spatial-gpu:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 40
+    needs: x86_64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # spatial-gpu-notebook: cuda13 variant
+  x86_64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 60
+    needs: x86_64-spatial
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  # spatial-gpu-notebook: cuda13 variant (aarch64)
+  aarch64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-build-upload.yml
+    with:
+      parent-image: spatial-notebook
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 60
+    needs: aarch64-spatial
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   # singlecell-gpu-notebook: default variant
@@ -414,6 +509,90 @@ jobs:
     needs: x86_64-spatial
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
+  test-aarch64-multiomics-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-multiomics-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-multiomics-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-multiomics-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-multiomics-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-multiomics-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: multiomics-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-multiomics-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-spatial-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-spatial-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-spatial-gpu:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-spatial-gpu
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-x86_64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: x86_64
+      runs-on: ubuntu-24.04
+      timeout-minutes: 30
+    needs: x86_64-spatial-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
+  test-aarch64-spatial-gpu-cuda13:
+    uses: ./.github/workflows/docker-test.yml
+    with:
+      image: spatial-gpu-notebook
+      variant: cuda13
+      platform: aarch64
+      runs-on: ubuntu-24.04-arm
+      timeout-minutes: 30
+    needs: aarch64-spatial-gpu-cuda13
+    if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
+
   test-aarch64-singlecell-gpu:
     uses: ./.github/workflows/docker-test.yml
     with:
@@ -492,11 +671,17 @@ jobs:
             singlecell-r-notebook,
             singlecell-gpu-notebook,
             multiomics-notebook,
+            multiomics-gpu-notebook,
             spatial-notebook,
+            spatial-gpu-notebook,
           ]
         variant: [default]
         include:
           - image: singlecell-gpu-notebook
+            variant: cuda13
+          - image: multiomics-gpu-notebook
+            variant: cuda13
+          - image: spatial-gpu-notebook
             variant: cuda13
     # prettier-ignore
     needs:
@@ -511,7 +696,11 @@ jobs:
         test-aarch64-singlecell-gpu,
         test-aarch64-singlecell-gpu-cuda13,
         test-aarch64-multiomics,
+        test-aarch64-multiomics-gpu,
+        test-aarch64-multiomics-gpu-cuda13,
         test-aarch64-spatial,
+        test-aarch64-spatial-gpu,
+        test-aarch64-spatial-gpu-cuda13,
 
         test-x86_64-data,
         test-x86_64-sequencing-base,
@@ -521,7 +710,11 @@ jobs:
         test-x86_64-singlecell-gpu,
         test-x86_64-singlecell-gpu-cuda13,
         test-x86_64-multiomics,
+        test-x86_64-multiomics-gpu,
+        test-x86_64-multiomics-gpu-cuda13,
         test-x86_64-spatial,
+        test-x86_64-spatial-gpu,
+        test-x86_64-spatial-gpu-cuda13,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
@@ -546,7 +739,7 @@ jobs:
     if: contains(github.event.pull_request.title, '[FAST_BUILD]')
 
   apptainer-push:
-    uses: ./.github/workflows/docker-apptainer-push.yml
+    uses: ./.github/workflows/apptainer-push.yml
     with:
       image: ${{ matrix.image }}
       variant: ${{ matrix.variant }}
@@ -564,12 +757,18 @@ jobs:
             singlecell-r-notebook,
             singlecell-gpu-notebook,
             multiomics-notebook,
+            multiomics-gpu-notebook,
             spatial-notebook,
+            spatial-gpu-notebook,
           ]
         variant: [default]
         # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
         # include:
         #   - image: singlecell-gpu-notebook
+        #     variant: cuda13
+        #   - image: multiomics-gpu-notebook
+        #     variant: cuda13
+        #   - image: spatial-gpu-notebook
         #     variant: cuda13
     # Depends on test jobs to ensure images are tested before pushing
     # prettier-ignore
@@ -583,10 +782,13 @@ jobs:
         test-aarch64-singlecell,
         test-aarch64-singlecell-r,
         test-aarch64-singlecell-gpu,
-        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-aarch64-singlecell-gpu-cuda13,
+        test-aarch64-singlecell-gpu-cuda13,
         test-aarch64-multiomics,
+        test-aarch64-multiomics-gpu,
+        test-aarch64-multiomics-gpu-cuda13,
         test-aarch64-spatial,
+        test-aarch64-spatial-gpu,
+        test-aarch64-spatial-gpu-cuda13,
 
         test-x86_64-data,
         test-x86_64-sequencing-base,
@@ -594,15 +796,18 @@ jobs:
         test-x86_64-singlecell,
         test-x86_64-singlecell-r,
         test-x86_64-singlecell-gpu,
-        # do not include singlecell-gpu-notebook:cuda13 in apptainer-push because of disk space issues on the runner
-        # test-x86_64-singlecell-gpu-cuda13,
+        test-x86_64-singlecell-gpu-cuda13,
         test-x86_64-multiomics,
+        test-x86_64-multiomics-gpu,
+        test-x86_64-multiomics-gpu-cuda13,
         test-x86_64-spatial,
+        test-x86_64-spatial-gpu,
+        test-x86_64-spatial-gpu-cuda13,
       ]
     if: ${{ !contains(github.event.pull_request.title, '[FAST_BUILD]') }}
 
   apptainer-push-fast:
-    uses: ./.github/workflows/docker-apptainer-push.yml
+    uses: ./.github/workflows/apptainer-push.yml
     with:
       image: ${{ matrix.image }}
       variant: ${{ matrix.variant }}

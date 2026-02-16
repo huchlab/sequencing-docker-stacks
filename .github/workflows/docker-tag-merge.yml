@@ -56,14 +56,11 @@ jobs:
 
       - name: Login to Registry 🔐
         if: env.PUSH_TO_REGISTRY == 'true'
-        run: |
-          docker login ${{ env.REGISTRY }} \
-            --username ${{ secrets.REGISTRY_USERNAME }} \
-            --password ${{ secrets.REGISTRY_TOKEN }} || \
-          docker login ${{ env.REGISTRY }} \
-            --username ${{ secrets.REGISTRY_USERNAME }} \
-            --password ${{ secrets.REGISTRY_TOKEN }}
-        shell: bash
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
         id: login
 
       - name: Merge tags for the images 🔀

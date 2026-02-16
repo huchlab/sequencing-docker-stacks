@@ -77,7 +77,6 @@ jobs:
           remove_swap: true
           remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
           remove_packages_one_command: true
-          # Directories that freed 0 MB on both platforms:
           remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc  /usr/local/lib/android /usr/share/dotnet  /opt/ghc /usr/local/.ghcup /swapfile /usr/local/bin/minikube /usr/local/bin/node /usr/local/bin/pulumi* /usr/local/bin/helm /usr/local/bin/azcopy /usr/local/bin/packer /usr/local/bin/cmake* /usr/lib/jvm /usr/lib/snapd /usr/lib/go* /usr/local/share /usr/local/n /usr/local/doc /usr/bin/kubectl* /usr/bin/podman* /usr/bin/mysql* /usr/share/java /usr/libexec/gcc /var/lib/apt/lists/* /var/lib/mysql /var/lib/mecab /var/lib/cache/* /home/packer/.rustup /home/packer/.dotnet /home/linuxbrew/.linuxbrew /opt/google-cloud-sdk /opt/powershell"
           rm_cmd: "rmz"
 
@@ -89,9 +88,9 @@ jobs:
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
-      - name: Get commit SHA
-        id: get_sha
-        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Get build date
+        id: get_build_date
+        run: echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
@@ -101,38 +100,43 @@ jobs:
           platform: ${{ inputs.platform }}
           variant: ${{ inputs.parent-variant }}
 
+      - name: Set up Docker Buildx 🏗
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+
       - name: Login to GHCR 🔐
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ${{ env.GHCR_REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push image to GHCR 🛠📤
-        run: |
-          docker buildx build \
-            --rm --force-rm \
-            --tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
-            --push \
-            images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
-            --build-arg REGISTRY=${{ env.REGISTRY }} \
-            --build-arg OWNER=${{ env.OWNER }} \
-            --build-arg CONTAINER_BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-            --build-arg CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
-            --build-arg CONTAINER_GIT_REPOSITORY=${{ github.repository }} \
-            --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha }} \
-            --secret id=GITHUB_PAT
+        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
+        with:
+          context: images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/
+          tags: ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          build-args: |
+            REGISTRY=${{ env.REGISTRY }}
+            OWNER=${{ env.OWNER }}
+            CONTAINER_BUILD_DATE=${{ steps.get_build_date.outputs.build_date }}
+            CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+            CONTAINER_GIT_REPOSITORY=${{ github.repository }}
+            CONTAINER_GIT_COMMIT=${{ github.sha}}
+          secrets: |
+            GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
+          cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          # Push to GHCR and load to local Docker daemon simultaneously
+          outputs: |
+            type=registry,push=true
+            type=docker
         env:
-          DOCKER_BUILDKIT: 1
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
 
-      - name: Pull image from GHCR for tagging 📥
+      - name: Tag image locally for Python tagging scripts 🏷
         run: |
-          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
         shell: bash
 
       - name: Write tags file 🏷
