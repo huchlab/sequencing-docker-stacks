@@ -15,18 +15,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Login to GHCR 🔐
-      uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ github.token }}
-
     - name: Download tags file 📥
       uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: ${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}-tags
         path: /tmp/jupyter/tags/
+
+    - name: Install Crane
+      uses: imjasonh/setup-crane@v0.5
 
     - name: Copy and tag image directly from GHCR to Registry 🏷
       run: |

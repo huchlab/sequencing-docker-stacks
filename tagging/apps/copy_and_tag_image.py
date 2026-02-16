@@ -10,7 +10,7 @@ from tagging.apps.common_cli_arguments import common_arguments_parser
 from tagging.apps.config import Config
 from tagging.utils.get_prefix import get_file_prefix_for_platform
 
-docker = plumbum.local["docker"]
+crane = plumbum.local["crane"]
 
 LOGGER = logging.getLogger(__name__)
 
@@ -23,8 +23,8 @@ def copy_and_tag_image(
     push_to_registry: bool,
 ) -> None:
     """
-    Copy an image directly from source registry to target registry with tags.
-    Uses docker buildx imagetools create to copy without pulling to local.
+    Copy an image directly from source registry to target registry and tag.
+    Uses crane to copy without pulling to local.
     """
     LOGGER.info(f"Copying and tagging image: {config.image}")
 
@@ -38,27 +38,36 @@ def copy_and_tag_image(
     source_image = f"{source_registry}/{source_owner}/sequencing-docker-stacks/{config.image}:{source_image_tag}"
     LOGGER.info(f"Source image: {source_image}")
 
-    # Copy image with each tag
-    for tag in tags:
+    tag0 = tags[0]
+    tag_name0 = tag0.rsplit(":", 1)[-1]
+    target_tag0 = f"{config.registry}/{config.owner}/{config.image}:{tag_name0}"
+    LOGGER.info(f"Copying to first tag: {target_tag0}")
+    copy_args = [
+        "copy",
+        source_image,
+        target_tag0,
+    ]
+
+    if push_to_registry:
+        crane[copy_args] & plumbum.FG
+
+    # Use 'crane tag' for all subsequent tags
+    # This is an instant API call with no data transfer.
+    for tag in tags[1:]:
         # Extract just the tag part (after the last colon)
         # Tags are in format: registry/owner/image:tag
         tag_name = tag.rsplit(":", 1)[-1]
         target_tag = f"{config.registry}/{config.owner}/{config.image}:{tag_name}"
-        LOGGER.info(f"Copying to tag: {target_tag}")
+        LOGGER.info(f"Tagging : {target_tag}")
 
-        # Use docker buildx imagetools create to copy directly
-        args = [
-            "buildx",
-            "imagetools",
-            "create",
-            "--tag",
-            target_tag,
-            source_image,
+        tag_args = [
+            "tag",
+            target_tag0,
+            tag_name,
         ]
-        if not push_to_registry:
-            args.append("--dry-run")
 
-        docker[args] & plumbum.FG
+        if push_to_registry:
+            crane[tag_args] & plumbum.FG
 
     if push_to_registry:
         LOGGER.info(f"All tags copied and pushed to registry for image: {config.image}")
