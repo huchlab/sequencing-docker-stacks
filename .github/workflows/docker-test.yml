@@ -52,7 +52,6 @@ jobs:
           remove_swap: true
           remove_packages: false
           remove_packages_one_command: true
-          # Directories that freed 0 MB on both platforms:
           remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc  /usr/local/lib/android /usr/share/dotnet  /opt/ghc /usr/local/.ghcup"
           rm_cmd: "rmz"
 
