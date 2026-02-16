@@ -121,6 +121,11 @@ jobs:
             OWNER=${{ env.OWNER }}
           secrets: |
             GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            CONTAINER_BUILD_DATE=${{ steps.get_build_date.outputs.build_date }}
+            CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+            CONTAINER_GIT_REPOSITORY=${{ github.repository }}
+            CONTAINER_GIT_COMMIT=${{ github.sha }}
           cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           # Push to GHCR and load to local Docker daemon simultaneously
