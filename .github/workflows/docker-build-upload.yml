@@ -89,10 +89,6 @@ jobs:
       - name: Create dev environment 📦
         uses: ./.github/actions/create-dev-env
 
-      - name: Get commit SHA
-        id: get_sha
-        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
         uses: ./.github/actions/load-image
@@ -112,7 +108,7 @@ jobs:
         run: |
           docker buildx build \
             --rm --force-rm \
-            --tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+            --tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
             --push \
             images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/ \
             --build-arg REGISTRY=${{ env.REGISTRY }} \
@@ -120,7 +116,7 @@ jobs:
             --build-arg CONTAINER_BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }} \
             --build-arg CONTAINER_GIT_REPOSITORY=${{ github.repository }} \
-            --build-arg CONTAINER_GIT_COMMIT=${{ steps.get_sha.outputs.sha }} \
+            --build-arg CONTAINER_GIT_COMMIT=${{ github.sha }} \
             --secret id=GITHUB_PAT
         env:
           DOCKER_BUILDKIT: 1
@@ -131,8 +127,8 @@ jobs:
 
       - name: Pull image from GHCR for tagging 📥
         run: |
-          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
+          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
         shell: bash
 
       - name: Write tags file 🏷

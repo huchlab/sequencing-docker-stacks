@@ -15,11 +15,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get commit SHA
-      id: get_sha
-      run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      shell: bash
-
     - name: Login to GHCR 🔐
       uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
       with:
@@ -37,7 +32,7 @@ runs:
       run: |
         SOURCE_REGISTRY=ghcr.io \
         SOURCE_OWNER=${{ github.repository_owner }} \
-        SOURCE_IMAGE_TAG=build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
+        SOURCE_IMAGE_TAG=build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} \
         python3 -m tagging.apps.copy_and_tag_image \
           --registry ${{ env.REGISTRY }} \
           --owner ${{ env.OWNER }} \
@@ -57,7 +52,7 @@ runs:
           --from oci-registry \
           --platform linux/${{ inputs.platform == 'aarch64' && 'arm64' || 'amd64' }} \
           -o spdx-json=/tmp/sbom-${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}.spdx.json \
-          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+          ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
       shell: bash
 
     - name: Upload SBOM artifact 📤
