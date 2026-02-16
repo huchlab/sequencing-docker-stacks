@@ -69,11 +69,6 @@ jobs:
         with:
           apptainer-version: 1.4.5
 
-      - name: Get commit SHA
-        id: get_sha
-        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-        shell: bash
-
       - name: Download x86_64 tags file 📥
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
@@ -85,7 +80,7 @@ jobs:
           mkdir -p /tmp/apptainer/
 
           echo "Preparing Apptainer definition file..."
-          GHCR_IMAGE="ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}"
+          GHCR_IMAGE="ghcr.io/${{ github.repository_owner }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-x86_64-${{ inputs.variant }}"
           cp .github/apptainer/apptainer.def /tmp/apptainer/apptainer.def
           sed -i "s|PLACEHOLDER_IMAGE_REFERENCE|$GHCR_IMAGE|g" /tmp/apptainer/apptainer.def
 
