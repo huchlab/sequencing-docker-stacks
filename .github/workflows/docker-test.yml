@@ -42,34 +42,33 @@ jobs:
       - name: Checkout Repo ⚡️
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Free Disk Space
+        uses: endersonmenezes/free-disk-space@v3
+        with:
+          remove_android: false
+          remove_dotnet: true
+          remove_haskell: true
+          remove_tool_cache: true
+          remove_swap: true
+          remove_packages: false
+          remove_packages_one_command: true
+          remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc  /usr/local/lib/android /usr/share/dotnet  /opt/ghc /usr/local/.ghcup"
+          rm_cmd: "rmz"
 
-      # - name: Free Disk Space
-      #   uses: endersonmenezes/free-disk-space@v3
-      #   with:
-      #     remove_android: false
-      #     remove_dotnet: true
-      #     remove_haskell: true
-      #     remove_tool_cache: true
-      #     remove_swap: true
-      #     remove_packages: false
-      #     remove_packages_one_command: true
-      #     remove_folders: "/etc/skel/.dotnet /etc/skel/.rustup /home/runner/.rustup /opt/az /opt/google /opt/hostedtoolcache/CodeQL /opt/pipx /opt/pipx_bin /opt/pipx/venvs/ansible-core /usr/lib/firefox /usr/lib/llvm* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/local/julia* /usr/local/lib/android/sdk /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/az* /usr/share/go* /usr/share/gradle /usr/share/kotlinc /usr/share/miniconda /usr/share/swift /usr/share/doc /usr/share/mecab /usr/lib/gcc  /usr/local/lib/android /usr/share/dotnet  /opt/ghc /usr/local/.ghcup"
-      #     rm_cmd: "rmz"
+      - name: Create dev environment 📦
+        uses: ./.github/actions/create-dev-env
 
-      # - name: Create dev environment 📦
-      #   uses: ./.github/actions/create-dev-env
+      - name: Load built image to Docker 📥
+        uses: ./.github/actions/load-image
+        with:
+          image: ${{ inputs.image }}
+          platform: ${{ inputs.platform }}
+          variant: ${{ inputs.variant }}
 
-      # - name: Load built image to Docker 📥
-      #   uses: ./.github/actions/load-image
-      #   with:
-      #     image: ${{ inputs.image }}
-      #     platform: ${{ inputs.platform }}
-      #     variant: ${{ inputs.variant }}
-
-      # - name: Run tests ✅
-      #   run: |
-      #     python3 -m tests.run_tests \
-      #       --registry ${{ env.REGISTRY }} \
-      #       --owner ${{ env.OWNER }} \
-      #       --image ${{ inputs.image }}
-      #   shell: bash
+      - name: Run tests ✅
+        run: |
+          python3 -m tests.run_tests \
+            --registry ${{ env.REGISTRY }} \
+            --owner ${{ env.OWNER }} \
+            --image ${{ inputs.image }}
+        shell: bash
