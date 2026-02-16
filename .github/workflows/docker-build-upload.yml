@@ -119,7 +119,6 @@ jobs:
         uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
         with:
           context: images/${{ inputs.image }}/${{ inputs.variant != 'default' && inputs.variant || '.' }}/
-          push: true
           tags: ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
@@ -132,13 +131,15 @@ jobs:
             GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
           cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
+          outputs: |
+            type=registry,push=true
+            type=docker
         env:
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
 
-      - name: Pull image from GHCR for tagging 📥
+      - name: Tag image locally for Python tagging scripts 🏷
         run: |
-          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
           docker tag ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ steps.get_sha.outputs.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }} ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
         shell: bash
 
