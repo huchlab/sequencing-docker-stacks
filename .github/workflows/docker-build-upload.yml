@@ -91,7 +91,10 @@ jobs:
 
       - name: Get build date
         id: get_build_date
-        run: echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+        run: |
+          echo "build_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "build_date_short=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Load parent built image to Docker 📥
         if: inputs.parent-image != ''
@@ -124,10 +127,13 @@ jobs:
           labels: |
             org.opencontainers.image.url=${{ github.repository }}
             org.opencontainers.image.source=${{ github.repository }}
-            org.opencontainers.image.title=${{ inputs.image }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title="${{ inputs.image }}-${{ inputs.variant }} (${inputs.platform})"
             org.opencontainers.image.licenses="BSD-3-Clause"
             org.opencontainers.image.documentation="https://sequencing-docker-stacks.readthedocs.io/"
             org.opencontainers.image.base.name=${{ inputs.parent-image }}
+            org.opencontainers.image.version=${{ steps.get_build_date.outputs.build_date_short }}
+            org.opencontainers.image.build.date=${{ steps.get_build_date.outputs.build_date }}
           cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           # Push to GHCR and load to local Docker daemon simultaneously
