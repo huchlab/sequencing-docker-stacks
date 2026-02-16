@@ -132,7 +132,6 @@ jobs:
           cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           # Push to GHCR and load to local Docker daemon simultaneously
-          # This eliminates the need for a separate docker pull step
           outputs: |
             type=registry,push=true
             type=docker
