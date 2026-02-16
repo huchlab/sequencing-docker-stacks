@@ -94,6 +94,7 @@ if __name__ == "__main__":
     )
     source_image_tag = os.environ.get("SOURCE_IMAGE_TAG", "")
     push_to_registry = os.environ.get("PUSH_TO_REGISTRY", "false").lower() == "true"
+    push_to_registry = True
 
     if not source_image_tag:
         raise ValueError("SOURCE_IMAGE_TAG environment variable must be set")
