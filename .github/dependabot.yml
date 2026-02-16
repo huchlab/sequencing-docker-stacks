@@ -21,6 +21,12 @@ updates:
     commit-message:
       prefix: "[FAST_BUILD] "
   - package-ecosystem: github-actions
+    directory: .github/actions/copy-and-tag-image/
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "[FAST_BUILD] "
+  - package-ecosystem: github-actions
     directory: .github/actions/create-dev-env/
     schedule:
       interval: weekly
