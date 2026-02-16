@@ -122,10 +122,12 @@ jobs:
           secrets: |
             GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
           labels: |
-            CONTAINER_BUILD_DATE=${{ steps.get_build_date.outputs.build_date }}
-            CONTAINER_IMAGE_NAME=${{ env.REGISTRY }}/${{ env.OWNER }}/${{ inputs.image }}
-            CONTAINER_GIT_REPOSITORY=${{ github.repository }}
-            CONTAINER_GIT_COMMIT=${{ github.sha }}
+            org.opencontainers.image.url=${{ github.repository }}
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.title=${{ inputs.image }}
+            org.opencontainers.image.licenses="BSD-3-Clause"
+            org.opencontainers.image.documentation="https://sequencing-docker-stacks.readthedocs.io/"
+            org.opencontainers.image.base.name=${{ inputs.parent-image }}
           cache-from: type=gha,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           cache-to: type=gha,mode=max,scope=${{ inputs.image }}-${{ inputs.platform }}-${{ inputs.variant }}
           # Push to GHCR and load to local Docker daemon simultaneously
