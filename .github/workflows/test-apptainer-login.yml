@@ -22,6 +22,6 @@ jobs:
 
       - name: Login to Registry 🔐
         run: |
-          echo "${{ secrets.QUAY_USERNAME }}" | apptainer registry login -u "${{ secrets.QUAY_ROBOT_TOKEN }}" --password-stdin oras://${{ env.REGISTRY }}
+          echo "${{ secrets.QUAY_ROBOT_TOKEN }}" | apptainer registry login -u "${{ secrets.QUAY_USERNAME }}" --password-stdin oras://${{ env.REGISTRY }}
         shell: bash
         id: login
