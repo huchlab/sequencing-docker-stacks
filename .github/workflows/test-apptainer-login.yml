@@ -1,0 +1,27 @@
+name: test-apptainer-login
+
+env:
+  REGISTRY: quay.io
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  test-login:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: eWaterCycle/setup-apptainer@v2
+        with:
+          apptainer-version: 1.3.6
+
+      - name: Login to Registry 🔐
+        run: |
+          echo "${{ secrets.QUAY_USERNAME }}" | apptainer registry login -u "${{ secrets.QUAY_ROBOT_TOKEN }}" --password-stdin oras://${{ env.REGISTRY }}
+        shell: bash
+        id: login
