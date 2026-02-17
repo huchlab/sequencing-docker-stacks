@@ -38,3 +38,6 @@ jobs:
           echo "${{ secrets.QUAY_ROBOT_TOKEN }}" | apptainer registry login -u "${{ secrets.QUAY_USERNAME }}" --password-stdin oras://${{ env.REGISTRY }}
         shell: bash
         id: login
+        env:
+          APPTAINER_DOCKER_USERNAME: ${{ github.actor }}
+          APPTAINER_DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
