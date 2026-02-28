@@ -156,6 +156,7 @@ RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
     Rscript -e "install.packages('openxlsx2')" && \
     Rscript -e "install.packages('scCustomize')" && \
     Rscript -e "remotes::install_github('cellgeni/sceasy', upgrade = FALSE)" && \
+    Rscript -e "remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', upgrade = FALSE, force = TRUE)" && \
     Rscript -e "remotes::install_github('immunogenomics/presto', upgrade = FALSE)" && \
     Rscript -e "remotes::install_github('saezlab/liana', upgrade = FALSE)"
 
