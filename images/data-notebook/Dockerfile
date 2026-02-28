@@ -37,6 +37,7 @@ RUN git lfs install && \
         'openpyxl' \
         'pingouin' \
         'plotnine' \
+        'plotly' \
         'polars' \
         'pyarrow' \
         'scikit-misc' \
