@@ -59,6 +59,7 @@ RUN git lfs install && \
         'palantir' \
         'pingouin' \
         'plotnine' \
+        'plotly' \
         'polars' \
         'pooch' \
         'pyarrow' \
