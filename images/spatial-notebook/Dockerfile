@@ -27,7 +27,7 @@ RUN mamba install --yes \
 
 RUN pip install --no-cache-dir  \
     "zarr<3" \
-    "spatialdata[extra]" \
+    "spatialdata[extra]>=0.7.2" \
     squidpy \
     tangram-sc
 
