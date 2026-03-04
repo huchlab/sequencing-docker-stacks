@@ -17,6 +17,7 @@ USER ${NB_UID}
 
 RUN mamba install --yes \
     # Python
+    'opencv' \
     'pyproj' \
     'pyqt' \
     'spatial-image' \
@@ -26,9 +27,11 @@ RUN mamba install --yes \
     fix-permissions "/home/${NB_USER}"
 
 RUN pip install --no-cache-dir  \
-    "zarr<3" \
-    "spatialdata[extra]" \
-    squidpy \
-    tangram-sc
+    # see https://github.com/scverse/spatialdata/issues/1065
+    "setuptools<82" \
+    "spatialdata[extra]>=0.7.2" \
+    "squidpy" \
+    "tangram-sc" \
+    "zarr"
 
 USER ${NB_UID}
