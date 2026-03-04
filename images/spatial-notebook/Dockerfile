@@ -17,6 +17,7 @@ USER ${NB_UID}
 
 RUN mamba install --yes \
     # Python
+    'opencv' \
     'pyproj' \
     'pyqt' \
     'spatial-image' \
