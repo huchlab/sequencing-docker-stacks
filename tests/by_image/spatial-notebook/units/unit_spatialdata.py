@@ -1,5 +1,5 @@
 import spatialdata
-from packaging import version
+from packaging import version  # type: ignore
 
 current_version = spatialdata.__version__
 required_version = "0.7.2"
