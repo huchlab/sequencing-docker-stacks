@@ -69,8 +69,16 @@ queue_rules:
               - check-success = aarch64-singlecell-gpu-cuda13 / build-upload
               - check-success = x86_64-spatial / build-upload
               - check-success = aarch64-spatial / build-upload
+              - check-success = x86_64-spatial-gpu / build-upload
+              - check-success = aarch64-spatial-gpu / build-upload
+              - check-success = x86_64-spatial-gpu-cuda13 / build-upload
+              - check-success = aarch64-spatial-gpu-cuda13 / build-upload
               - check-success = x86_64-multiomics / build-upload
               - check-success = aarch64-multiomics / build-upload
+              - check-success = x86_64-multiomics-gpu / build-upload
+              - check-success = aarch64-multiomics-gpu / build-upload
+              - check-success = x86_64-multiomics-gpu-cuda13 / build-upload
+              - check-success = aarch64-multiomics-gpu-cuda13 / build-upload
               - check-success = test-x86_64-data / test
               - check-success = test-aarch64-data / test
               - check-success = test-x86_64-sequencing-base / test
@@ -83,8 +91,6 @@ queue_rules:
               - check-success = test-aarch64-singlecell-r / test
               - check-success = test-x86_64-singlecell-gpu / test
               - check-success = test-aarch64-singlecell-gpu / test
-              - check-success = test-x86_64-singlecell-gpu-cuda13 / test
-              - check-success = test-aarch64-singlecell-gpu-cuda13 / test
               - check-success = test-x86_64-spatial / test
               - check-success = test-aarch64-spatial / test
               - check-success = test-x86_64-multiomics / test
@@ -98,6 +104,11 @@ queue_rules:
               - check-success = tag-push (singlecell-gpu-notebook, default) / tag-push
               - check-success = tag-push (singlecell-gpu-notebook, cuda13) / tag-push
               - check-success = tag-push (spatial-notebook, default) / tag-push
+              - check-success = tag-push (spatial-gpu-notebook, default) / tag-push
+              - check-success = tag-push (spatial-gpu-notebook, cuda13) / tag-push
+              - check-success = tag-push (multiomics-notebook, default) / tag-push
+              - check-success = tag-push (multiomics-gpu-notebook, default) / tag-push
+              - check-success = tag-push (multiomics-gpu-notebook, cuda13) / tag-push
               - check-success = apptainer-push (data-notebook, default) / apptainer-push
               - check-success = apptainer-push (sequencing-base-notebook, default) / apptainer-push
               - check-success = apptainer-push (rnaseq-notebook, default) / apptainer-push
@@ -106,8 +117,12 @@ queue_rules:
               - check-success = apptainer-push (singlecell-gpu-notebook, default) / apptainer-push
               # not building apptainer for cuda13 because of disk space issues
               # - check-success = apptainer-push (singlecell-gpu-notebook, cuda13) / apptainer-push
+              # - check-success = apptainer-push (spatial-gpu-notebook, cuda13) / apptainer-push
+              # - check-success = apptainer-push (multiomics-gpu-notebook, cuda13) / apptainer-push
               - check-success = apptainer-push (multiomics-notebook, default) / apptainer-push
+              - check-success = apptainer-push (multiomics-gpu-notebook, default) / apptainer-push
               - check-success = apptainer-push (spatial-notebook, default) / apptainer-push
+              - check-success = apptainer-push (spatial-gpu-notebook, default) / apptainer-push
               - check-success = wiki-update / wiki-update
     branch_protection_injection_mode: none
     merge_bot_account: huchlab-bot
