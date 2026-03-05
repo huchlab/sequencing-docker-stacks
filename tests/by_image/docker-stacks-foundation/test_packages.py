@@ -122,6 +122,7 @@ EXCLUDED_PACKAGES = [
     "r-irkernel",
     "rapids",
     "scip",
+    "scvi",
     "scvi-tools",
     "unixodbc",
     "uv",
