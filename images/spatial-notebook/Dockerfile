@@ -20,6 +20,7 @@ RUN mamba install --yes \
     'opencv' \
     'pyproj' \
     'pyqt' \
+    'setuptools<82' \
     'spatial-image' \
     && \
     mamba clean --all -f -y && \
@@ -28,7 +29,6 @@ RUN mamba install --yes \
 
 RUN pip install --no-cache-dir  \
     # see https://github.com/scverse/spatialdata/issues/1065
-    "setuptools<82" \
     "spatialdata[extra]>=0.7.2" \
     "squidpy" \
     "tangram-sc" \
