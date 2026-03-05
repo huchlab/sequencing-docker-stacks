@@ -45,7 +45,7 @@ PACKAGE_MAPPING = {
     "scikit-image": "skimage",
     "scikit-learn": "sklearn",
     "scikit-misc": "skmisc",
-    "scvi-tools": "scvi",
+    # "scvi-tools": "scvi",
     "session-info": "session_info",
     "session-info2": "session_info2",
     "spatial-image": "spatial_image",
