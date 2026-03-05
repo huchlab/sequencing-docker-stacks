@@ -4,7 +4,7 @@
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
 ARG TAG=latest
-ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook:python-3.13
+ARG BASE_IMAGE=quay.io/jupyter/datascience-notebook:python-3.13
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
