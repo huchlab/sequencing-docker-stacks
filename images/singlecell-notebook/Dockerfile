@@ -3,7 +3,8 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG BASE_IMAGE=$REGISTRY/$OWNER/sequencing-base-notebook
+ARG TAG=latest
+ARG BASE_IMAGE=$REGISTRY/$OWNER/sequencing-base-notebook:$TAG
 FROM $BASE_IMAGE
 
 LABEL maintainer="Fabian Rost <rost@mpi-cbg.de>"
