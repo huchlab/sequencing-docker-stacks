@@ -12,15 +12,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
 
-ARG CONTAINER_BUILD_DATE
-ARG CONTAINER_IMAGE_NAME
-ARG CONTAINER_GIT_REPOSITORY
-ARG CONTAINER_GIT_COMMIT
-
-ENV CONTAINER_BUILD_DATE=${CONTAINER_BUILD_DATE}
-ENV CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME
-ENV CONTAINER_GIT_REPOSITORY=$CONTAINER_GIT_REPOSITORY
-ENV CONTAINER_GIT_COMMIT=$CONTAINER_GIT_COMMIT
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git-lfs && \
@@ -44,8 +35,10 @@ RUN git lfs install && \
         'jupyterlab_execute_time' \
         'natsort' \
         'openpyxl' \
+        'papermill' \
         'pingouin' \
         'plotnine' \
+        'plotly' \
         'polars' \
         'pyarrow' \
         'scikit-misc' \
@@ -93,3 +86,5 @@ RUN git lfs install && \
 RUN Rscript -e \
     "Sys.setenv(NOT_CRAN = 'true'); \
     install.packages(c('polars', 'tidypolars'), repos = 'https://community.r-multiverse.org')"
+
+USER ${NB_UID}

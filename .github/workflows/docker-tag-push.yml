@@ -51,6 +51,14 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN }}
         id: login
 
+      - name: Login to GHCR 🔐
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+        id: login-ghcr
+
       - name: Copy aarch64 image and apply tags directly 🏷
         uses: ./.github/actions/copy-and-tag-image
         with:
@@ -74,7 +82,13 @@ jobs:
         shell: bash
 
       - name: Logout from Registry 🔐
-        if: always() && env.PUSH_TO_REGISTRY == 'true' && steps.login.outcome == 'success'
+        if: always()
         run: |
           docker logout ${{ env.REGISTRY }}
+        shell: bash
+
+      - name: Logout from GHCR 🔐
+        if: always()
+        run: |
+          docker logout ghcr.io
         shell: bash
