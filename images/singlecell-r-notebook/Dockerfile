@@ -3,7 +3,6 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=huchlab
-ARG TAG=latest
 ARG BASE_IMAGE=$REGISTRY/jupyter/datascience-notebook:python-3.13
 FROM $BASE_IMAGE
 

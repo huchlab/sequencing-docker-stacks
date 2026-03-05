@@ -121,8 +121,7 @@ jobs:
           tags: ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
-            OWNER="${{ env.OWNER }}/sequencing-docker-stacks"
-            TAG=build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+            OWNER=${{ env.OWNER }}
           secrets: |
             GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}
           labels: |
