@@ -35,6 +35,7 @@ RUN git lfs install && \
         'jupyterlab_execute_time' \
         'natsort' \
         'openpyxl' \
+        'papermill' \
         'pingouin' \
         'plotnine' \
         'plotly' \
