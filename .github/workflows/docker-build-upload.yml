@@ -151,7 +151,7 @@ jobs:
           # Push to GHCR and load to local Docker daemon simultaneously
           outputs: |
             type=registry,push=true
-          load: true
+          # load: true
         env:
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
