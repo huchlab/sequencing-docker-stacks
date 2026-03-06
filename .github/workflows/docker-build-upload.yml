@@ -156,10 +156,10 @@ jobs:
           # Full logs for CI build
           BUILDKIT_PROGRESS: plain
 
-      # - name: Pull image from GHCR to local Docker daemon 🛠📥
-      #   run: |
-      #     docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
-      #   shell: bash
+      - name: Pull image from GHCR to local Docker daemon 🛠📥
+        run: |
+          docker pull ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_OWNER }}/sequencing-docker-stacks/${{ inputs.image }}:build-${{ github.sha }}-${{ github.run_id }}-${{ inputs.platform }}-${{ inputs.variant }}
+        shell: bash
 
       - name: Tag image locally for Python tagging scripts 🏷
         run: |
