@@ -7,8 +7,8 @@ name: Docker Stacks
 
 on:
   schedule:
-    # Weekly, at 03:00 on Monday UTC
-    - cron: "0 3 * * 1"
+    # Weekly, at 05:00 on Monday UTC
+    - cron: "0 5 * * 1"
   pull_request:
     paths:
       - ".github/workflows/docker.yml"
