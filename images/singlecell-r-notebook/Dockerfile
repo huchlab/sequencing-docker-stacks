@@ -16,7 +16,8 @@ USER root
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        git-lfs && \
+        git-lfs \
+        zlib1g-dev && \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/R-cran/library && \
