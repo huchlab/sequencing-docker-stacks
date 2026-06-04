@@ -22,7 +22,7 @@ runs:
         path: /tmp/jupyter/tags/
 
     - name: Install Crane
-      uses: imjasonh/setup-crane@v0.5
+      uses: imjasonh/setup-crane@v0.6
 
     - name: Copy and tag image directly from GHCR to Registry 🏷
       run: |
