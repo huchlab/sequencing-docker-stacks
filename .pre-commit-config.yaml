@@ -24,21 +24,21 @@ repos:
 
   # Automatically sort python imports
   - repo: https://github.com/PyCQA/isort
-    rev: a333737ed43df02b18e6c95477ea1b285b3de15a # frozen: 8.0.1
+    rev: 7f321d375f31a2f03833bc9a548e8783f2b5c420 # frozen: 9.0.0b1
     hooks:
       - id: isort
         args: [--profile, black]
 
   # Autoformat: Python code
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: ea488cebbfd88a5f50b8bd95d5c829d0bb76feb8 # frozen: 26.1.0
+    rev: 4160603246a6b365d4a2af661c6d71b0a0f50478 # frozen: 26.5.1
     hooks:
       - id: black
         args: [--target-version=py312]
 
   # Check python code static typing
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: a66e98df7b4aeeb3724184b332785976d062b92e # frozen: v1.19.1
+    rev: 41e691678310dfd3833f7ab4e180ddb014310356 # frozen: v2.3.0
     hooks:
       - id: mypy
         args: [--config, ./mypy.ini]
@@ -67,7 +67,7 @@ repos:
 
   # Autoformat: YAML, JSON, Markdown, etc.
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: c2bc67fe8f8f549cc489e00ba8b45aa18ee713b1 # frozen: v3.8.1
+    rev: 0ee178619d696787ca73d210cc191d720868c631 # frozen: v3.9.6
     hooks:
       - id: prettier
 
@@ -84,7 +84,7 @@ repos:
 
   # Lint: Dockerfile
   - repo: https://github.com/hadolint/hadolint
-    rev: 4e697ba704fd23b2409b947a319c19c3ee54d24f # frozen: v2.14.0
+    rev: 2eece55955ced00200be9729e9728cb7dacca505 # frozen: v2.15.1
     hooks:
       - id: hadolint-docker
         entry: hadolint/hadolint:v2.14.0 hadolint
@@ -92,7 +92,7 @@ repos:
   # Lint: Dockerfile
   # We're linting .dockerfile files as well
   - repo: https://github.com/hadolint/hadolint
-    rev: 4e697ba704fd23b2409b947a319c19c3ee54d24f # frozen: v2.14.0
+    rev: 2eece55955ced00200be9729e9728cb7dacca505 # frozen: v2.15.1
     hooks:
       - id: hadolint-docker
         name: Lint *.dockerfile Dockerfiles
@@ -129,7 +129,7 @@ repos:
 
   # Lint: Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 5387279b3b4c24822c0f86d4df4f28b37e3e8992 # frozen: v0.21.0
+    rev: b82a6c8896e491b9cb377a99ff3412131920681b # frozen: v0.23.2
     hooks:
       - id: markdownlint-cli2
         args: [--fix]
