@@ -24,21 +24,21 @@ repos:
 
   # Automatically sort python imports
   - repo: https://github.com/PyCQA/isort
-    rev: a333737ed43df02b18e6c95477ea1b285b3de15a # frozen: 8.0.1
+    rev: 9f905615631c545f5aea2516508109350d1d2f7d # frozen: 9.0.2
     hooks:
       - id: isort
         args: [--profile, black]
 
   # Autoformat: Python code
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: ea488cebbfd88a5f50b8bd95d5c829d0bb76feb8 # frozen: 26.1.0
+    rev: 96ae3e5802f3fe2d551e703e18f0a367d1a81ac2 # frozen: 26.10.0
     hooks:
       - id: black
         args: [--target-version=py312]
 
   # Check python code static typing
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: a66e98df7b4aeeb3724184b332785976d062b92e # frozen: v1.19.1
+    rev: 2834ec6639549dd6796205c8f011dedcd587288b # frozen: v2.4.0
     hooks:
       - id: mypy
         args: [--config, ./mypy.ini]
@@ -67,7 +67,7 @@ repos:
 
   # Autoformat: YAML, JSON, Markdown, etc.
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: c2bc67fe8f8f549cc489e00ba8b45aa18ee713b1 # frozen: v3.8.1
+    rev: ef4a397f916211b4a39ccf9d3d9cbb6562157251 # frozen: v3.9.9
     hooks:
       - id: prettier
 
@@ -84,7 +84,7 @@ repos:
 
   # Lint: Dockerfile
   - repo: https://github.com/hadolint/hadolint
-    rev: 4e697ba704fd23b2409b947a319c19c3ee54d24f # frozen: v2.14.0
+    rev: 2eece55955ced00200be9729e9728cb7dacca505 # frozen: v2.15.1
     hooks:
       - id: hadolint-docker
         entry: hadolint/hadolint:v2.14.0 hadolint
@@ -92,7 +92,7 @@ repos:
   # Lint: Dockerfile
   # We're linting .dockerfile files as well
   - repo: https://github.com/hadolint/hadolint
-    rev: 4e697ba704fd23b2409b947a319c19c3ee54d24f # frozen: v2.14.0
+    rev: 2eece55955ced00200be9729e9728cb7dacca505 # frozen: v2.15.1
     hooks:
       - id: hadolint-docker
         name: Lint *.dockerfile Dockerfiles
@@ -116,20 +116,20 @@ repos:
 
   # Lint: Shell scripts
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: 745eface02aef23e168a8afb6b5737818efbea95 # frozen: v0.11.0.1
+    rev: a6564f5d57444e123433a5c9af733e3975c77229 # frozen: v0.11.0.1-1
     hooks:
       - id: shellcheck
         args: ["-x"]
 
   # Lint: Python
   - repo: https://github.com/PyCQA/flake8
-    rev: d93590f5be797aabb60e3b09f2f52dddb02f349f # frozen: 7.3.0
+    rev: cfbbfdeb2391c14a37e101e92a77f54f329e1726 # frozen: 7.4.1
     hooks:
       - id: flake8
 
   # Lint: Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: 5387279b3b4c24822c0f86d4df4f28b37e3e8992 # frozen: v0.21.0
+    rev: 916ad0aaa108c64d294101002066f530ea170b10 # frozen: v0.23.3
     hooks:
       - id: markdownlint-cli2
         args: [--fix]
